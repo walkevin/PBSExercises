@@ -16,11 +16,8 @@ void AdvanceTimeStep1(double k, double m, double d, double L, double dt, int met
 	//case scene::method::euler:
 
 	//}
-	//p2 = p1 + dt*v1;
-	//v2 = v1 + dt*(-k*(p1 - L) - d*v1 + m*g ) / m;
-	p2 = 0.5 + p1;
-
-
+	p2 = p2 + dt*v2;
+	v2 = v2 + dt*(-k*(p2 - L) - d*v2 + m*g ) / m;
 }
 
 
