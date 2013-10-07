@@ -1,0 +1,20 @@
+The error convergence plots are all quite similar with respect to different damping factors. The three Euler methods show the lowest average error convergence, in comparison to the Midpoint method. This is what we expect, since the Midpoint method is known to be accurate of order 2, while Euler methods are only accurate of order 1.
+
+In concrete terms, the following values for the error convergence $\frac{e_{i+1}}{e_i}$ (damping factor 0) were obtained.
+
+\begin{tabular}{ll}
+Euler			& 3.89\\
+Symplectic Euler	& 4.10\\
+Backwards Euler		& 3.84\\
+Midpoint		& 9.57\\
+\end{tabular}
+
+In order to get meaningful results, the first three measurements were ignored when computing the average error convergence.
+
+
+STABILITY
+As expected, the backwards Euler method is unconditionally stable. The symplectic Euler method is also stable, which was pointed out during the lecture. Both midpoint and Euler method are not stable, which is also as expected.
+
+However, for a damping coefficient of 1.9, all methods seem to be stable. But for a general setting, the Midpoint and Euler method remain unstable.
+
+Since an accurate method produces a smaller error per step, the error propagation is smaller, therefore it is more likely to be stable.
