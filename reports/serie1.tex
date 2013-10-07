@@ -1,4 +1,6 @@
 \chapter*{Serie 1}
+\section*{Exercise 2}
+\subsection*{2.1. Analytic solution}
 First lets do a sketch as seen in figure \ref{fig:sp} to omit any misunderstanding of the problem.
 \begin{figure}[]
 	\begin{center}
@@ -46,20 +48,33 @@ We would like to find the constants $c_1, c_2$ of the equation
 	\intertext{Using the constraint in Eq. \ref{eq:c2a} finally gives us}
 	c_2&=\frac{mg}{\beta k}(1-\alpha)+\frac{L}{\beta}.
 \end{align}
-\begin{figure}[]
-	\begin{center}
-		\includegraphics*[width=\textwidth]{graphics/ErrorCvgDamp0_01-crop.pdf}
-	\end{center}
-	\caption{<++>}
-	\label{fig:<++>}
-\end{figure}<++>
-\begin{figure}[]
-	\begin{center}
-		\includegraphics*[width=\textwidth]{graphics/ErrorCvgDamp0-crop.pdf}
-	\end{center}
-	\caption{}
-	\label{fig:}
+\subsection*{2.2. Error convergence analysis}
+\begin{figure}[h]
+	\centering
+	\subfloat[damping factor $d=0.01$]{
+		\includegraphics*[width=0.8\textwidth]{graphics/ErrorConvergenceDamp0_01-crop.pdf}
+		%\input{tikz-pictures/wavefunctionVgE1.tex}
+	\label{fig:errorconvd001} 
+}
 \end{figure}
+\begin{figure}
+	\ContinuedFloat
+	\centering
+\subfloat[damping factor $d=0$]{
+		\includegraphics*[width=0.8\textwidth]{graphics/ErrorCvgDamp0-crop.pdf}
+}%
+	\label{fig:errorconvd0} 
+\end{figure}
+\begin{figure}
+	\ContinuedFloat
+	\centering
+\subfloat[damping factor $d=1$]{
+		\includegraphics*[width=0.8\textwidth]{graphics/ErrorCvgDamp1-crop.pdf}
+	}%
+%\caption{Examples of Schr\"odinger wave-functions. }
+	\label{fig:errorconvd1} 
+\end{figure}
+
 \begin{figure}[]
 	\begin{center}
 		\includegraphics*[width=\textwidth]{graphics/ErrorCvgDamp1-crop.pdf}
@@ -95,3 +110,37 @@ We would like to find the constants $c_1, c_2$ of the equation
 	\caption{}
 	\label{fig:}
 \end{figure}
+graphics/ErrorConvergenceDamp0_01.pdf
+graphics/ErrorConvergenceDamp1-crop.pdf
+graphics/ErrorConvergenceDamp1.pdf
+graphics/ErrorCvgDamp0_01-crop.pdf
+graphics/ErrorCvgDamp0_01.eps
+graphics/ErrorCvgDamp0_01-eps-converted-to-crop.pdf
+graphics/ErrorCvgDamp0_01-eps-converted-to.pdf
+graphics/ErrorCvgDamp0_01.pdf
+graphics/ErrorCvgDamp0-crop.pdf
+graphics/ErrorCvgDamp0.eps
+graphics/ErrorCvgDamp0.pdf
+graphics/ErrorCvgDamp1-crop.pdf
+graphics/ErrorCvgDamp1.eps
+graphics/ErrorCvgDamp1.pdf
+graphics/StabilityDamp0_01-crop.pdf
+graphics/StabilityDamp0_01.eps
+graphics/StabilityDamp0_01.pdf
+graphics/StabilityDamp0_1-crop.pdf
+graphics/StabilityDamp0_1.eps
+graphics/StabilityDamp0_1.pdf
+graphics/StabilityDamp0-crop.pdf
+graphics/StabilityDamp0.eps
+graphics/StabilityDamp0.pdf
+graphics/StabilityDamp1_9-crop.pdf
+graphics/StabilityDamp1_9.eps
+graphics/StabilityDamp1_9.pdf
+graphics/StabilityMeasurementDamp0_01-crop.pdf
+graphics/StabilityMeasurementDamp0_01.pdf
+graphics/StabilityMeasurementDamp0_1-crop.pdf
+graphics/StabilityMeasurementDamp0_1.pdf
+graphics/StabilityMeasurementDamp0-crop.pdf
+graphics/StabilityMeasurementDamp0.pdf
+graphics/StabilityMeasurementDamp1_9-crop.pdf
+graphics/StabilityMeasurementDamp1_9.pdf
