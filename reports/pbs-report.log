@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Arch Linux) (format=pdflatex 2013.9.19)  7 OCT 2013 12:52
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Arch Linux) (format=pdflatex 2013.9.19)  7 OCT 2013 14:18
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1519,22 +1519,30 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip283
 )
-(./macrosetup.tex) (./theoremsetup.tex
-\c@currexplctr=\count340
-\c@endexplctr=\count341
-\c@expl=\count342
-\c@currremkctr=\count343
-\c@endremkctr=\count344
-\c@remk=\count345
-\c@currcorlctr=\count346
-\c@endcorlctr=\count347
-\c@corl=\count348
-\c@currthrmctr=\count349
-\c@endthrmctr=\count350
-\c@thrm=\count351
-\c@currexerctr=\count352
-\c@endexerctr=\count353
-\c@exer=\count354
+(./macrosetup.tex (/usr/share/texmf-dist/tex/latex/rotating/rotating.sty
+Package: rotating 2009/03/28 v2.16a rotated objects in LaTeX
+\c@r@tfl@t=\count340
+\rotFPtop=\skip284
+\rotFPbot=\skip285
+\rot@float@box=\box71
+\rot@mess@toks=\toks58
+))
+(./theoremsetup.tex
+\c@currexplctr=\count341
+\c@endexplctr=\count342
+\c@expl=\count343
+\c@currremkctr=\count344
+\c@endremkctr=\count345
+\c@remk=\count346
+\c@currcorlctr=\count347
+\c@endcorlctr=\count348
+\c@corl=\count349
+\c@currthrmctr=\count350
+\c@endthrmctr=\count351
+\c@thrm=\count352
+\c@currexerctr=\count353
+\c@endexerctr=\count354
+\c@exer=\count355
 ) (./layoutsetup.tex
 Package hyperref Info: Option `colorlinks' set `false' on input line 18.
 )
@@ -1591,17 +1599,17 @@ LaTeX Font Info:    ... okay on input line 50.
  ABD: EveryShipout initializing macros
 (/usr/share/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count355
+\scratchcounter=\count356
 \scratchdimen=\dimen345
-\scratchbox=\box71
-\nofMPsegments=\count356
-\nofMParguments=\count357
-\everyMPshowfont=\toks58
-\MPscratchCnt=\count358
+\scratchbox=\box72
+\nofMPsegments=\count357
+\nofMParguments=\count358
+\everyMPshowfont=\toks59
+\MPscratchCnt=\count359
 \MPscratchDim=\dimen346
-\MPnumerator=\count359
-\makeMPintoPDFobject=\count360
-\everyMPtoPDFconversion=\toks59
+\MPnumerator=\count360
+\makeMPintoPDFobject=\count361
+\everyMPtoPDFconversion=\toks60
 ) (/usr/share/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
@@ -1626,20 +1634,20 @@ Package: everysel 2011/10/28 v1.2 EverySelectfont Package (MS)
 ABD: EverySelectfont initializing macros
 LaTeX Info: Redefining \selectfont on input line 126.
 )
-\CenteringLeftskip=\skip284
-\RaggedLeftLeftskip=\skip285
-\RaggedRightLeftskip=\skip286
-\CenteringRightskip=\skip287
-\RaggedLeftRightskip=\skip288
-\RaggedRightRightskip=\skip289
-\CenteringParfillskip=\skip290
-\RaggedLeftParfillskip=\skip291
-\RaggedRightParfillskip=\skip292
-\JustifyingParfillskip=\skip293
-\CenteringParindent=\skip294
-\RaggedLeftParindent=\skip295
-\RaggedRightParindent=\skip296
-\JustifyingParindent=\skip297
+\CenteringLeftskip=\skip286
+\RaggedLeftLeftskip=\skip287
+\RaggedRightLeftskip=\skip288
+\CenteringRightskip=\skip289
+\RaggedLeftRightskip=\skip290
+\RaggedRightRightskip=\skip291
+\CenteringParfillskip=\skip292
+\RaggedLeftParfillskip=\skip293
+\RaggedRightParfillskip=\skip294
+\JustifyingParfillskip=\skip295
+\CenteringParindent=\skip296
+\RaggedLeftParindent=\skip297
+\RaggedRightParindent=\skip298
+\JustifyingParindent=\skip299
 )
 (/usr/share/texmf-dist/tex/latex/beamer/translator/dicts/translator-basic-dicti
 onary/translator-basic-dictionary-English.dict
@@ -1651,8 +1659,9 @@ File: siunitx-abbreviations.cfg 2013/07/31 v2.5s siunitx: Abbreviated units
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: hyperref package is loaded.
+Package caption Info: rotating package is loaded.
 Package caption Info: End \AtBeginDocument code.
-\AtBeginShipoutBox=\box72
+\AtBeginShipoutBox=\box73
 Package hyperref Info: Link coloring OFF on input line 50.
 
 (/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
@@ -1661,7 +1670,7 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/share/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count361
+\c@section@level=\count362
 )
 Redoing nameref's sectioning
 Redoing nameref's label
@@ -1673,7 +1682,7 @@ LaTeX Info: Redefining \nameref on input line 50.
 \@outlinefile=\write5
 \openout5 = `pbs-report.out'.
 
-\c__siunitx_mathsf_int=\count362
+\c__siunitx_mathsf_int=\count363
 LaTeX Font Info:    Try loading font information for OMX+yhex on input line 50.
 
 
@@ -1711,7 +1720,7 @@ LaTeX Font Info:    Font shape `U/lasy/b/n' in size <7> not available
 (Font)              Font shape `U/lasy/m/n' tried instead on input line 50.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <5> not available
 (Font)              Font shape `U/lasy/m/n' tried instead on input line 50.
-\c__siunitx_mathtt_int=\count363
+\c__siunitx_mathtt_int=\count364
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
@@ -1746,196 +1755,195 @@ l.1 \chapter
 ]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 5.
+               Default added (so using `tbp') on input line 29.
 
 LaTeX Font Info:    External font `yhcmex10' loaded for size
-(Font)              <8> on input line 50.
+(Font)              <8> on input line 74.
 LaTeX Font Info:    External font `yhcmex10' loaded for size
-(Font)              <6> on input line 50.
+(Font)              <6> on input line 74.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <8> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 50.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 74.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <6> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 50.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 74.
 
 Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
  [3]
-<graphics/ErrorConvergenceDamp0_01-crop.pdf, id=62, 493.845pt x 390.45876pt>
+<graphics/ErrorConvergenceDamp0_01-crop.pdf, id=74, 493.845pt x 390.45876pt>
 File: graphics/ErrorConvergenceDamp0_01-crop.pdf Graphic file (type pdf)
 
 <use graphics/ErrorConvergenceDamp0_01-crop.pdf>
 Package pdftex.def Info: graphics/ErrorConvergenceDamp0_01-crop.pdf used on inp
-ut line 58.
+ut line 82.
 (pdftex.def)             Requested size: 268.00102pt x 211.89317pt.
 
-<graphics/ErrorCvgDamp0-crop.pdf, id=64, 1040.88875pt x 565.11125pt>
+Overfull \vbox (5.0pt too high) has occurred while \output is active []
+
+ [4]
+<graphics/ErrorCvgDamp0-crop.pdf, id=88, 1040.88875pt x 565.11125pt>
 File: graphics/ErrorCvgDamp0-crop.pdf Graphic file (type pdf)
 
 <use graphics/ErrorCvgDamp0-crop.pdf>
-Package pdftex.def Info: graphics/ErrorCvgDamp0-crop.pdf used on input line 65.
+Package pdftex.def Info: graphics/ErrorCvgDamp0-crop.pdf used on input line 89.
 
 (pdftex.def)             Requested size: 268.00102pt x 145.49405pt.
 
-<graphics/ErrorCvgDamp1-crop.pdf, id=66, 238.8925pt x 577.15625pt>
+<graphics/ErrorCvgDamp1-crop.pdf, id=90, 238.8925pt x 577.15625pt>
 File: graphics/ErrorCvgDamp1-crop.pdf Graphic file (type pdf)
 
 <use graphics/ErrorCvgDamp1-crop.pdf>
-Package pdftex.def Info: graphics/ErrorCvgDamp1-crop.pdf used on input line 73.
+Package pdftex.def Info: graphics/ErrorCvgDamp1-crop.pdf used on input line 97.
 
 (pdftex.def)             Requested size: 268.00102pt x 647.52023pt.
 
 
-LaTeX Warning: Float too large for page by 159.02022pt on input line 76.
+LaTeX Warning: Float too large for page by 159.02022pt on input line 100.
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 78.
+               Default added (so using `tbp') on input line 102.
 
 File: graphics/ErrorCvgDamp1-crop.pdf Graphic file (type pdf)
 <use graphics/ErrorCvgDamp1-crop.pdf>
-Package pdftex.def Info: graphics/ErrorCvgDamp1-crop.pdf used on input line 80.
-
+Package pdftex.def Info: graphics/ErrorCvgDamp1-crop.pdf used on input line 104
+.
 (pdftex.def)             Requested size: 335.0pt x 809.4047pt.
 
 
-LaTeX Warning: Float too large for page by 340.80508pt on input line 84.
+LaTeX Warning: Float too large for page by 340.80508pt on input line 108.
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 85.
+               Default added (so using `tbp') on input line 109.
 
-<graphics/StabilityDamp0_01-crop.pdf, id=69, 339.2675pt x 566.115pt>
+<graphics/StabilityDamp0_01-crop.pdf, id=93, 339.2675pt x 566.115pt>
 File: graphics/StabilityDamp0_01-crop.pdf Graphic file (type pdf)
 
 <use graphics/StabilityDamp0_01-crop.pdf>
 Package pdftex.def Info: graphics/StabilityDamp0_01-crop.pdf used on input line
- 87.
+ 111.
 (pdftex.def)             Requested size: 335.0pt x 559.013pt.
 
 
-LaTeX Warning: Float too large for page by 90.41339pt on input line 91.
+LaTeX Warning: Float too large for page by 90.41339pt on input line 115.
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 92.
+               Default added (so using `tbp') on input line 116.
 
-<graphics/StabilityDamp0_1-crop.pdf, id=71, 339.2675pt x 566.115pt>
+<graphics/StabilityDamp0_1-crop.pdf, id=95, 339.2675pt x 566.115pt>
 File: graphics/StabilityDamp0_1-crop.pdf Graphic file (type pdf)
 
 <use graphics/StabilityDamp0_1-crop.pdf>
 Package pdftex.def Info: graphics/StabilityDamp0_1-crop.pdf used on input line 
-94.
+118.
 (pdftex.def)             Requested size: 335.0pt x 559.013pt.
 
 
-LaTeX Warning: Float too large for page by 90.41339pt on input line 98.
+LaTeX Warning: Float too large for page by 90.41339pt on input line 122.
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 99.
+               Default added (so using `tbp') on input line 123.
 
-<graphics/StabilityDamp0-crop.pdf, id=73, 339.2675pt x 566.115pt>
+<graphics/StabilityDamp0-crop.pdf, id=97, 339.2675pt x 566.115pt>
 File: graphics/StabilityDamp0-crop.pdf Graphic file (type pdf)
 
 <use graphics/StabilityDamp0-crop.pdf>
-Package pdftex.def Info: graphics/StabilityDamp0-crop.pdf used on input line 10
-1.
+Package pdftex.def Info: graphics/StabilityDamp0-crop.pdf used on input line 12
+5.
 (pdftex.def)             Requested size: 335.0pt x 559.013pt.
 
 
-LaTeX Warning: Float too large for page by 90.41339pt on input line 105.
+LaTeX Warning: Float too large for page by 90.41339pt on input line 129.
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 106.
+               Default added (so using `tbp') on input line 130.
 
-<graphics/StabilityDamp1_9-crop.pdf, id=75, 339.2675pt x 566.115pt>
+<graphics/StabilityDamp1_9-crop.pdf, id=99, 339.2675pt x 566.115pt>
 File: graphics/StabilityDamp1_9-crop.pdf Graphic file (type pdf)
 
 <use graphics/StabilityDamp1_9-crop.pdf>
 Package pdftex.def Info: graphics/StabilityDamp1_9-crop.pdf used on input line 
-108.
+132.
 (pdftex.def)             Requested size: 335.0pt x 559.013pt.
 
 
-LaTeX Warning: Float too large for page by 90.41339pt on input line 112.
+LaTeX Warning: Float too large for page by 90.41339pt on input line 136.
 
 )
-Overfull \hbox (2.6118pt too wide) in paragraph at lines 113--100
+Overfull \hbox (2.6118pt too wide) in paragraph at lines 137--100
 []\OT1/cmr/m/n/10 graphics/ErrorConvergenceDamp0_01.pdf graphics/ErrorConvergen
 ceDamp1-
  []
 
 
-Overfull \hbox (3.72298pt too wide) in paragraph at lines 113--100
+Overfull \hbox (3.72298pt too wide) in paragraph at lines 137--100
 \OT1/cmr/m/n/10 crop.pdf graph-ics/ErrorConvergenceDamp1.pdf graphics/ErrorCvgD
 amp0_01-
  []
 
 
-Overfull \hbox (10.05626pt too wide) in paragraph at lines 113--100
+Overfull \hbox (10.05626pt too wide) in paragraph at lines 137--100
 \OT1/cmr/m/n/10 converted-to-crop.pdf graphics/ErrorCvgDamp0_01-eps-converted-t
 o.pdf graph-
  []
 
 
-Overfull \hbox (71.94539pt too wide) in paragraph at lines 113--100
+Overfull \hbox (71.94539pt too wide) in paragraph at lines 137--100
 \OT1/cmr/m/n/10 ics/ErrorCvgDamp0_01.pdf graphics/ErrorCvgDamp0-crop.pdf graph-
 ics/ErrorCvgDamp0.eps
  []
 
 
-Overfull \hbox (84.19542pt too wide) in paragraph at lines 113--100
+Overfull \hbox (84.19542pt too wide) in paragraph at lines 137--100
 \OT1/cmr/m/n/10 graph-ics/ErrorCvgDamp0.pdf graphics/ErrorCvgDamp1-crop.pdf gra
 ph-ics/ErrorCvgDamp1.eps
  []
 
 
-Overfull \hbox (102.08443pt too wide) in paragraph at lines 113--100
+Overfull \hbox (102.08443pt too wide) in paragraph at lines 137--100
 \OT1/cmr/m/n/10 graph-ics/ErrorCvgDamp1.pdf graphics/StabilityDamp0_01-crop.pdf
  graph-ics/StabilityDamp0_01.eps
  []
 
 
-Overfull \hbox (27.08424pt too wide) in paragraph at lines 113--100
+Overfull \hbox (27.08424pt too wide) in paragraph at lines 137--100
 \OT1/cmr/m/n/10 ics/StabilityDamp0_1.eps graph-ics/StabilityDamp0_1.pdf graphic
 s/StabilityDamp0-
  []
 
 
-Overfull \hbox (82.6955pt too wide) in paragraph at lines 113--100
+Overfull \hbox (82.6955pt too wide) in paragraph at lines 137--100
 \OT1/cmr/m/n/10 crop.pdf graph-ics/StabilityDamp0.eps graph-ics/StabilityDamp0.
 pdf graphics/StabilityDamp1_9-
  []
 
 
-Overfull \hbox (161.66788pt too wide) in paragraph at lines 113--100
+Overfull \hbox (161.66788pt too wide) in paragraph at lines 137--100
 \OT1/cmr/m/n/10 crop.pdf graph-ics/StabilityDamp1_9.eps graph-ics/StabilityDamp
 1_9.pdf graphics/StabilityMeasurementDamp0_01-
  []
 
 
-Overfull \hbox (83.41765pt too wide) in paragraph at lines 113--100
+Overfull \hbox (83.41765pt too wide) in paragraph at lines 137--100
 \OT1/cmr/m/n/10 crop.pdf graph-ics/StabilityMeasurementDamp0_01.pdf graphics/St
 abilityMeasurementDamp0_1-
  []
 
 
-Overfull \hbox (70.63983pt too wide) in paragraph at lines 113--100
+Overfull \hbox (70.63983pt too wide) in paragraph at lines 137--100
 \OT1/cmr/m/n/10 crop.pdf graph-ics/StabilityMeasurementDamp0_1.pdf graphics/Sta
 bilityMeasurementDamp0-
  []
 
 
-Overfull \hbox (70.63983pt too wide) in paragraph at lines 113--100
+Overfull \hbox (70.63983pt too wide) in paragraph at lines 137--100
 \OT1/cmr/m/n/10 crop.pdf graph-ics/StabilityMeasurementDamp0.pdf graphics/Stabi
 lityMeasurementDamp1_9-
  []
 
-
-Overfull \vbox (5.0pt too high) has occurred while \output is active []
-
- [4 <./graphics/ErrorConvergenceDamp0_01-crop.pdf>]
 
 Class memoir Warning: The material used in the headers is too large
 (12.0pt) for the given head height (7.0pt), it is recommended to
@@ -1948,25 +1956,28 @@ either increase the head height or redesign the header
 
 Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
- [5 <./graphics/ErrorCvgDamp0-crop.pdf>]
+ [5 <./graphics/ErrorConvergenceDamp0_01-crop.pdf>]
 Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
- [6 <./graphics/ErrorCvgDamp1-crop.pdf>]
+ [6 <./graphics/ErrorCvgDamp0-crop.pdf>]
 Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
- [7]
+ [7 <./graphics/ErrorCvgDamp1-crop.pdf>]
 Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
- [8 <./graphics/StabilityDamp0_01-crop.pdf>]
+ [8]
 Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
- [9 <./graphics/StabilityDamp0_1-crop.pdf>]
+ [9 <./graphics/StabilityDamp0_01-crop.pdf>]
 Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
- [10 <./graphics/StabilityDamp0-crop.pdf>]
+ [10 <./graphics/StabilityDamp0_1-crop.pdf>]
 Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
- [11 <./graphics/StabilityDamp1_9-crop.pdf>]
+ [11 <./graphics/StabilityDamp0-crop.pdf>]
+Overfull \vbox (5.0pt too high) has occurred while \output is active []
+
+ [12 <./graphics/StabilityDamp1_9-crop.pdf>]
 \tf@toc=\write7
 \openout7 = `pbs-report.toc'.
 
@@ -1984,13 +1995,13 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 101.
  ) 
 Here is how much of TeX's memory you used:
- 31224 strings out of 493311
- 587453 string characters out of 6143650
- 674732 words of memory out of 5000000
- 34054 multiletter control sequences out of 15000+600000
+ 31346 strings out of 493311
+ 588749 string characters out of 6143650
+ 680575 words of memory out of 5000000
+ 34161 multiletter control sequences out of 15000+600000
  20866 words of font info for 82 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 64i,12n,62p,562b,827s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 64i,13n,62p,562b,827s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exi
 st, replaced by a fixed one
 
@@ -2004,11 +2015,13 @@ st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/
 public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></
 usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on pbs-report.pdf (13 pages, 181502 bytes).
+dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/yhmat
+h/yhcmex.pfb>
+Output written on pbs-report.pdf (14 pages, 202268 bytes).
 PDF statistics:
- 244 PDF objects out of 1000 (max. 8388607)
- 180 compressed objects within 2 object streams
- 38 named destinations out of 1000 (max. 500000)
+ 271 PDF objects out of 1000 (max. 8388607)
+ 203 compressed objects within 3 object streams
+ 49 named destinations out of 1000 (max. 500000)
  104 words of extra memory for PDF output out of 10000 (max. 10000000)
 

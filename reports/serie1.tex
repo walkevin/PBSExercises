@@ -1,4 +1,28 @@
 \chapter*{Serie 1}
+\section*{Exercise 1}
+\subsection*{Backward Euler update formula derivation}
+General update formula
+\begin{equation}
+ y_{k+1} = y_k + \rd t \cdot f(t_{k+1}, y{k+1})
+\end{equation}
+
+In concrete terms for the equations of motion, it is
+\begin{subequations}
+ \begin{align}
+  x_{k+1} &= x_k + \rd t \cdot v_{k+1}
+  \label{eq:xkp1}\\
+  v_{k+1} &= v_k + \rd t \cdot \left( \frac{k(-x_{k+1} -L)}{m} - \frac{d\cdot v_{k+1}}{m} -g \right)
+  \label{eq:vkp1}
+ \end{align}
+\end{subequations}
+Insert \eqref{eq:xkp1} into \eqref{eq:vkp1} and reorder.
+\begin{subequations}
+ \begin{align}
+  v_{k+1} &= v_k + \rd t \cdot \left( \frac{k(-x_{k+1} -L)}{m} - \frac{d\cdot v_{k+1}}{m} -g \right)\\
+          &= \rd t\left(-\frac{k}{m}\rd t - \frac{d}{m}\right) v_{k+1} + v_k + \rd t\left( \frac{k}{m}(-x_k-L)-g \right)\\
+          &= \frac{ v_k -\rd t \left(\frac{k}{m} (x_k + L) -g \right)}{1+\rd t \left( \frac{k\cdot \rd t + d}{m} \right)}
+ \end{align}
+\end{subequations}
 \section*{Exercise 2}
 \subsection*{2.1. Analytic solution}
 First lets do a sketch as seen in figure \ref{fig:sp} to omit any misunderstanding of the problem.

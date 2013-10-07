@@ -1,50 +1,140 @@
-%\hypersetup{colorlinks=false,linkbordercolor=gray}
+%% Custom commands =============================================================
 
-%%% mmaetz: For a better readability, I made the vectors bold and roman
-%%% note that this is bad practice. Consider something like:
-%%% If you find a way to make a curly E upright, you might win the nobel price.
-\newcommand{\vtr}[1]{\bm{\mathrm#1}}
-\renewcommand{\vec}[1]{\bm{\mathrm#1}}
-\newcommand{\s}{\ensuremath{\;}}
-\newcommand{\lag}{\ensuremath{\cal L}}
-\newcommand{\dslash}{\ensuremath{\displaystyle{\not}}}
-\newcommand{\Ta}{\ensuremath{\tilde T}}
-\newcommand{\tr}{\ensuremath{\text{tr}}}
+%% Depends on this
+\usepackage{ifthen}
+\usepackage{rotating}
+%\usepackage[all]{xy}
 
-%%% These commands have been modified because breqn needs to know if a "|" is left or right for the automatic alignment
-\newcommand{\ket}[1]{\ensuremath{\left\lvert {#1} \right\rangle}}
-\newcommand{\bra}[1]{\ensuremath{\left\langle {#1} \right\rvert}}
-%%% mmaetz: Added negative thin space, added vphantom (makes both sides of the braket of the same height in all cases)
-\newcommand{\braket}[2]{\ensuremath{\left\langle {#1}\vphantom{#2}   \middle| {#2}\vphantom{#1} \right\rangle}}
-\newcommand{\ketbra}[2]{\ensuremath{ {\ket{#1} \!\bra{#2}}}}
-\newcommand{\proj}[1]{\ensuremath{ {\ket{#1} \!\bra{#1}}}}
-\newcommand{\sumproj}[1]{\ensuremath{ {\sum_{#1}\proj{#1}}}}
-\newcommand{\sand}[3]{\ensuremath{\left\langle {#1}\vphantom{#3} \right\rvert{#2} \left\lvert{#3}\vphantom{#1}\right\rangle}}
+%% Differential d. This sets it as proper operator in roman type. With correct
+%% spacing. ISO standards for mathematical typesetting says it should be printed
+%% like this.
+%\newcommand{\diff}[1]{\operatorname{d}\ifthenelse{\equal{#1}{}}{\,}{\!#1}}
+\newcommand{\dd}[1]{\operatorname{d}\ifthenelse{\equal{#1}{}}{\,}{\!#1}}
+\newcommand{\rd}{\mathrm d}
 
+%% Symbols for euler number and imaginary unit
+\providecommand*{\eu}%
+{\ensuremath{\mathrm{e}}}
+% The imaginary unit
+\providecommand*{\iu}%
+{\ensuremath{\mathrm{i}}} % i can be replaced with j on preference.
 
-\newcommand{\vevj}[2]{\left\langle {#1} \right\langle_{#2} }
-\newcommand{\vev}[1]{\left\langle {#1} \right\rangle }
+%% Uncomment below what style you prefer for printing differential operators
+%\DeclareMathOperator{\grad}{grad}
+%\DeclareMathOperator{\rot}{rot}
+%\DeclareMathOperator{\Div}{div}
+\DeclareMathOperator{\grad}{\nabla}
+\DeclareMathOperator{\rot}{\nabla\times}
+\DeclareMathOperator{\Div}{\nabla\cdot}
 
+%% Additional mathematical operators
+%% Just use the physics package
+\DeclareMathOperator{\sgn}{tr}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\id}{Id}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arsinh}{arsinh}
+\DeclareMathOperator{\arcosh}{arcosh}
+\DeclareMathOperator{\artanh}{artanh}
+%% German variants
+%\DeclareMathOperator{\Kern}{Kern}
+%\DeclareMathOperator{\Bild}{Bild}
+%\DeclareMathOperator{\Grad}{Grad}
+%% English variants
+%% \ker is provided by LaTeX
+\DeclareMathOperator{\im}{im}
+%% \grad is provided by LaTeX
 
+%% Special characters for number sets, e.g. real or complex numbers.
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\X}{\mathbb{X}}
+
+%% Fixed size delimiter examples
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\seq}[1]{\langle #1 \rangle}
+\newcommand{\set}[1]{\{ #1 \}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\indic}[1]{\bigl[#1\bigr]}
 \newcommand{\comm}[2]{\left[ {#1}, {#2} \right] }
 \newcommand{\acomm}[2]{\left\{ {#1}, {#2} \right\} }
 
-\newcommand{\norm}[1]{\left\lvert {#1} \right\rvert }
+%% Scaling delimiter examples
+\newcommand{\Floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\Ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\Seq}[1]{\left\langle #1 \right\rangle}
+\newcommand{\Set}[1]{\left\{ #1 \right\}}
+\newcommand{\Abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\Norm}[1]{\left\lVert #1 \right\rVert}
 
-%%% mmaetz: For the differential.
-\newcommand{\td}{\mathrm d }
-%%% vphantom command to get bigger braces where needed
-\newcommand{\vaa}{\vphantom{A^{A}}}
-\newcommand{\vaaa}{\vphantom{{A^{A}}^{a}}}
-\newcommand{\dls}{\delimitershortfall=-1pt}
-
-%%% calculus: (Part of what I found some time ago somewhere in the internet.)
-\newcommand{\ddd}[2]{\frac{\mathrm d ^{2} #1}{\mathrm d #2 ^{2}}}
-\newcommand{\dd}[2]{\frac{\mathrm d #1}{\mathrm d #2}}
-\newcommand{\ddn}[3]{\frac{\mathrm d ^{#1} #2}{\mathrm d #3 ^{#1}}}
-\newcommand{\pdd}[2]{\frac{\partial #1}{\partial #2}}
-\newcommand{\pddd}[2]{\frac{\partial^{2} #1}{\partial #2 ^{2}}}
-\newcommand{\pdddm}[3]{\frac{\partial^{2} #1}{\partial #2 \partial #3}}
-\newcommand{\pddn}[3]{\frac{\partial^{#1} #2}{\partial #3 ^{#1}}}
+%% Absolute and partial derrivate fractions
+%% Calculus
+\newcommand{\dv}[2]{\frac{\mathrm d #1}{\mathrm d #2}}
+\newcommand{\dvt}[3]{\frac{\mathrm d ^{2} #1}{\mathrm d #2 ^{2}}}
+\newcommand{\dvn}[3]{\frac{\mathrm d ^{#1} #2}{\mathrm d #3 ^{#1}}}
+\newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pddv}[2]{\frac{\partial^{2} #1}{\partial #2 ^{2}}}
+\newcommand{\pddvm}[3]{\frac{\partial^{2} #1}{\partial #2 \partial #3}}
+\newcommand{\pdvn}[3]{\frac{\partial^{#1} #2}{\partial #3 ^{#1}}}
+\newcommand{\fdv}[2]{\frac{\delta #1}{\delta #2}}
+\newcommand{\vtr}[1]{\boldsymbol{\mathrm{#1}}}
 
 
+%% Set an index and print it to the current position at the same time
+\newcommand{\Index}[1]{\emph{#1}\index{#1}}
+
+%% Displaystyle math for inline math mode
+\newcommand{\ds}{\displaystyle}
+
+%% Easy to use alias for the default matrices with round braces
+\newcommand{\Mx}[1]{\ensuremath{\begin{pmatrix}#1\end{pmatrix}}}
+
+%% Include a lecture from the lectures/ folder by date.
+%% Added ddmmyydate option because the default format is too large.
+
+
+%% A macro to typeset a commutitive diagram in the style of
+%% \[\Abb[functionname]{from}{to}{fromelement}{toelement}\]
+\newcommand{\Sidein}{\begin{rotate}{90}\small$\in$\end{rotate}}
+\newcommand{\sidew}[1]{\rotatebox{90}{\small$#1$}}
+
+\newcommand{\Abb}[5][]{\ensuremath{
+    \begin{array}{lc}
+      \ifthenelse{\equal{#1}{}}{}{#1:}\;\; &
+      \begin{xy}
+        \xymatrixrowsep{1em}\xymatrixcolsep{2em}%
+        \xymatrix{ #2 \ar[r] \ar@{}[d]^<<<<{\hspace{0.001em} \Sidein}
+          & #3  \ar@{}[d]^<<<<{\hspace{0.001em} \Sidein} \\
+          #4 \ar@{|->}[r] & #5} \end{xy}
+    \end{array}
+  }%
+}
+
+
+%% Use the alternative epsilon per default and define the old one as \oldepsilon
+\let\oldepsilon\epsilon
+
+\renewcommand{\epsilon}{\ensuremath\varepsilon}
+
+%% Also set the alternate phi as default.
+%\renewcommand{\phi}{\ensuremath{\varphi}}
+
+%% Uncomment to type bra, kets etc.
+\newcommand{\bra}[1]{\left\langle #1\right|}
+\newcommand{\ket}[1]{\left| #1\right\rangle}
+\newcommand{\braket}[2]{\left\langle #1\right|\left.\! #2\right\rangle}
+\newcommand{\ketbra}[2]{\ensuremath{ {\ket{#1} \!\bra{#2}}}}
+\newcommand{\proj}[1]{\ensuremath{ {\ket{#1} \!\bra{#1}}}}
+\newcommand{\sumproj}[1]{\ensuremath{ {\sum_{#1}\proj{#1}}}}
+%% matrix element
+\newcommand{\mel}[3]{\ensuremath{\left\langle {#1}\vphantom{#3} \right\rvert{#2} \left\lvert{#3}\vphantom{#1}\right\rangle}}
+\newcommand{\ev}[3]{\ensuremath{\left\langle {#1}\right\rvert{#2} \left\lvert{#1}\right\rangle}}
+
+\newcommand{\vevj}[2]{\left\langle {#1} \right\langle_{#2} }
+\newcommand{\vev}[1]{\left\langle {#1} \right\rangle }
