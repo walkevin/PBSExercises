@@ -92,9 +92,9 @@ void AdvanceTimeStep3(double k, double m, double d, double L, double dt,
 	Vec2 force23 = (lenSpr23 - L) / lenSpr23 * spr23;
 
 	//Be careful about direction of force vectors!
-	v1 += dt/m *(-k*(force12 + force13) - d*v1) - dt*Vec2(0., g);
-	v2 += dt/m *(k*(force12 - force23) - d*v2) - dt*Vec2(0., g);
-	v3 += dt/m *(k*(force13 + force23) - d*v3) - dt*Vec2(0., g);
+	v1 += dt/m *(k*(force12 + force13) - d*v1) - dt*Vec2(0., g);
+	v2 += dt/m *(-k*(force12 - force23) - d*v2) - dt*Vec2(0., g);
+	v3 += dt/m *(-k*(force13 + force23) - d*v3) - dt*Vec2(0., g);
 
 	//Update positions
 	p1 += dt * v1;
