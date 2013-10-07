@@ -1,0 +1,25 @@
+\begin{tikzpicture}[]
+	\foreach \w/\x/\y/\z in {0/0/-3/3,2/0.75/-3.75/2.25,2/-0.75/-2.25/3.75}
+	{
+	\begin{scope}[shift={(\w,\x)}]
+		\clip (0,\y) rectangle (2,\z);
+		\foreach \x in {0.25,0.5,...,4}
+		\draw[] (270:\x) arc (270:450:\x);
+	\end{scope}
+	}
+	\node[align=center,anchor=east] (ws) at (0,0) {wave\\source};
+	\fill[] (0,0) circle (2pt);
+	% slits
+	\draw[ultra thick] (2,3) -- (2,1);
+	\draw[ultra thick] (2,-3) -- (2,-1);
+	\draw[ultra thick] (2,0.5) -- (2,-0.5);
+	\node[rectangle,draw,sfill,minimum width=0.5cm,minimum height=6cm,label=below:detector,anchor=west] (detector) at (4,0) {};
+	\draw[domain=-2.25:3] plot[parametric,id=sinc1,smasa] function{4.5+1.5*sin(t*pi)**2/(t*pi)**2,t-0.75};
+	\draw[domain=-3:2.25] plot[parametric,id=sinc2,smasa] function{4.5+1.5*sin(t*pi)**2/(t*pi)**2,t+0.75};
+	\draw[domain=-3:3] plot[parametric,id=sinccos1,smasa] function{6.5+3*sin(t*pi)**2*cos(4*t*pi)**2/(t*pi)**2,t};
+	\draw[ultra thick] (6.5,3) -- (6.5,-3);
+	\node[] (p1) at (5,2) {$I_1$};
+	\node[] (p2) at (5,-2) {$I_2$};
+	\node[] (p12) at (8cm,-2cm) {$I_1+I_2\not=I_{12}$};
+	\node[align=center,anchor=north] (ws) at (6.5,-3) {interference\\pattern};
+\end{tikzpicture}

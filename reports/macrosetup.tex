@@ -1,0 +1,50 @@
+%\hypersetup{colorlinks=false,linkbordercolor=gray}
+
+%%% mmaetz: For a better readability, I made the vectors bold and roman
+%%% note that this is bad practice. Consider something like:
+%%% If you find a way to make a curly E upright, you might win the nobel price.
+\newcommand{\vtr}[1]{\bm{\mathrm#1}}
+\renewcommand{\vec}[1]{\bm{\mathrm#1}}
+\newcommand{\s}{\ensuremath{\;}}
+\newcommand{\lag}{\ensuremath{\cal L}}
+\newcommand{\dslash}{\ensuremath{\displaystyle{\not}}}
+\newcommand{\Ta}{\ensuremath{\tilde T}}
+\newcommand{\tr}{\ensuremath{\text{tr}}}
+
+%%% These commands have been modified because breqn needs to know if a "|" is left or right for the automatic alignment
+\newcommand{\ket}[1]{\ensuremath{\left\lvert {#1} \right\rangle}}
+\newcommand{\bra}[1]{\ensuremath{\left\langle {#1} \right\rvert}}
+%%% mmaetz: Added negative thin space, added vphantom (makes both sides of the braket of the same height in all cases)
+\newcommand{\braket}[2]{\ensuremath{\left\langle {#1}\vphantom{#2}   \middle| {#2}\vphantom{#1} \right\rangle}}
+\newcommand{\ketbra}[2]{\ensuremath{ {\ket{#1} \!\bra{#2}}}}
+\newcommand{\proj}[1]{\ensuremath{ {\ket{#1} \!\bra{#1}}}}
+\newcommand{\sumproj}[1]{\ensuremath{ {\sum_{#1}\proj{#1}}}}
+\newcommand{\sand}[3]{\ensuremath{\left\langle {#1}\vphantom{#3} \right\rvert{#2} \left\lvert{#3}\vphantom{#1}\right\rangle}}
+
+
+\newcommand{\vevj}[2]{\left\langle {#1} \right\langle_{#2} }
+\newcommand{\vev}[1]{\left\langle {#1} \right\rangle }
+
+
+\newcommand{\comm}[2]{\left[ {#1}, {#2} \right] }
+\newcommand{\acomm}[2]{\left\{ {#1}, {#2} \right\} }
+
+\newcommand{\norm}[1]{\left\lvert {#1} \right\rvert }
+
+%%% mmaetz: For the differential.
+\newcommand{\td}{\mathrm d }
+%%% vphantom command to get bigger braces where needed
+\newcommand{\vaa}{\vphantom{A^{A}}}
+\newcommand{\vaaa}{\vphantom{{A^{A}}^{a}}}
+\newcommand{\dls}{\delimitershortfall=-1pt}
+
+%%% calculus: (Part of what I found some time ago somewhere in the internet.)
+\newcommand{\ddd}[2]{\frac{\mathrm d ^{2} #1}{\mathrm d #2 ^{2}}}
+\newcommand{\dd}[2]{\frac{\mathrm d #1}{\mathrm d #2}}
+\newcommand{\ddn}[3]{\frac{\mathrm d ^{#1} #2}{\mathrm d #3 ^{#1}}}
+\newcommand{\pdd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pddd}[2]{\frac{\partial^{2} #1}{\partial #2 ^{2}}}
+\newcommand{\pdddm}[3]{\frac{\partial^{2} #1}{\partial #2 \partial #3}}
+\newcommand{\pddn}[3]{\frac{\partial^{#1} #2}{\partial #3 ^{#1}}}
+
+

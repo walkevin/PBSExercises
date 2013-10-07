@@ -1,0 +1,37 @@
+\tdplotsetmaincoords{70}{159}
+\begin{tikzpicture}[]
+	\draw[dashed] (0,{1+2*sqrt(2/3)}) -- (0,{-4-2*sqrt(2/3)});
+	\def\anglerot{180}
+	\def\molheight{sqrt(2/3)}
+	%
+	\tdplotsetrotatedcoords{0}{\anglerot}{\anglerot}
+	%
+	\foreach \w/\x/\y/\z in {2/tdplot_main_coords/m/0,1/tdplot_rotated_coords/r/3}
+	{
+		\begin{scope}[\x,shift={(0,0,\z)}]
+			\coordinate[yxplane=0] (h1\y) at (0:2);
+			\coordinate[yxplane=0] (h2\y) at (120:2);
+			\coordinate[yxplane=0] (h3\y) at (240:2);
+			\coordinate[] (n\y) at (0,0,{\molheight*2});
+			\draw[] (h1\y) -- (h2\y) -- (h3\y) -- (h1\y);
+			\foreach \b in {h1\y,h2\y,h3\y}
+				\draw[] (\b) -- (n\y);
+			\foreach \a/\b in {h1\y/H,h2\y/H,h3\y/H,n\y/N}
+			{
+				\node[circle,draw,fill=rioday,minimum size=0.2cm] (n\a) at (\a) {$\!\scriptstyle\mathrm\b\!$};
+			}
+		\end{scope}
+	}
+	\def\begangle{-40};
+	\def\endangle{\begangle+180};
+	\begin{scope}[tdplot_main_coords]
+		\begin{scope}[yxplane=-1]
+			\draw[latex-] (\begangle:0.5) arc (\begangle:\endangle:0.5);
+		\end{scope}
+		\begin{scope}[yxplane={-4-\molheight*2}]
+			\draw[latex-] (\begangle:0.5) arc (\begangle:\endangle:0.5);
+		\end{scope}
+	\end{scope}
+	\node[] (k1) at (3,{\molheight}) {$\ket{1}$};
+	\node[] (k2) at (3,{-\molheight-3}) {$\ket{2}$};
+\end{tikzpicture}

@@ -1,0 +1,20 @@
+\begin{tikzpicture}[]
+		\node[rectangle,draw,anchor=east] (gun) at (0,0) {gun};
+		\fill[] (gun.east) circle (2pt);
+		\foreach \x in {-30,-15,...,30}
+		\draw[-latex] (gun.east) -- (\x:1);
+		\draw[] (3,3) -- (3,1);
+		\draw[] (3,-3) -- (3,-1);
+		\draw[] (3,0.5) -- (3,-0.5);
+		\coordinate[pin=above left:slit 1] (s1) at (3,0.75);
+		\coordinate[pin=below left:slit 2] (s2) at (3,-0.75);
+		\node[rectangle,draw,sfill,minimum width=0.5cm,minimum height=6cm,label=below:detector] (detector) at (5,0) {};
+		\draw[domain=-2.25:3] plot[parametric,id=gauss1,smasa] function{5.25+1.5*exp(-t**2),t-0.75};
+		\draw[domain=-3:2.25] plot[parametric,id=gauss1,smasa] function{5.25+1.5*exp(-t**2),t+0.75};
+		\draw[] (7.5,3) -- (7.5,-3);
+		\draw[domain=-3:3] plot[parametric,id=gauss1,bigsa] function{7.5+1.5*exp(-(t-0.75)**2)+1.5*exp(-(t+0.75)**2),t};
+		\node[] (p1) at (6,2) {$P_1$};
+		\node[] (p2) at (6,-2) {$P_2$};
+		\node[] (p12) at (8cm+4ex,-2cm) {$P_1+P_2$};
+	\end{tikzpicture}
+

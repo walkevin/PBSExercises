@@ -1,0 +1,21 @@
+\begin{tikzpicture}[every pin edge/.style=semithick]
+	%\tikzset{every pin edge./style=ultra thick}
+	\node[draw,rectangle,anchor=east,align=center] (es) at (0,0) {electron\\source};
+	\foreach \x in {-30,-15,...,30}
+	\draw[-latex] (es.east) -- (\x:1);
+	% slits
+	\draw[ultra thick] (2,3) -- (2,1);
+	\draw[ultra thick] (2,-3) -- (2,-1);
+	\draw[ultra thick] (2,0.5) -- (2,-0.5);
+	%%%%%%%
+	\coordinate[pin={above left:light source 1}] (s1) at (2,0.75);
+	\coordinate[pin={below left:light source 2}] (s2) at (2,-0.75);
+	\node[rectangle,draw,sfill,minimum width=0.5cm,minimum height=6cm,label=below:detector,anchor=west] (detector) at (4,0) {};
+	\draw[domain=-2.25:3] plot[parametric,id=gauss1,smasa] function{4.5+1.5*exp(-t**2),t-0.75};
+	\draw[domain=-3:2.25] plot[parametric,id=gauss1,smasa] function{4.5+1.5*exp(-t**2),t+0.75};
+	\draw[domain=-3:3] plot[parametric,id=gauss1,smasa] function{6.5+1.5*exp(-(t-0.75)**2)+1.5*exp(-(t+0.75)**2),t};
+	\draw[ultra thick] (6.5,3) -- (6.5,-3);
+	\node[] (p1) at (5.5,2) {$P_1$};
+	\node[] (p2) at (5.5,-2) {$P_2$};
+	\node[] (p12) at (8cm+2ex,-2cm) {$P_1+P_2=P_{12}$};
+\end{tikzpicture}

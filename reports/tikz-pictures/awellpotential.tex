@@ -1,0 +1,13 @@
+\begin{tikzpicture}[]
+	\coordinate[label=above:$V(x)$] (y) at (0,4);
+	\coordinate[label=right:$x$] (x) at (4,0);
+	\draw[-latex] (0,0) -- (y);
+	\draw[-latex] (0,0) -- (x);
+	\draw[domain=0:4,thick,helsinkinight] plot[parametric,id=sgl1,smasa] function{t,2+cos(t*pi/2)};
+	\coordinate[label=left:$E$] (e) at (0,2);
+	\coordinate[label=below:$x_{1}$] (x1) at (1,0);
+	\coordinate[label=below:$x_{2}$] (x2) at (3,0);
+	\draw[dashed,gray] (0,2) -- (4,2);
+	\draw[dashed,gray] (1,2) -- (1,0);
+	\draw[dashed,gray] (3,2) -- (3,0);
+\end{tikzpicture}

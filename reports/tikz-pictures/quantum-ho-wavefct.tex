@@ -1,0 +1,33 @@
+%\includegraphics[height=0.4\textheight]{./figures/spinprecession.pdf}\\
+\begin{tikzpicture}[]
+	%%% Could be done in a more elegant way with pgfplots but I didn't want to include packages that have to be installed separately.
+	\coordinate[label=above:$\braket{x}{n}$] (y) at (0,5);
+	\coordinate[label=right:$x$] (x) at (5,0);
+	\draw[-latex] (0,-5) -- (y);
+	\draw[-latex] (-5,0) -- (x);
+	\draw[domain=-5:5,rioday,thick] plot[smasa,id=ho-wave-fct0] function{(1/pi**(1/4))*exp(-x**2/2)*4} ;
+	\path[domain=-5:0,rioday] plot[samples=2,id=ho-wave-fct0-pseudo] function{(1/pi**(1/4))*exp(-x**2/2)*4} coordinate[label=above right:$\braket{x}{0}$] (x0);
+	\draw[domain=-5:5,helsinkinight,thick] plot[smasa,id=ho-wave-fct1] function{(x*sqrt(2)/pi**(1/4))*exp(-x**2/2)*4};
+	\path[domain=-5:-1,helsinkinight] plot[samples=2,id=ho-wave-fct1-pseudo] function{(x*sqrt(2)/pi**(1/4))*exp(-x**2/2)*4} coordinate[label=below right:$\braket{x}{1}$] (x1);
+	\draw[domain=-5:5,rioday,thick,dashed] plot[smasa,id=ho-wave-fct2] function{((-1+2*x**2)/(pi**(1/4)*sqrt(2)))*exp(-x**2/2)*4};
+	\path[domain=-5:-2,rioday] plot[samples=2,id=ho-wave-fct3-pseudo] function{((-1+2*x**2)/(pi**(1/4)*sqrt(2)))*exp(-x**2/2)*4} coordinate[label=above left:$\braket{x}{2}$] (x1);
+	\draw[domain=-5:5,helsinkinight,thick,dashed] plot[smasa,id=ho-wave-fct3] function{(x*(-3+2*x**2)/(pi**(1/4)*sqrt(2)))*exp(-x**2/2)*4};
+	\path[domain=-5:-3,helsinkinight] plot[samples=2,id=ho-wave-fct3-pseudo] function{(x*(-3+2*x**2)/(pi**(1/4)*sqrt(2)))*exp(-x**2/2)*4} coordinate[label=left:$\braket{x}{3}$] (x1);
+	\path[domain=4:4.5,helsinkinight] plot[samples=2,id=time-ev-p22] function{(0.7*sin(x*pi/2.5)**2)*5};
+	%x-axis labeling
+	%\foreach \x in {-4,-3.75,...,4}
+	%\draw[gray,ultra thin] (\x,0) -- (\x,-1pt);
+	%\foreach \x/\y in {0/0,1/\frac{\pi}{\omega},2/\frac{2\pi}{\omega},3/\frac{3\pi}{\omega},4/\frac{4\pi}{\omega}}
+	%{
+	%\draw[gray,ultra thin] (\x,0) -- (\x,-2pt);
+	%\coordinate[label=below:$\y$] (u\x) at (\x,-2pt);
+	%}
+	%y-axis labeling
+	%\foreach \x in {0,0.25,...,5}
+	\draw[gray,ultra thin] (2pt,4) -- (-2pt,4);
+	%\foreach \x/\y in {0/0,1/0.2,2/0.4,3/0.6,4/0.8,5/1}
+	%{
+	%\draw[gray,ultra thin] (0,\x) -- (-2pt,\x);
+	\coordinate[label=left:$1$] (u1) at (-2pt,4);
+	%}
+\end{tikzpicture}

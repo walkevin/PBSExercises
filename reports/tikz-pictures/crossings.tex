@@ -1,0 +1,31 @@
+\begin{tikzpicture}[scale=0.5]
+\coordinate[label=right:$V(x)$] (y1) at (0,2);
+	\coordinate[label=right:$x$] (x1) at (4.5,0);
+	\draw[-latex] (0,0) -- (y1);
+	\draw[-latex] (-4.5,0) -- (x1);
+	\draw[domain=0:8,rioday,thick,shift={(-4,0)}] plot[parametric,id=aasg3] function{t,1+cos(t*pi/4)/2};
+	\def\eh{1/4}
+	%	\draw[dashed,gray] (2,1) -- (2,-5);
+	%	\draw[dashed,gray] (6,1) -- (6,-5);
+	\begin{scope}[shift={(0,-4)}]
+		\coordinate[label=right:$\psi(x)$] (y2) at (0,3);
+		\coordinate[label=right:$x$] (x2) at (4,0);
+		\draw[-latex] (0,0) -- (y2);
+		\draw[-latex] (-4,0) -- (x2);
+		\draw[helsinkinight,thick] plot[smooth,tension=0.8] coordinates {(-4,0.125) (-1.5,0.5) (0,2) (1.5,0.5) (4,0.125) };
+	\end{scope}
+	\begin{scope}[shift={(0,-7)}]
+		\coordinate[label=right:$\psi(x)$] (y3) at (0,2);
+		\coordinate[label=right:$x$] (x3) at (4,0);
+		\draw[-latex] (0,-2) -- (y3);
+		\draw[-latex] (-4,0) -- (x3);
+		\draw[helsinkinight,thick] plot[smooth,tension=0.9] coordinates {(-4,0.125) (-3.25,0.5) (-1.25,1.8) (1.25,-1.8) (3.25,-0.5) (4,-0.125) };
+	\end{scope}
+	\begin{scope}[shift={(-4,-13)}]
+		\coordinate[label=right:$\psi(x)$] (y4) at (4,3);
+		\coordinate[label=right:$x$] (x4) at (8,0);
+		\draw[-latex] (4,-1) -- (y4);
+		\draw[-latex] (0,0) -- (x4);
+		\draw[helsinkinight,thick] plot[smooth,tension=0.7] coordinates {(0,0.125) (1,0.5) (2.35,2) (4,-1) (5.65,2) (7,0.5) (8,0.125)};
+	\end{scope}
+\end{tikzpicture}
