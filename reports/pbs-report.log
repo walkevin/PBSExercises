@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Arch Linux) (format=pdflatex 2013.9.19)  7 OCT 2013 18:15
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Arch Linux) (format=pdflatex 2013.9.19)  7 OCT 2013 18:48
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1569,20 +1569,20 @@ Sidefootvsep and sidefootheight: 12pt and 344.39996pt
 (./pbs-report.aux)
 \openout1 = `pbs-report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 50.
-LaTeX Font Info:    ... okay on input line 50.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 64.
+LaTeX Font Info:    ... okay on input line 64.
  ABD: EveryShipout initializing macros
 (/usr/share/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -1649,7 +1649,7 @@ Package caption Info: hyperref package is loaded.
 Package caption Info: rotating package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box73
-Package hyperref Info: Link coloring OFF on input line 50.
+Package hyperref Info: Link coloring OFF on input line 64.
 
 (/usr/share/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -1661,16 +1661,16 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 Redoing nameref's sectioning
 Redoing nameref's label
-LaTeX Info: Redefining \nameref on input line 50.
-LaTeX Info: Redefining \ref on input line 50.
-LaTeX Info: Redefining \pageref on input line 50.
-LaTeX Info: Redefining \nameref on input line 50.
+LaTeX Info: Redefining \nameref on input line 64.
+LaTeX Info: Redefining \ref on input line 64.
+LaTeX Info: Redefining \pageref on input line 64.
+LaTeX Info: Redefining \nameref on input line 64.
 (./pbs-report.out) (./pbs-report.out)
 \@outlinefile=\write5
 \openout5 = `pbs-report.out'.
 
 \c__siunitx_mathsf_int=\count363
-LaTeX Font Info:    Try loading font information for OMX+yhex on input line 50.
+LaTeX Font Info:    Try loading font information for OMX+yhex on input line 64.
 
 
 (/usr/share/texmf-dist/tex/latex/yhmath/OMXyhex.fd
@@ -1678,36 +1678,48 @@ File: OMXyhex.fd
 File: OMXyhex.fd 2013/07/03 v1.1 YH's humble contribution to TeX maths (NP)
 )
 LaTeX Font Info:    External font `yhcmex10' loaded for size
-(Font)              <10> on input line 50.
+(Font)              <10> on input line 64.
 LaTeX Font Info:    External font `yhcmex10' loaded for size
-(Font)              <7> on input line 50.
+(Font)              <7> on input line 64.
 LaTeX Font Info:    External font `yhcmex10' loaded for size
-(Font)              <5> on input line 50.
-LaTeX Font Info:    Try loading font information for U+msa on input line 50.
+(Font)              <5> on input line 64.
+LaTeX Font Info:    Try loading font information for U+msa on input line 64.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 50.
+LaTeX Font Info:    Try loading font information for U+msb on input line 64.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 50.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 64.
 
 (/usr/share/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-LaTeX Font Info:    Try loading font information for U+lasy on input line 50.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 64.
 
 (/usr/share/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <7> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 50.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 64.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <5> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 50.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 64.
 \c__siunitx_mathtt_int=\count364
+LaTeX Font Info:    External font `yhcmex10' loaded for size
+(Font)              <12> on input line 71.
+LaTeX Font Info:    External font `yhcmex10' loaded for size
+(Font)              <8> on input line 71.
+LaTeX Font Info:    External font `yhcmex10' loaded for size
+(Font)              <6> on input line 71.
+LaTeX Font Info:    Font shape `U/lasy/b/n' in size <8> not available
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 71.
+LaTeX Font Info:    Font shape `U/lasy/b/n' in size <6> not available
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 71.
+Missing character: There is no Ã in font cmr12!
+Missing character: There is no ¼ in font cmr12!
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
@@ -1717,19 +1729,11 @@ LaTeX Font Info:    Font shape `U/lasy/b/n' in size <5> not available
 Package hyperref Warning: Option `colorlinks' has already been used,
 (hyperref)                setting the option has no effect on input line 20.
 
-) (./pbs-report.toc) (./serie1.tex
+) (./serie1.tex
 
 LaTeX Warning: No positions in optional float specifier.
                Default added (so using `tbp') on input line 30.
 
-LaTeX Font Info:    External font `yhcmex10' loaded for size
-(Font)              <8> on input line 75.
-LaTeX Font Info:    External font `yhcmex10' loaded for size
-(Font)              <6> on input line 75.
-LaTeX Font Info:    Font shape `U/lasy/b/n' in size <8> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 75.
-LaTeX Font Info:    Font shape `U/lasy/b/n' in size <6> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 75.
 
 Class memoir Warning: The material used in the headers is too large
 (12.0pt) for the given head height (7.0pt), it is recommended to
@@ -1745,27 +1749,22 @@ been already used, duplicate ignored
                    \relax 
 l.75 \end{align}
                  [1]
-
-LaTeX Warning: Reference `fig:errorconvd1' on page 2 undefined on input line 77
-.
-
-
 Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.78 
-      [2]
-<../data/ex1/errorConvergenceDamp0_01-crop.pdf, id=79, 374.39874pt x 293.095pt>
+l.89 \end{center}
+                  [2]
+<../data/ex1/errorConvergenceDamp0_01-crop.pdf, id=80, 374.39874pt x 293.095pt>
 File: ../data/ex1/errorConvergenceDamp0_01-crop.pdf Graphic file (type pdf)
 <use ../data/ex1/errorConvergenceDamp0_01-crop.pdf>
 Package pdftex.def Info: ../data/ex1/errorConvergenceDamp0_01-crop.pdf used on 
 input line 95.
 (pdftex.def)             Requested size: 268.00102pt x 209.81177pt.
 
-<../data/ex1/errorConvergenceDamp0-crop.pdf, id=81, 374.39874pt x 293.095pt>
+<../data/ex1/errorConvergenceDamp0-crop.pdf, id=82, 374.39874pt x 293.095pt>
 File: ../data/ex1/errorConvergenceDamp0-crop.pdf Graphic file (type pdf)
 
 <use ../data/ex1/errorConvergenceDamp0-crop.pdf>
@@ -1773,7 +1772,7 @@ Package pdftex.def Info: ../data/ex1/errorConvergenceDamp0-crop.pdf used on inp
 ut line 101.
 (pdftex.def)             Requested size: 268.00102pt x 209.81177pt.
 
-<../data/ex1/errorConvergenceDamp1-crop.pdf, id=83, 370.38374pt x 293.095pt>
+<../data/ex1/errorConvergenceDamp1-crop.pdf, id=84, 370.38374pt x 293.095pt>
 File: ../data/ex1/errorConvergenceDamp1-crop.pdf Graphic file (type pdf)
 
 <use ../data/ex1/errorConvergenceDamp1-crop.pdf>
@@ -1781,26 +1780,15 @@ Package pdftex.def Info: ../data/ex1/errorConvergenceDamp1-crop.pdf used on inp
 ut line 107.
 (pdftex.def)             Requested size: 268.00102pt x 212.07921pt.
 
-Underfull \vbox (badness 4454) has occurred while \output is active []
-
-
-Overfull \vbox (5.0pt too high) has occurred while \output is active []
-
- [3 <../data/ex1/errorConvergenceDamp0_01-crop.pdf>]
-Overfull \vbox (5.0pt too high) has occurred while \output is active []
-
- [4 <../data/ex1/errorConvergenceDamp0-crop.pdf> <../data/ex1/errorConvergenceD
-amp1-crop.pdf>]
-<../data/ex1/stabilityMeasurementDamp0-crop.pdf, id=128, 365.365pt x 283.0575pt
->
+<../data/ex1/stabilityMeasurementDamp0-crop.pdf, id=88, 365.365pt x 283.0575pt>
 File: ../data/ex1/stabilityMeasurementDamp0-crop.pdf Graphic file (type pdf)
- <use ../data/ex1/stabilityMeasurementDamp0-crop.pdf>
+<use ../data/ex1/stabilityMeasurementDamp0-crop.pdf>
 Package pdftex.def Info: ../data/ex1/stabilityMeasurementDamp0-crop.pdf used on
  input line 121.
 (pdftex.def)             Requested size: 268.00102pt x 207.6366pt.
 
-<../data/ex1/stabilityMeasurementDamp1_9-crop.pdf, id=130, 365.365pt x 283.0575
-pt>
+<../data/ex1/stabilityMeasurementDamp1_9-crop.pdf, id=90, 365.365pt x 283.0575p
+t>
 File: ../data/ex1/stabilityMeasurementDamp1_9-crop.pdf Graphic file (type pdf)
  <use ../data/ex1/stabilityMeasurementDamp1_9-crop.pdf>
 Package pdftex.def Info: ../data/ex1/stabilityMeasurementDamp1_9-crop.pdf used 
@@ -1811,7 +1799,7 @@ on input line 127.
 Class memoir Warning: The material used in the headers is too large
 (12.0pt) for the given head height (7.0pt), it is recommended to
 either increase the head height or redesign the header
-(in both cases you will find help in the memoir manual). on input line 101.
+(in both cases you will find help in the memoir manual). on input line 115.
 
 \tf@thm=\write6
 \openout6 = `pbs-report.thm'.
@@ -1819,57 +1807,55 @@ either increase the head height or redesign the header
 
 Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
- [5 <../data/ex1/stabilityMeasurementDamp0-crop.pdf>]
+ [3 <../data/ex1/errorConvergenceDamp0_01-crop.pdf>]
 Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
- [6 <../data/ex1/stabilityMeasurementDamp1_9-crop.pdf>]
-\tf@toc=\write7
-\openout7 = `pbs-report.toc'.
+ [4 <../data/ex1/errorConvergenceDamp0-crop.pdf> <../data/ex1/errorConvergenceD
+amp1-crop.pdf>]
+Overfull \vbox (5.0pt too high) has occurred while \output is active []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 101.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 101.
+ [5 <../data/ex1/stabilityMeasurementDamp0-crop.pdf> <../data/ex1/stabilityMeas
+urementDamp1_9-crop.pdf>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 115.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 115.
  (./pbs-report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 101.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 101.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 115.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 115.
 Package rerunfilecheck Info: File `pbs-report.out' has not changed.
-(rerunfilecheck)             Checksum: 1178D1AA0ACBBBF90C5F3558B6FBAB2A;44.
-
-
-LaTeX Warning: There were undefined references.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 101.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 115.
  ) 
 Here is how much of TeX's memory you used:
- 31315 strings out of 493311
- 588353 string characters out of 6143650
- 680540 words of memory out of 5000000
- 34144 multiletter control sequences out of 15000+600000
- 20866 words of font info for 82 fonts, out of 8000000 for 9000
+ 31329 strings out of 493311
+ 588700 string characters out of 6143650
+ 680762 words of memory out of 5000000
+ 34160 multiletter control sequences out of 15000+600000
+ 23337 words of font info for 93 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 64i,13n,62p,562b,827s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 64i,13n,62p,562b,835s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{Hfootnote.1} has been referenced but does not exi
 st, replaced by a fixed one
 
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr
-/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></
-usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/yhmat
-h/yhcmex.pfb>
-Output written on pbs-report.pdf (8 pages, 186275 bytes).
+/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mi5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/s
+hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr5.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr
+/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1
+/public/yhmath/yhcmex.pfb>
+Output written on pbs-report.pdf (7 pages, 179804 bytes).
 PDF statistics:
- 221 PDF objects out of 1000 (max. 8388607)
- 168 compressed objects within 2 object streams
- 37 named destinations out of 1000 (max. 500000)
- 76 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 205 PDF objects out of 1000 (max. 8388607)
+ 154 compressed objects within 2 object streams
+ 35 named destinations out of 1000 (max. 500000)
+ 68 words of extra memory for PDF output out of 10000 (max. 10000000)
 
