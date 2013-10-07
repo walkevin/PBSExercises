@@ -1,0 +1,7 @@
+Problem 1: M_PI: nichtdeklarierter Bezeichner.
+Lösung: In Datei Scene.cpp, #define _USE_MATH_DEFINES in die oberste Zeile verschieben. _USE_MATH_DEFINES wirkt in <cmath>. Falls vor dem eigentlichen #include <cmath> cmath durch einen anderen Header included wird, ist das _USE_MATH_DEFINES noch nicht definiert und ein Desaster passiert.
+http://stackoverflow.com/questions/6563810/m-pi-works-with-math-h-but-not-with-cmath-in-visual-studio
+
+Problem 2: glut32.dll kann nicht gefunden werden.
+Lösung: Kopiere glut32.dll (ist im Ordner GLUT) nach C://Windows/SysWOW64
+http://visualambition.wordpress.com/2010/08/12/glut-and-visual-studio-2010/
