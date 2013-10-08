@@ -1,7 +1,7 @@
+#define _USE_MATH_DEFINES
 #include "Scene.h"
 #include "Primitives.h"
 #include "Vec2.h"
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include <cstring>
 
