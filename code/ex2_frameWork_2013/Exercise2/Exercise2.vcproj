@@ -2,11 +2,10 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="Exercise1"
-	ProjectGUID="{61451301-5731-4C49-B77D-EB971C88E208}"
+	Name="Exercise2"
+	ProjectGUID="{206303F6-D4F1-4C1F-9D2A-CD02A7059C53}"
 	RootNamespace="Exercise2"
 	Keyword="Win32Proj"
-	AssemblyReferenceSearchPaths="&quot;..\GLUT&quot;"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -42,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="C:\Users\bthomasz\Documents\Lectures\PhysicallyBasedSimulationFS10\exercises\2fem\code"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,9 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="glut32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="GLUT"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -136,7 +134,6 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -175,27 +172,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Exercise.cpp"
+				RelativePath="..\FEMElementTri.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\LinSys.cpp"
+				RelativePath="..\MeshViewer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\main.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Primitives.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Scene.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Vec2.cpp"
+				RelativePath="..\SimpleFEM.cpp"
 				>
 			</File>
 		</Filter>
@@ -205,27 +190,27 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\GLUT\freeglut_std.h"
+				RelativePath="..\FEMElementTri.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GLUT\glut.h"
+				RelativePath="..\FEMMesh.h"
 				>
 			</File>
 			<File
-				RelativePath=".\LinSys.h"
+				RelativePath="..\MeshViewer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Primitives.h"
+				RelativePath="..\SimpleFEM.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Scene.h"
+				RelativePath="..\SimpleFEMDefs.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Vec2.h"
+				RelativePath="..\utilities.h"
 				>
 			</File>
 		</Filter>
