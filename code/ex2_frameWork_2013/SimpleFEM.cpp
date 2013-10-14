@@ -2,6 +2,7 @@
 #include "SimpleFEM.h"
 #include "MeshViewer.h"
 
+#include <numeric>
 // size of grid
 static const size_t GRIDSIZE = 20;
 // use a graded mesh, or a regular mesh
@@ -125,7 +126,16 @@ void SimpleFEM::ComputeRHS(const FEMMesh &mesh,  vector<float> &rhs)
 	for(size_t ie=0; ie<mesh.GetNumElements(); ie++) {
 		const FEMElementTri& elem = mesh.GetElement(ie);
 		//Task4 starts here
-		
+		Vector2 node0 = mesh.GetNodePosition(elem.GetGlobalNodeForElementNode(0));
+		Vector2 node1 = mesh.GetNodePosition(elem.GetGlobalNodeForElementNode(1));
+		Vector2 node2 = mesh.GetNodePosition(elem.GetGlobalNodeForElementNode(2));
+
+		//Compute area of triangle using the Shoelace formula
+		double areaThird = 0.5 / 3 * abs((node0.x - node2.x)*(node1.y - node0.y) - (node0.x - node1.x)*(node2.y - node0.y));
+
+		rhs[0] = areaThird * eval_f(node0.x, node0.y);
+		rhs[1] = areaThird * eval_f(node1.x, node1.y);
+		rhs[2] = areaThird * eval_f(node2.x, node2.y);
 		//Task4 ends here
 	}
 }
@@ -133,7 +143,18 @@ void SimpleFEM::ComputeRHS(const FEMMesh &mesh,  vector<float> &rhs)
 void SimpleFEM::computeError(FEMMesh &mesh,  const vector<float> &sol_num, vector<float> &verror, float& err_nrm )
 {
 	//Task 5 starts here
-	
+	//Analytical solution: u(x,y) = 3x^2 + 2xy^3
+	size_t N = mesh.GetNumNodes();
+	for (int i = 0; i < N; i++){
+		Vector2 nodeI = mesh.GetNodePosition(i);
+		double solAnalyticI = 3 * nodeI.x*nodeI.x + 2 * nodeI.x*nodeI.y*nodeI.y*nodeI.y;
+		verror[i] = abs(sol_num[i] - solAnalyticI);
+	}
+
+	//Compute sqrt(verror^T*K*verror)
+	vector<float> tmp(N);
+	mesh.getMat().MultVector(verror, tmp);
+	err_nrm = std::sqrt(std::inner_product(verror.begin(),verror.end(),tmp.begin(),0.));
 	//Task 5 ends here
 }
 
