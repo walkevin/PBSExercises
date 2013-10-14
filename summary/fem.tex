@@ -1,0 +1,360 @@
+\chapter{Finite elements}
+\section{Poisson's equation}
+\begin{dgroup}[]
+	\begin{dmath*}[]
+		-\Delta u(x,y)=f(x,y)
+	\end{dmath*}
+\end{dgroup}
+\section{Finite Difference}
+\begin{expl}[1D problem]
+	\begin{dmath}[]
+		-u''(x)=f(x)\condition*{x\in \Omega=(0,1)}
+	\end{dmath}
+	\begin{dmath}[compact]
+		u(0)=u(1)=0
+	\end{dmath}
+	\begin{dsuspend}
+		regular grid
+	\end{dsuspend}
+	\begin{dmath}[]
+		u[i]=u(i\cdot h)\condition*{i\in (0,\ldots,n)}
+	\end{dmath}
+	\begin{dsuspend}
+		approximate derivatives
+	\end{dsuspend}
+	\begin{dmath}[]
+		u''(x)=\frac{u'[i]-u'[i-1]}{h}=\frac{u[i+1]-2u[i]+u[i-1]}{h^2}
+	\end{dmath}
+	\begin{dsuspend}
+		equation for eevry grid point $2,\cdots,n-1$
+	\end{dsuspend}
+	\begin{dmath}[]
+		h^2 f[i]=u[i-1]+2 u[i]+u[i+1]
+	\end{dmath}
+\end{expl}
+\section{Finite Elements}
+\begin{expl}[1D problem]
+	\begin{dgroup}[]
+		\begin{dmath}[]
+			-u''(x)=f(x)\condition*{x\in \Omega=(0,1)}
+		\end{dmath}
+		\begin{dmath}[compact]
+			u(0)=u(1)=0
+		\end{dmath}
+		\begin{dsuspend}
+			Assume PDF is satisfied \emph{pointwise}, then
+		\end{dsuspend}
+		\begin{dmath}[]
+			-\int_{\Omega}^{}\dd{x}\,  u''(x)
+			=\int_{\Omega}^{}\dd{x}\, f(x)
+		\end{dmath}
+		\begin{dsuspend}
+			and also
+		\end{dsuspend}
+		\begin{dmath}[]
+			-\int_{\Omega}^{} \dd{x}\, u''(x) \cdot v(x)
+			=\int_{\Omega}^{}\dd{x}\,  f(x)\cdot v(x)
+		\end{dmath}
+		\begin{dsuspend}
+			for arbitrary functions $v:\Omega \to \mathbb{R}$.
+		\end{dsuspend}
+	\end{dgroup}
+\end{expl}
+\begin{expl}
+	\begin{itemize}
+		\item Assume $v$ sufficiently smooth and 
+			\begin{dmath}[compact]
+				v(0)=v(1)=0
+			\end{dmath}.
+		\item Integration by parts
+			\begin{dmath}[compact]
+				\int_{a}^{b}\dd{x}\, f'(x) g(x)=[f(x)\cdot g(x)]_{a}^{b}-\int_{a}^{b}\dd{x}\, f(x) g'(x)
+			\end{dmath}.
+	\end{itemize}
+	\begin{dgroup}[]
+		\begin{dmath}[]
+			-\int_{\Omega}^{} \dd{x}\, u''(x)\cdot v(x)
+			=\int_{\Omega}^{}\dd{x}\, f(x)\cdot v(x)
+		\end{dmath}
+		\begin{dmath}[]
+			\int_{\Omega}^{}\dd{x}\, u'(x)\cdot v'(x)
+			=\int_{\Omega}^{}\dd{x}\, f(x)\cdot v(x)
+			+[u'(x)\cdot v(x)]_{0}^{1}
+		\end{dmath}
+		\begin{dsuspend}
+			with the imposed boundary conditions of $v(x)$ this leads to
+		\end{dsuspend}
+		\begin{dmath}[]
+			\int_{\Omega}^{}\dd{x} \, u'(x) \cdot v'(x)
+			=\int_{\Omega}^{}\dd{x}\, f(x) \cdot v(x)
+		\end{dmath}
+	\end{dgroup}
+	\emph{Weak} form because of the \emph{weaker} continuity requirements.
+\end{expl}
+\subsection{Ritz-Galerkin Approach}
+So far, $u(x)$ and $f(x)$ continuous function, but now choose finite-dimensional subspace for $u(x)$ and $f(x)$. Solve problem in \emph{weak} form in subspace (projection). $\to$ Discretize $u$
+\begin{itemize}
+	\item Sample with nodal positions $x_i$
+	\item Nodal coefficients $u_i$
+	\item Basis functions $N_i(x)$
+\end{itemize}
+\begin{dmath}[]
+	\hiderel{\leadsto} u(x)=\sum_{i}^{}u_iN_i(x)
+\end{dmath}
+Discretize both $u$ and $v$ on $n$-dimensional space
+\begin{dgroup*}[]
+	\begin{dmath*}[]
+		u(x)=\sum_{i=1}^{N}u_i N_i(x)
+	\end{dmath*}
+	\begin{dmath*}[]
+		\hiderel{\leadsto} \pdv{}{x}u(x)=\sum_{i=1}^{n}u_i\pdv{}{x}N_i(x)
+	\end{dmath*}
+	\begin{dsuspend}
+		insert into \emph{weak} formulation
+	\end{dsuspend}
+	\begin{dmath*}[]
+		\int_{\Omega}^{} \dd{x}\, u'(x) v'(x)=\int_{\Omega}^{}\dd{x}\, f(x) v(x)
+	\end{dmath*}
+	\begin{dmath*}[]
+		\hiderel{\leadsto} \int_{\Omega}^{}\dd{x}\,\sum_{i=1}^{n} u_i \pdv{N_i}{x}\cdot \sum_{j=1}^{n}v_j \pdv{N_j}{x}=\int_{\Omega}^{} \dd{x}\, f \cdot \sum_{j=1}^{n}v_j N_j(x)
+	\end{dmath*}
+	\begin{dmath*}[]
+		\hiderel{\leadsto} \sum_{i,j\!=1}^{n}u_i v_j\int_{\Omega}^{}\dd{x}\, \pdv{N_i}{x} \pdv{N_j}{x}=\sum_{j=1}^{n} v_j\int_{\Omega}^{} \dd{x}\, f(x)  N_j(x)
+	\end{dmath*}
+\end{dgroup*}
+\begin{dgroup*}[]
+	\begin{dmath*}[]
+		\hiderel{\leadsto} \sum_{j\!=1}^{n} v_j \!\left[ \sum_{i=1}^{n}u_i \int_{\Omega}^{}\dd{x} \, \pdv{N_i}{x}\pdv{N_j}{x}-\int_{\Omega}^{}\dd{x}\, f(x)N_j (x) \right]\!=0
+	\end{dmath*},
+	\begin{dsuspend}
+		with an arbitrary $v_j$ (assumed)
+	\end{dsuspend}
+	\begin{dmath*}[]
+		\sum_{i=1}^{n} u_i \int_{\Omega}^{}\dd{x}\, \pdv{N_i}{x}\pdv{N_j}{x}
+		-\int_{\Omega}^{}\dd{x}\, f(x) N_i(x) =0 \condition*{\forall i,\ldots,n.}
+	\end{dmath*}
+\end{dgroup*}
+Now we have $n$ linear equations for $n$ unknowns, which can be written as
+\begin{dgroup}[]
+	\begin{dmath}[]
+		K \vtr{u}=\vtr{f}
+	\end{dmath}
+	\begin{dmath}[]
+		\underbrace{
+			\begin{pmatrix}
+				K_{11}&\cdots &K_{1n}\\
+				\vdots &\ddots & \vdots\\
+				K_{n1}&\cdots & K_{nn}
+			\end{pmatrix}\!
+		}_{K}\,
+		\underbrace{\!
+			\begin{pmatrix}
+				u_1\\
+				\vdots\\
+				u_n
+			\end{pmatrix}\!
+		}_{\vtr{u}}
+		=
+		\underbrace{\!
+			\begin{pmatrix}
+				f_1\\
+				\vdots\\
+				f_n
+			\end{pmatrix}\!
+		}_{\vtr{f}}
+	\end{dmath}
+\end{dgroup}
+
+\begin{dgroup}[]
+	\begin{dmath}[]
+		K_{ij}=\int_{\Omega}^{} \dd{x}\, \pdv{N_i}{x}\pdv{N_j}{x}
+	\end{dmath}
+	\begin{dmath}[]
+		f_i=\int_{\Omega}^{}\dd{x}\, f(x)N_i(x)
+	\end{dmath}
+\end{dgroup}
+
+This matrix is 
+\begin{itemize}
+	\item symmetric (definition of $K_{ij}$)
+	\item positive-definite (eliptic PDE)
+	\item sparse ($N_i$ have compact support)
+\end{itemize}
+$\leadsto$ use sparse solvel, e.g., conjugate gradients
+\paragraph{Choice of function space (types of Finite Elements)}
+\begin{dmath}[]
+	u(x)=\sum_{i}^{}u_i N_i(x)
+\end{dmath}
+\begin{itemize}
+	\item smooth enough $\leadsto$ once differentiable
+	\item simple $\leadsto$ polynomial functions
+	\item interpolation $\leadsto$ $N_i(\vtr{x}_j)=\delta_{ij}$
+	\item compact support $\leadsto$ defined piecewise on simple geometry
+\end{itemize}
+use piecewise linear basis functions $\leadsto$ piece wise linear approximation $u(x)$.
+\paragraph{Linear simplicial elements}
+Basis functions are uniquely defined through
+\begin{itemize}
+	\item Geometry $\vtr{x}_j$ and
+	\item interpolations requirement $N_i(\vtr{x}_j)=\delta_{ij}$
+\end{itemize}
+\begin{dgroup}[]
+	\begin{dmath}[]
+		\vtr{x}_j=x_j \condition{in 1D,}
+		=(x_j,y_j)^t \condition{in 2D,}
+		=(x_j,y_j,z_j)^t \condition{in 3D}
+	\end{dmath}.
+\end{dgroup}
+\begin{itemize}
+	\item Basis functions are linear
+		\begin{dmath}[]
+			N_i(x,y)=a_i x+b_i y+ c
+		\end{dmath}
+	\item Due to $N_i(\vtr{x}_j)=\delta_{ij}$ we have
+		\begin{dgroup}[]
+			\begin{dmath}[]
+				\begin{pmatrix}
+					x_1&y_1&1\\
+					x_2&y_2&1\\
+					x_3&y_3&1
+				\end{pmatrix}
+				\begin{pmatrix}
+					a_i\\
+					b_i\\
+					c_i
+				\end{pmatrix}
+				=
+				\begin{pmatrix}
+					\delta_{1i}\\
+					\delta_{2i}\\
+					\delta_{3i}
+				\end{pmatrix}
+			\end{dmath}
+			\begin{dmath}[]
+				\begin{pmatrix}
+					a_i\\
+					b_i\\
+					c_i
+				\end{pmatrix}
+				=
+				{\begin{pmatrix}
+					x_1&y_1&1\\
+					x_2&y_2&1\\
+					x_3&y_3&1
+				\end{pmatrix}}^{\!-1\!}
+				\begin{pmatrix}
+					\delta_{1i}\\
+					\delta_{2i}\\
+					\delta_{3i}
+				\end{pmatrix}
+			\end{dmath}
+		\end{dgroup}
+\end{itemize}
+\paragraph{What is a finite element}
+A finite element is a triple consisting of 
+\begin{itemize}
+	\item a closed subset $\Omega_{e}\subset \mathbb{R}^{d}$
+	\item a set of $n$ basis function $N_i:\Omega_{E}\to \mathbb{R}$
+	\item a set of $n$ associated nodal variables $\vtr{x}_i$
+\end{itemize}
+\paragraph{Summary of problem}
+\begin{itemize}
+	\item 1D Poisson problem given as
+		\begin{gather}
+			u''(x)=f(x)
+		\end{gather}
+	\item Weak form + galerkin approach gives linear system
+		\begin{dgroup}[]
+			\begin{dmath}[]
+				K u = f
+			\end{dmath}
+			\begin{dsuspend}
+				with
+			\end{dsuspend}
+			\begin{dmath}[]
+				K_{ij}=\int_{\Omega}^{}\dd{x}\, \pdv{N_i}{x}\pdv{N_j}{x}
+			\end{dmath},
+			\begin{dsuspend}
+				and
+			\end{dsuspend}
+			\begin{dmath}[]
+				\vtr{f}_i=\int_{\Omega}^{}\dd{x}\, f(x)N_i(x)
+			\end{dmath}.
+		\end{dgroup}
+	\item Use simple elements with linear basis functions
+\end{itemize}
+What is left is
+\begin{itemize}
+	\item tesseate domain into elements
+	\item evaluate integrals (basis functions \& derivatives)
+	\item assemble the system matrix and right hand side
+\end{itemize}
+\section{Exercise 2}
+\paragraph{Task:} use linear triangle elements
+\begin{itemize}
+	\item evaluate integrals
+	\item assemble the global system matrix and right hand side
+\end{itemize}
+\paragraph{Goal:} evaluate 
+\begin{dmath}[]
+	\vtr{f}_i=\int_{\Omega}^{}\dd{x}\dd{y}\, f(x)N_i(x)
+\end{dmath}
+\begin{itemize}
+	\item $N_i$ extends ovel all $n_{e,i}$ elements incident to $\vtr{x}_i$
+	\item $N_i$ is zero outside $\Omega_i\subset \Omega$
+	\item Consider restrictions $N_{i}^{e}$ onto elements
+\end{itemize}
+It holds 
+\begin{dgroup}[]
+	\begin{dmath}[]
+		\int_{\Omega}^{}\dd{x}\, f(x) N_i(x)
+		=\sum_{\ell=1}^{n_{\ell,i}} \int_{\Omega_{\ell}}^{} \dd{x}\, f(x)N_{i}^{\ell}(x)\condition{with $\Omega_i =\bigcup_\ell \Omega_{\ell}$}
+	\end{dmath}
+	\begin{dsuspend}
+		evaluate integrals over $\Omega_{\ell}$ with \emph{quadratic rule}
+	\end{dsuspend}
+	\begin{dmath}[]
+		\int_{\Omega_{\ell}}^{} \rd x\rd y \, f(x)N_{i}^{e}(x)
+		\approx f(x_{q},y_{q})\cdot N_{i}^{\ell} (x_{q},y_{q}) \cdot A_{\ell}
+	\end{dmath},
+	\begin{dsuspend}
+		where $A_{\ell}$ area of element $\ell$ and $(x_{\ell},y_{\ell})$ the single quadrature point at bory-center
+	\end{dsuspend}
+\end{dgroup}
+\paragraph{Goal:} evaluate
+\begin{dgroup}[]
+	\begin{dmath}[]
+		\vtr{K}_{ij}=\int_{\Omega}^{}\rd x\rd y \, \int_{\Omega_{\ell}}^{}\rd x\rd y \, N_{i}^{\ell}N_{j}^{\ell} >0
+	\end{dmath}
+	\begin{dsuspend}
+		i.e., $\exists$ an element containing vertices $\vtr{x}_i$ and $\vtr{x}_j$. Let $S_{ij}$ denote a set of all these elements, then
+	\end{dsuspend}
+	\begin{dmath}[]
+		K_{ij}=\sum_{\ell \in S_{ij}}^{}\int_{\Omega_{\ell}}^{} \rd x\rd y \, \pdv{N_{i}^{\ell}}{x}\pdv{N_{j}^{\ell}}{x}+\pdv{N_{i}^{\ell}}{y}\pdv{N_{j}^{\ell}}{y}
+	\end{dmath}.
+\end{dgroup}
+This is an element-centered implementation. For each element $\ell$, compute basis function derivatives
+\begin{dgroup}[]
+	\begin{dmath}[]
+		\pdv{N_{k}^{\ell}}{\vtr{x}}\condition*{k=1,\ldots,3}
+	\end{dmath}
+	\begin{dsuspend}
+		form products and integrate
+	\end{dsuspend}
+	\begin{dmath}[]
+		\pdv{N_{k}^{\ell}}{\vtr{x}}\pdv{N_{m}^{\ell}}{\vtr{x}}\condition*{k=1,\ldots,3;\, m=k,\ldots, 3}
+	\end{dmath},
+	\begin{dsuspend}
+		which is a constant on element and add to global matrix (local vs. global numbering)
+	\end{dsuspend}
+	\begin{dmath}[]
+		K_{ij}\hiderel{+}=A_{\ell} \left( \pdv{N_{k}^{\ell}}{\vtr{x}}\pdv{N_{m}^{\ell}}{\vtr{x}} +\pdv{N_{k}^{\ell}}{\vtr{y}}\pdv{N_{m}^{\ell}}{\vtr{y}}\right)
+	\end{dmath}
+\end{dgroup}
+\paragraph{Advantages of \emph{FEM}} (over Finite Differences)
+\begin{itemize}
+	\item can easily deal with comple geometries
+	\item solution in nodes is naturally interpolated inside elements using basis functions
+	\item weaker smoothness requirements on solution
+	\item weak form is natural for many applications
+\end{itemize}
