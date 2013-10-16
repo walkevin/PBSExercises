@@ -9,8 +9,10 @@
 #define UTILITIES_T_H
 
 #include <iostream>
+#include <stdio.h>
 #include <string>
 #include <map>
+#include <limits>
 using std::map;
 
 //! Simple 2D vector class

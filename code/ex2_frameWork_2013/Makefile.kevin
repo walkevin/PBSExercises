@@ -1,0 +1,21 @@
+EXE=ex2
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
+
+CXX        = g++-4.8
+#If g++-4.8 is not available, you use g++ and remove -std=c++11 from CFLAGS
+LDFLAGS    = -lGL -lglut -L/usr/lib/x86_64-linux-gnu
+CFLAGS     = -c -O2 -DLINUXVERSION=1 -std=c++11
+
+
+default: $(EXE)
+
+$(EXE): $(OBJECTS)
+	$(CXX) -o $(EXE) $(LDFLAGS) $(OBJECTS)
+
+%.o : %.cpp
+	$(CXX) $(CFLAGS) -o $@ $<
+
+clean:
+	 rm -f *.o $(EXE)
+
