@@ -101,6 +101,21 @@ public:
 			matK.FixSolution(rhs, boundaryConds[i].GetID(), boundaryConds[i].GetValue());
 		}
 
+		////Debug Output
+		//std::cout << "From FEMMesh::Solve\t RHS\n";
+		//for (int i = 0; i < rhs.size(); i++){
+		//	std::cout << rhs[i] << std::endl;
+		//}
+		//std::cout << "From FEMMesh::Solve\t Matrix\n";
+
+		//for (int i = 0; i < matK.GetNumRows(); i++){
+		//	for (int j = 0; j < matK.GetNumCols(); j++){
+		//		std::cout << matK(i, j) << " ";
+		//	}
+		//	std::cout << std::endl;
+		//}
+
+
 		// Solve the problem:
 		SparseLinSolverPCGT<float> solver;
 		return solver.SolveLinearSystem(matK, solution, rhs, (float)1e-6, 1000);

@@ -667,9 +667,9 @@ public:
 				d[i] = s[i] + beta*d[i];
 
 			iter++;
-			std::cout<<"PCG, iter="<<iter<<", deltaNew="<<sqrt(deltaNew)<< " vs "<< (residual) <<"\n";
+			//std::cout<<"PCG, iter="<<iter<<", deltaNew="<<sqrt(deltaNew)<< " vs "<< (residual) <<"\n";
 		}
-
+		std::cout << "PCG, iter=" << iter << std::endl;
 		return true;
 	}
 

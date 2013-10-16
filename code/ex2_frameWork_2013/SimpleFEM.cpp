@@ -4,7 +4,7 @@
 
 #include <numeric>
 // size of grid
-static const size_t GRIDSIZE = 20;
+static const size_t GRIDSIZE = 25;
 // use a graded mesh, or a regular mesh
 static const bool gradedMesh = true;
 // laplace or poisson problem?
@@ -126,16 +126,27 @@ void SimpleFEM::ComputeRHS(const FEMMesh &mesh,  vector<float> &rhs)
 	for(size_t ie=0; ie<mesh.GetNumElements(); ie++) {
 		const FEMElementTri& elem = mesh.GetElement(ie);
 		//Task4 starts here
-		Vector2 node0 = mesh.GetNodePosition(elem.GetGlobalNodeForElementNode(0));
-		Vector2 node1 = mesh.GetNodePosition(elem.GetGlobalNodeForElementNode(1));
-		Vector2 node2 = mesh.GetNodePosition(elem.GetGlobalNodeForElementNode(2));
-
+		//Get global nodes and positions
+		size_t g0 = elem.GetGlobalNodeForElementNode(0), g1 = elem.GetGlobalNodeForElementNode(1), g2 = elem.GetGlobalNodeForElementNode(2);
+		Vector2 node0 = mesh.GetNodePosition(g0);
+		Vector2 node1 = mesh.GetNodePosition(g1);
+		Vector2 node2 = mesh.GetNodePosition(g2);
+		
 		//Compute area of triangle using the Shoelace formula
-		double areaThird = 0.5 / 3 * abs((node0.x - node2.x)*(node1.y - node0.y) - (node0.x - node1.x)*(node2.y - node0.y));
+		float areaThird = 0.5f / 3.f * abs((node0.x() - node2.x())*(node1.y() - node0.y()) - (node0.x() - node1.x())*(node2.y() - node0.y()));
 
-		rhs[0] = areaThird * eval_f(node0.x, node0.y);
-		rhs[1] = areaThird * eval_f(node1.x, node1.y);
-		rhs[2] = areaThird * eval_f(node2.x, node2.y);
+		//Quadrature at barycenter and assembly to global rhs vector
+		Vector2 barycenter = (node0 + node1 + node2) / 3;
+		rhs[g0] += areaThird * eval_f(barycenter.x(), barycenter.y());
+		rhs[g1] += areaThird * eval_f(barycenter.x(), barycenter.y());
+		rhs[g2] += areaThird * eval_f(barycenter.x(), barycenter.y());
+
+		////Alternative quadrature rule (2D trapezoidal rule)
+		//rhs[g0] += areaThird * eval_f(node0.x(), node0.y());
+		//rhs[g1] += areaThird * eval_f(node1.x(), node1.y());
+		//rhs[g2] += areaThird * eval_f(node2.x(), node2.y());
+
+
 		//Task4 ends here
 	}
 }
@@ -147,14 +158,14 @@ void SimpleFEM::computeError(FEMMesh &mesh,  const vector<float> &sol_num, vecto
 	size_t N = mesh.GetNumNodes();
 	for (int i = 0; i < N; i++){
 		Vector2 nodeI = mesh.GetNodePosition(i);
-		double solAnalyticI = 3 * nodeI.x*nodeI.x + 2 * nodeI.x*nodeI.y*nodeI.y*nodeI.y;
+		float solAnalyticI = eval_u(nodeI.x(), nodeI.y());
 		verror[i] = abs(sol_num[i] - solAnalyticI);
-	}
+ 	}
 
 	//Compute sqrt(verror^T*K*verror)
 	vector<float> tmp(N);
 	mesh.getMat().MultVector(verror, tmp);
-	err_nrm = std::sqrt(std::inner_product(verror.begin(),verror.end(),tmp.begin(),0.));
+	err_nrm = std::sqrt(std::inner_product(verror.begin(),verror.end(),tmp.begin(),0.f));
 	//Task 5 ends here
 }
 
@@ -190,21 +201,25 @@ int main(int argc, char *argv[])
 	assert(isSolved);
 
 	// print matrix for boundary nodes
-	if(debugOut) 
-		for(size_t i=0; i<mesh.GetNumNodes(); i++) {
-			const Vector2 & pi = mesh.GetNodePosition(i);
-			if(SimpleFEM::isOnBoundary(pi))
-				continue;
-			for(size_t j=0; j<mesh.GetNumNodes(); j++) {
-				const Vector2 & pj = mesh.GetNodePosition(j);
+	if (debugOut){
+		for (size_t i = 0; i < mesh.GetNumNodes(); i++) {
+			//const Vector2 & pi = mesh.GetNodePosition(i);
+			//if(SimpleFEM::isOnBoundary(pi))
+			//	continue;
+			for (size_t j = 0; j<mesh.GetNumNodes(); j++) {
+				/*const Vector2 & pj = mesh.GetNodePosition(j);
 				if(SimpleFEM::isOnBoundary(pj))
-					continue;
-				if(j>i) cout<<mesh.getMat()(j,i)<<"\t";
-				else    cout<<mesh.getMat()(i,j)<<"\t";
+				continue;*/
+				if (j>i) cout << mesh.getMat()(j, i) << " ";
+				else    cout << mesh.getMat()(i, j) << " ";
 			}
-			std::cout<<std::endl;
-		//cout<<" rhs="<<rhs[i]<<" \n";
-	} // debug output
+			std::cout << std::endl;
+		} // debug output
+		
+		for (size_t i = 0; i < rhs.size(); i++){
+			std::cout << rhs[i] << "\n";
+		}
+	}
 
 	float err_nrm = 0;
 	std::vector<float> verr(nNodes);
