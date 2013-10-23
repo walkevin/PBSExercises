@@ -1,0 +1,27 @@
+# common stuff
+LDFLAGS_COMMON = -lglut -lpng
+CFLAGS_COMMON =  -c -Wall -DDO_PNG_OUT=1 -I.
+
+# mac:
+# LDFLAGS_COMMON = -framework GLUT -framework OpenGL -L/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries -L/sw/lib -lpng
+# CFLAGS_COMMON =  -c -Wall -I../include  -I/sw/include -DDO_PNG_OUT=1 -DAPPLE=1
+
+CC         = g++
+#CFLAGS     = ${CFLAGS_COMMON} -O1 -fno-inline -g 
+CFLAGS     = ${CFLAGS_COMMON} -O3 -Wno-unused
+LDFLAGS    = ${LDFLAGS_COMMON}
+EXECUTABLE = fluid2d
+
+SOURCES    = main.cpp fluid2d.cpp exercise.cpp boundary.cpp
+OBJECTS    = $(SOURCES:.cpp=.o)
+
+all: $(SOURCES) $(EXECUTABLE)
+	
+$(EXECUTABLE): $(OBJECTS) 
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+.cpp.o: 
+	$(CC) $(CFLAGS) $< -o $@
+
+clean:
+	rm -f *.o $(EXECUTABLE)
