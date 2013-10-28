@@ -46,12 +46,12 @@ void ExCorrectVelocities(int _xRes, int _yRes, double _dt, const double* _pressu
 {
 	double deltax = 1 / double(_xRes);
 	double deltay = 1 / double(_yRes);
-	for (int j = 0; j < _xRes; j++)
+	for (int j = 0; j < _xRes-1; j++)
 	{
-		for (int i = 0; i < _yRes; i++)
+		for (int i = 0; i < _yRes-1; i++)
 		{
-			_xVelocity[i + j*_xRes] = _xVelocity[i + j*_xRes] - _dt*(_pressure[(i + 1) + j*_xRes] - _pressure[i + j*_xRes])/deltay;
-			_yVelocity[i + j*_xRes] = _yVelocity[i + j*_xRes] - _dt*(_pressure[i + (j+1)*_xRes] - _pressure[i + j*_xRes])/deltax;
+			_xVelocity[i+1 + j*_xRes] = _xVelocity[i+1 + j*_xRes] - _dt*(_pressure[(i + 1) + j*_xRes] - _pressure[i + j*_xRes])/deltax;
+			_yVelocity[i + (j+1)*_xRes] = _yVelocity[i + (j+1)*_xRes] - _dt*(_pressure[i + (j+1)*_xRes] - _pressure[i + j*_xRes])/deltay;
 		}
 	}	
 }
