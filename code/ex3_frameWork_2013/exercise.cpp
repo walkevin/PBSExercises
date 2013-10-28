@@ -25,8 +25,10 @@ void ExSolvePoisson(int xRes, int yRes, int _iterations, double _accuracy, doubl
 				}
 			}
 		}
-		if (maxResidual > _accuracy)
+		if (maxResidual > _accuracy){
+			printf("Pressure solver: iter=%d , res=%f \n", i, maxResidual);
 			break;
+		}
 	}
 
 	// for your debugging, and ours, please add these prints after every iteration
