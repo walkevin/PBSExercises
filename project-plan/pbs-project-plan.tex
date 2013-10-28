@@ -1,0 +1,117 @@
+%%%\documentclass[paper,notoc,12pt]{JHEP3}
+%%%mmaetz: put a4paper
+%\documentclass[a5paper]{book}
+\documentclass[10pt,a5paper,twoside]{memoir}
+%%%mmaetz: reduce margins
+%%%mmaetz: omitted temporarily to have the margins for the change remarks.
+%\usepackage[a5paper,left=2cm, right=1cm,top=1.5cm, bottom=1.5cm]{geometry}
+%mmaetz: use tikz package
+\input{extrapackages}
+\input{macrosetup}
+\input{theoremsetup}
+\input{layoutsetup}
+%%% New definition of square root:
+%%% it renames \sqrt as \oldsqrt
+%\let\oldsqrt\sqrt
+%%% it defines the new \sqrt in terms of the old one
+%\def\sqrt{\mathpalette\DHLhksqrt}
+%\def\DHLhksqrt#1#2{%
+%	\setbox0=\hbox{$#1\oldsqrt{#2\,}$}\dimen0=\ht0
+%	\advance\dimen0-0.2\ht0
+%	\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}%
+%	{\box0\lower0.4pt\box2}}
+
+%%% Theorems. (Copied from www.mitschriften.ethz.ch template)
+
+
+\title{\Huge Physically-based Simulation in Computer Graphics\\\vspace{1em}
+Project Plan: Paintball shot
+}
+
+
+\preauthor{}
+\author{\LARGE Kevin Wallimann, Andri Schmidt, Marc Maetz}
+\postauthor{\Large\\\vspace{2em}
+\begin{tabular}{ccc}
+	\begin{tabular}{c}
+		Berhard Thomaszewski,\\
+		Amit Bermano\\
+		Disney Research Zurich
+	\end{tabular}
+	&\quad 
+	&
+	\begin{tabular}{c}
+		Barbara Solenthaler\\
+		CGL ETH Zürich
+	\end{tabular}
+\end{tabular}
+  %ETH Zurich,\\
+  %8093 Zurich, Switzerland\\
+	\vspace{1em}
+  %E-mail: {\em babis@phys.ethz.ch}
+}
+\professor{}
+%\professor{Prof. Dr. Markus Gross, Prof. Dr. Marc Pollefeys}
+
+\date{\vspace{1em}\today}
+
+%\author{Babis Anastasiou\\
+%  Institute for Theoretical Physics, \\ 
+%  ETH Zurich,\\
+%  8093 Zurich, Switzerland\\
+%  E-mail: {\em babis@phys.ethz.ch}}
+
+\begin{document} 
+
+\begin{titlingpage}
+\maketitle
+	%\titleS
+%\vfill
+%Revision \SVNRev{} --- \SVNDate{}
+\end{titlingpage}
+
+
+%%% Color settings and plot settings. If the pictures look bad look at this file!
+\input{tikzstuff.tex}
+
+
+
+%\begin{abstract}
+%The subject of the course an  introduction to  quantum 
+%field theory. The following topics are discussed: 
+%\begin{itemize}
+%\item Theory of classical fields.  
+%\item Canonical quantization of free fields.
+%\item The  Dirac equation and  quantization of the Dirac field
+%\item Field Propagation, interacting fields and perturbation theory. 
+%\item Cross-sections  and decay rates.
+%\item Introduction to QED and the problem of infinities.
+%\item One-loop renormalization of QED. 
+%\end{itemize}
+%\end{abstract}
+
+%\tableofcontents 
+%\listofchanges
+%\bibliographystyle{JHEP}
+%\begin{thebibliography}{10}
+%\bibitem{srednicki}
+%Modern Quantum Mechanics, Sakurai 
+%\bibitem{sterman}
+%The Feynman Lectures in Physics, Feynman 
+%\bibitem{weinberg}
+%The Quantum Theory of Fields, Weinberg 
+%\end{thebibliography} 
+%\newpage
+
+%%% Have decided to reverse the order of the material wrt the first time I taught this. 
+%%% Files renamed according to the new order.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% bibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{plan1.tex}
+
+\end{document}
+
+% LocalWords:  asimple
