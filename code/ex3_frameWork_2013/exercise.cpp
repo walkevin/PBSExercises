@@ -4,6 +4,8 @@
 #define GETF(x,y) field[(x) + (y) * xRes]
 #define GETB(x,y) b[(x) + (y) * xRes]
 
+double interp(double x1, double y1, double x2, double y2, double xip);
+
 // Problem 1
 void ExSolvePoisson(int xRes, int yRes, int _iterations, double _accuracy, double* field, double* b)
 {
@@ -60,4 +62,11 @@ void ExCorrectVelocities(int _xRes, int _yRes, double _dt, const double* _pressu
 void ExAdvectWithSemiLagrange(int xRes, int yRes, double dt,double* xVelocity, double* yVelocity, double *density, double *densityTemp, double *xVelocityTemp,double *yVelocityTemp)
 {
 	// note: velocity u_{i+1/2} is practically stored at i+1
+}
+
+double interp(double x1, double y1, double x2, double y2, double xip)
+{
+	double deltax = std::abs(x2 - x1);
+	double dis1 = std::abs(xip - x1);
+	return dis1 / deltax*y1 + (1 - dis1) / deltax* y2;
 }
