@@ -62,43 +62,98 @@ void ExCorrectVelocities(int _xRes, int _yRes, double _dt, const double* _pressu
 void ExAdvectWithSemiLagrange(int xRes, int yRes, double dt,double* xVelocity, double* yVelocity, double *density, double *densityTemp, double *xVelocityTemp,double *yVelocityTemp)
 {
 	// note: velocity u_{i+1/2} is practically stored at i+1
+	//Initialize to zero.
 	for (int i = 0; i < xRes*yRes; i++)
 	{
 		xVelocityTemp[i] = 0;
 		yVelocityTemp[i] = 0;
 	}
+
 	for (int i = 0; i < xRes - 1; i++)
 	{
 		for (int j = 0; j < yRes - 1; j++)
 		{
 			double advx = 0.5*xVelocity[i*xRes + j] + 0.5*xVelocity[(i + 1)*xRes + j];
 			double advy = 0.5*yVelocity[i*xRes + j] + 0.5*yVelocity[i*xRes + (j + 1)];
-			double dispx = -dt*advx;
-			double dispy = -dt*advy;
-			double dx = 1 / double(xRes);
-			double dy = 1 / double(yRes);
-			int ind_i_u = i + std::floor((dispx + 0.5) / dx);
-			int ind_j_u = j + std::floor(dispy / dy);
-			double w_i_u = (dispx + 0.5) / dx - std::floor((dispx + 0.5) / dx);
-			double w_j_u = dispy / dy - std::floor(dispy / dy);
-			double int_temp1 = w_i_u*xVelocity[ind_i_u*xRes + ind_j_u] + (1 - w_i_u)*xVelocity[(ind_i_u+1)*xRes + ind_j_u];
-			double int_temp2 = w_i_u*xVelocity[ind_i_u*xRes + (ind_j_u+1)] + (1 - w_i_u)*xVelocity[(ind_i_u + 1)*xRes + (ind_j_u+1)];
-			double inp_u = w_j_u*int_temp1 + (1 - w_j_u)*int_temp2;
+			
+			double ax = -dt * advx * static_cast<double>(xRes); 
+			double ay = -dt * advy * static_cast<double>(yRes);
 
-			int ind_i_v = i + std::floor(dispx / dx);
-			int ind_j_v = j + std::floor((dispy + 0.5) / dy);
-			double w_i_v = dispx / dx - std::floor(dispx / dx);
-			double w_j_v = (dispy + 0.5) / dy - std::floor((dispy + 0.5) / dy);
-			int_temp1 = w_i_v*yVelocity[ind_i_v*xRes + ind_j_v] + (1 - w_i_v)*yVelocity[(ind_i_v + 1)*xRes + ind_j_v];
-			int_temp2 = w_i_v*yVelocity[ind_i_v*xRes + (ind_j_v + 1)] + (1 - w_i_v)*yVelocity[(ind_i_v + 1)*xRes + (ind_j_v + 1)];
-			double inp_v = w_j_v*int_temp1 + (1 - w_j_v)*int_temp2;
 
-			xVelocityTemp[i*xRes + j] += 0.5*inp_u;
-			xVelocityTemp[(i + 1)*xRes + j] += 0.5*inp_u;
-			yVelocityTemp[i*xRes + j] += 0.5*inp_v;
-			yVelocityTemp[i*xRes + (j + 1)] += 0.5*inp_v;
+			//Compute interpolation indices for u (=> staggered in x resp. i, unstaggered in y resp. j)
+			//i-direction, staggered
+			int ip0_u = i + std::floor(ax - 0.5);
+			int ip1_u = ip0_u + 1;
+			double iw1_u = ax - 0.5 - std::floor(ax - 0.5);
+			double iw0_u = 1 - iw1_u;
+
+			//j-direction, unstaggered
+			int jp0_u = j + std::floor(ax);
+			int jp1_u = jp0_u + 1;
+			double jw1_u = ax - std::floor(ax);
+			double jw0_u = 1 - jw1_u;
+
+			//Perform bilinear interpolation for u (at center of cell)
+			double interp_u = iw0_u * ( jw0_u * xVelocity[ip0_u * xRes + jp0_u]
+									  + jw1_u * xVelocity[ip0_u * xRes + jp1_u])
+					        + iw1_u * ( jw0_u * xVelocity[ip1_u * xRes + jp0_u]
+								      + jw1_u * xVelocity[ip1_u * xRes + jp1_u]);
+
+			//Distribute value to neighboring cells. "undo initial interpolation"
+			xVelocityTemp[i*xRes + j] += 0.5*interp_u;
+			xVelocityTemp[(i + 1)*xRes + j] += 0.5*interp_u;
+
+			//Compute interpolation indices for v (=> unstaggered in x resp. i, staggered in y resp. j)
+			//i-direction, staggered
+			int ip0_v = i + std::floor(ay);
+			int ip1_v = ip0_v + 1;
+			double iw1_v = ay - std::floor(ay);
+			double iw0_v = 1 - iw1_v;
+
+			//j-direction, unstaggered
+			int jp0_v = j + std::floor(ay - 0.5);
+			int jp1_v = jp0_v + 1;
+			double jw1_v = ay - 0.5 - std::floor(ay - 0.5);
+			double jw0_v = 1 - jw1_v;
+
+			//Perform bilinear interpolation for v (at center of cell)
+			double interp_v = iw0_u * (jw0_v * yVelocity[ip0_v * yRes + jp0_v]
+				                     + jw1_v * yVelocity[ip0_v * yRes + jp1_v])
+				            + iw1_u * (jw0_v * yVelocity[ip1_v * yRes + jp0_v]
+				                     + jw1_v * yVelocity[ip1_v * yRes + jp1_v]);
+			
+			//Distribute value to neighboring cells. "undo initial interpolation"
+			yVelocityTemp[i*xRes + j] += 0.5*interp_v;
+			yVelocityTemp[i*xRes + (j + 1)] += 0.5*interp_v;
+
+			//double dispx = -dt*advx;
+			//double dispy = -dt*advy;
+			//double dx = 1 / double(xRes);
+			//double dy = 1 / double(yRes);
+			//int ind_i_u = i + std::floor((dispx + 0.5) / dx);
+			//int ind_j_u = j + std::floor(dispy / dy);
+			//double w_i_u = (dispx + 0.5) / dx - std::floor((dispx + 0.5) / dx);
+			//double w_j_u = dispy / dy - std::floor(dispy / dy);
+			//double int_temp1 = w_i_u*xVelocity[ind_i_u*xRes + ind_j_u] + (1 - w_i_u)*xVelocity[(ind_i_u+1)*xRes + ind_j_u];
+			//double int_temp2 = w_i_u*xVelocity[ind_i_u*xRes + (ind_j_u+1)] + (1 - w_i_u)*xVelocity[(ind_i_u + 1)*xRes + (ind_j_u+1)];
+			//double inp_u = w_j_u*int_temp1 + (1 - w_j_u)*int_temp2;
+
+			//int ind_i_v = i + std::floor(dispx / dx);
+			//int ind_j_v = j + std::floor((dispy + 0.5) / dy);
+			//double w_i_v = dispx / dx - std::floor(dispx / dx);
+			//double w_j_v = (dispy + 0.5) / dy - std::floor((dispy + 0.5) / dy);
+			//int_temp1 = w_i_v*yVelocity[ind_i_v*xRes + ind_j_v] + (1 - w_i_v)*yVelocity[(ind_i_v + 1)*xRes + ind_j_v];
+			//int_temp2 = w_i_v*yVelocity[ind_i_v*xRes + (ind_j_v + 1)] + (1 - w_i_v)*yVelocity[(ind_i_v + 1)*xRes + (ind_j_v + 1)];
+			//double inp_v = w_j_v*int_temp1 + (1 - w_j_v)*int_temp2;
+
+			//xVelocityTemp[i*xRes + j] += 0.5*inp_u;
+			//xVelocityTemp[(i + 1)*xRes + j] += 0.5*inp_u;
+			//yVelocityTemp[i*xRes + j] += 0.5*inp_v;
+			//yVelocityTemp[i*xRes + (j + 1)] += 0.5*inp_v;
 		}
 	}
+
+	//"Swap" buffers
 	for (int i = 0; i < xRes*yRes; i++)
 	{
 		xVelocity[i] = xVelocityTemp[i];
