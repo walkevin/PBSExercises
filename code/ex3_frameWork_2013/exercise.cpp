@@ -29,7 +29,7 @@ void ExSolvePoisson(int xRes, int yRes, int _iterations, double _accuracy, doubl
 			}
 		}
 		if (maxResidual < _accuracy && maxResidual >= 0.){
-			printf("Pressure solver: iter=%d , res=%f \n", i+1, maxResidual);
+			printf("Pressure solver: iter=%d , res=%f \n", i, maxResidual);
 			break;
 		}
 	}
@@ -57,8 +57,8 @@ void ExCorrectVelocities(int _xRes, int _yRes, double _dt, const double* _pressu
 	{
 		for (int i = 0; i < _xRes - 1; i++)
 		{
-			_xVelocity[A(i+1,j)] = _xVelocity[A(i+1,j)] - _dt*(_pressure[A(i+1,j)] - _pressure[A(i,j)]) / deltax;
-			_yVelocity[A(i,j+1)] = _yVelocity[A(i,j+1)] - _dt*(_pressure[A(i,j+1)] - _pressure[A(i,j)]) / deltay;
+			_xVelocity[A(i + 1, j)] = _xVelocity[A(i + 1, j)] - _dt*(_pressure[A(i + 1, j)] - _pressure[A(i, j)]) * double(_xRes);
+			_yVelocity[A(i, j + 1)] = _yVelocity[A(i, j + 1)] - _dt*(_pressure[A(i, j + 1)] - _pressure[A(i, j)]) * double(_yRes);
 		}
 	}
 }
@@ -78,9 +78,9 @@ void ExAdvectWithSemiLagrange(int xRes, int yRes, double dt,double* xVelocity, d
 	{
 		for (int j = 0; j < yRes - 1; j++)
 		{
-			//Compute departure point
-			double advx = 0.5*xVelocity[A(i,j)] + 0.5*xVelocity[A(i+1,j)];
-			double advy = 0.5*yVelocity[A(i,j)] + 0.5*yVelocity[A(i,j+1)];
+			//Compute distance to departure point
+			double advx = 0.5* (xVelocity[A(i,j)] + xVelocity[A(i+1,j)]);
+			double advy = 0.5* (yVelocity[A(i,j)] + yVelocity[A(i,j+1)]);
 			
 			double ax = -dt * advx * static_cast<double>(xRes); //A negative ax => ax + 0.5 to account for staggering. Otherwise, ax > 0 => ax - 0.5
 			double ay = -dt * advy * static_cast<double>(yRes);
@@ -104,8 +104,7 @@ void ExAdvectWithSemiLagrange(int xRes, int yRes, double dt,double* xVelocity, d
 			double interp_rho = interp(i, j, false, false, ax, ay, density, xRes);
 
 			//Distribute value to neighboring cells. "undo initial interpolation"
-			densityTemp[A(i,j)]   += 0.5*interp_rho;
-			densityTemp[A(i,j+1)] += 0.5*interp_rho;
+			densityTemp[A(i,j)]   = interp_rho;
 		}
 	}
 
