@@ -14,24 +14,23 @@ void ExSolvePoisson(int xRes, int yRes, int _iterations, double _accuracy, doubl
 	for (int i = 0; i < _iterations; i++)
 	{
 		//Stop condition using maximum norm
-		double maxResidual = -1.;
+		double maxResidual = 0;
 		for (int y = 1; y < yRes - 1; y++) {
 			for (int x = 1; x < xRes - 1; x++)
 			{
 				GETF(x, y) = 0.25*(GETB(x, y) + GETF(x + 1, y) + GETF(x - 1, y) + GETF(x, y + 1) + GETF(x, y - 1));
-				if (i == _iterations - 1) //residual for each element if deltat = deltax and rho = 1
-				{
-					double residual = std::abs(GETB(x, y) - (4 * GETF(x, y) - GETF(x + 1, y) - GETF(x - 1, y) - GETF(x, y + 1) - GETF(x, y - 1)));
-					printf("Pressure solver: iter=%d , res=%f \n", i, residual);
-					if (residual > maxResidual)
-						maxResidual = residual;
-				}
+				 //residual for each element if deltat = deltax and rho = 1
+				double residual = std::abs(GETB(x, y) - (4 * GETF(x, y) - GETF(x + 1, y) - GETF(x - 1, y) - GETF(x, y + 1) - GETF(x, y - 1)));
+				if (residual > maxResidual)
+					maxResidual = residual;
 			}
 		}
-		if (maxResidual < _accuracy && maxResidual >= 0.){
+		if (maxResidual < _accuracy){
 			printf("Pressure solver: iter=%d , res=%f \n", i, maxResidual);
 			break;
 		}
+		else if (i == _iterations)
+			printf("Pressure solver: iter=%d , res=%f \n", i, maxResidual);
 	}
 
 	// for your debugging, and ours, please add these prints after every iteration
