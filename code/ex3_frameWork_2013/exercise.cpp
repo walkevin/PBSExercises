@@ -52,9 +52,9 @@ void ExCorrectVelocities(int _xRes, int _yRes, double _dt, const double* _pressu
 	double deltax = 1 / double(_xRes);
 	double deltay = 1 / double(_yRes);
 
-	for (int j = 0; j < _yRes - 1; j++)
+	for (int j = 1; j < _yRes - 1; j++)
 	{
-		for (int i = 0; i < _xRes - 1; i++)
+		for (int i = 1; i < _xRes - 1; i++)
 		{
 			_xVelocity[A(i + 1, j)] = _xVelocity[A(i + 1, j)] - _dt*(_pressure[A(i + 1, j)] - _pressure[A(i, j)]) * double(_xRes);
 			_yVelocity[A(i, j + 1)] = _yVelocity[A(i, j + 1)] - _dt*(_pressure[A(i, j + 1)] - _pressure[A(i, j)]) * double(_yRes);
@@ -73,9 +73,9 @@ void ExAdvectWithSemiLagrange(int xRes, int yRes, double dt,double* xVelocity, d
 		yVelocityTemp[i] = 0;
 	}
 
-	for (int i = 0; i < xRes - 1; i++)
+	for (int i = 1; i < xRes - 1; i++)
 	{
-		for (int j = 0; j < yRes - 1; j++)
+		for (int j = 1; j < yRes - 1; j++)
 		{
 			//Compute distance to departure point
 			double advx = 0.5* (xVelocity[A(i,j)] + xVelocity[A(i+1,j)]);
