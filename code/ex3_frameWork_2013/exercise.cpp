@@ -47,10 +47,9 @@ void ExSolvePoisson(int xRes, int yRes, int _iterations, double _accuracy, doubl
 void ExCorrectVelocities(int _xRes, int _yRes, double _dt, const double* _pressure, double* _xVelocity, double* _yVelocity)
 {
 	int xRes = _xRes;//terribly ugly, but needed
-	int yRes = _yRes;//debug
 
-	double deltax = 1 / double(_xRes);
-	double deltay = 1 / double(_yRes);
+	//double deltax = 1 / double(_xRes);
+	//double deltay = 1 / double(_yRes);
 
 	for (int j = 1; j < _yRes - 1; j++)
 	{
