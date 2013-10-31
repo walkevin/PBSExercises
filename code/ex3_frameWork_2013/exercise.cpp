@@ -55,8 +55,8 @@ void ExCorrectVelocities(int _xRes, int _yRes, double _dt, const double* _pressu
 	{
 		for (int i = 1; i < _xRes - 1; i++)
 		{
-			_xVelocity[A(i + 1, j)] = _xVelocity[A(i + 1, j)] - _dt*(_pressure[A(i + 1, j)] - _pressure[A(i, j)]) * double(_xRes);
-			_yVelocity[A(i, j + 1)] = _yVelocity[A(i, j + 1)] - _dt*(_pressure[A(i, j + 1)] - _pressure[A(i, j)]) * double(_yRes);
+			_xVelocity[A(i + 1, j)] = _xVelocity[A(i + 1, j)] - _dt*(_pressure[A(i + 1, j)] - _pressure[A(i, j)]) * static_cast<double>(_xRes);
+			_yVelocity[A(i, j + 1)] = _yVelocity[A(i, j + 1)] - _dt*(_pressure[A(i, j + 1)] - _pressure[A(i, j)]) * static_cast<double>(_yRes);
 		}
 	}
 }
