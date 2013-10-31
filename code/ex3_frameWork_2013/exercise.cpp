@@ -52,9 +52,9 @@ void ExCorrectVelocities(int _xRes, int _yRes, double _dt, const double* _pressu
 	double deltax = 1 / double(_xRes);
 	double deltay = 1 / double(_yRes);
 
-	for (int j = 0; j < _yRes - 1; j++)
+	for (int j = 1; j < _yRes - 1; j++)
 	{
-		for (int i = 0; i < _xRes - 1; i++)
+		for (int i = 1; i < _xRes - 1; i++)
 		{
 			_xVelocity[A(i + 1, j)] = _xVelocity[A(i + 1, j)] - _dt*(_pressure[A(i + 1, j)] - _pressure[A(i, j)]) * double(_xRes);
 			_yVelocity[A(i, j + 1)] = _yVelocity[A(i, j + 1)] - _dt*(_pressure[A(i, j + 1)] - _pressure[A(i, j)]) * double(_yRes);
@@ -73,9 +73,9 @@ void ExAdvectWithSemiLagrange(int xRes, int yRes, double dt,double* xVelocity, d
 		yVelocityTemp[i] = 0;
 	}
 
-	for (int i = 0; i < xRes - 1; i++)
+	for (int i = 1; i < xRes - 1; i++)
 	{
-		for (int j = 0; j < yRes - 1; j++)
+		for (int j = 1; j < yRes - 1; j++)
 		{
 			//Compute distance to departure point
 			double advx = 0.5* (xVelocity[A(i,j)] + xVelocity[A(i+1,j)]);
@@ -135,6 +135,10 @@ double interp(int i, int j, bool xStag, bool yStag,double ax, double ay, double*
 	int jp1 = jp0 + 1;
 	double jw1 = ay + yst - std::floor(ay + yst);
 	double jw0 = 1 - jw1;
+
+	//Out of bounds check
+	if (ip0 < 0 || ip1 >= xRes || jp0 < 0 || jp1 >= xRes)
+		return 0.;
 
 	//Perform bilinear interpolation for v (at center of cell)
 	return            iw0 * (jw0 * f[A(ip0,jp0)]
