@@ -22,7 +22,7 @@
 using namespace std;
 
 // resolution of the simulation
-const int SIM_RES = 23;
+const int SIM_RES = 200;
 
 // global control defines
 #define OUTPATH "./output/"

@@ -47,17 +47,16 @@ void ExSolvePoisson(int xRes, int yRes, int _iterations, double _accuracy, doubl
 void ExCorrectVelocities(int _xRes, int _yRes, double _dt, const double* _pressure, double* _xVelocity, double* _yVelocity)
 {
 	int xRes = _xRes;//terribly ugly, but needed
-	int yRes = _yRes;//debug
 
-	double deltax = 1 / double(_xRes);
-	double deltay = 1 / double(_yRes);
+	//double deltax = 1 / double(_xRes);
+	//double deltay = 1 / double(_yRes);
 
 	for (int j = 1; j < _yRes - 1; j++)
 	{
 		for (int i = 1; i < _xRes - 1; i++)
 		{
-			_xVelocity[A(i + 1, j)] = _xVelocity[A(i + 1, j)] - _dt*(_pressure[A(i + 1, j)] - _pressure[A(i, j)]) * double(_xRes);
-			_yVelocity[A(i, j + 1)] = _yVelocity[A(i, j + 1)] - _dt*(_pressure[A(i, j + 1)] - _pressure[A(i, j)]) * double(_yRes);
+			_xVelocity[A(i + 1, j)] = _xVelocity[A(i + 1, j)] - _dt*(_pressure[A(i + 1, j)] - _pressure[A(i, j)]) * static_cast<double>(_xRes);
+			_yVelocity[A(i, j + 1)] = _yVelocity[A(i, j + 1)] - _dt*(_pressure[A(i, j + 1)] - _pressure[A(i, j)]) * static_cast<double>(_yRes);
 		}
 	}
 }
@@ -135,6 +134,10 @@ double interp(int i, int j, bool xStag, bool yStag,double ax, double ay, double*
 	int jp1 = jp0 + 1;
 	double jw1 = ay + yst - std::floor(ay + yst);
 	double jw0 = 1 - jw1;
+
+	//Out of bounds check
+	if (ip0 < 0 || ip1 >= xRes || jp0 < 0 || jp1 >= xRes)
+		return 0.;
 
 	//Perform bilinear interpolation for v (at center of cell)
 	return            iw0 * (jw0 * f[A(ip0,jp0)]
