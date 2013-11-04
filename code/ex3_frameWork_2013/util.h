@@ -169,7 +169,7 @@ using namespace std;
 static void WritePPM(const char *FileName, unsigned char* Color, int Width, int Height)
 {
 	FILE* fp;
-	fopen_s(&fp,FileName, "wb");
+	//fopen(&fp,FileName, "wb");
 	if (fp==NULL) { printf("PPM ERROR (WritePPM) : unable to open %s!\n",FileName); return; }
 	fprintf(fp, "P6\n%d %d\n255\n", Width, Height);
 	fwrite(Color,1,Width*Height*3,fp);
