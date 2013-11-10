@@ -1,8 +1,7 @@
 
-#include "ConcreteViewer.h"
-	void ConcreteViewer::display(float dTime){
-		// Subclass and override this method
-
+#include "ViewerTeapot.h"
+	void ViewerTeapot::display(float dTime){
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		static int frame = 0;
 		std::cout << "GlutFramework Display: Frame: " << frame << ", dt(sec): " << dTime << ", Position: " << position << std::endl;
 		++frame;
@@ -17,4 +16,6 @@
 		}
 		position += direction;
 
+		glutSwapBuffers();
+		glutPostRedisplay();
 	}

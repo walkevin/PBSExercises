@@ -49,7 +49,7 @@ namespace glutFramework {
 		
 		// Initialize GLUT
 		glutInit(&argc, argv);
-		glutInitContextVersion(3, 3);
+//		glutInitContextVersion(3, 3);
 //		glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
 //		glutInitContextProfile(GLUT_CORE_PROFILE);
 		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
