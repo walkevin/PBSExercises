@@ -34,12 +34,12 @@
 
 // **Note:** Include GLUT after the standard c++ libraries to prevent linker errors
 
+
 #if defined(__APPLE__) || defined(__APPLE_CC__)
 #include <GLUT/glut.h>
 #else
-#include <GL/glut.h>	// Also includes GL/gl.h and GL/glu.h
+#include <GL/freeglut.h>	// Also includes GL/gl.h and GL/glu.h
 #endif
-
 
 #include "Keyboard.h"
 #include "PerformanceTimer.h"
@@ -178,6 +178,10 @@ namespace glutFramework {
 		 */
 		virtual void specialKeyboardUp( int key, int x, int y ); 
 		
+		/** The close function is called when the window is closed
+		 */
+		virtual void close();
+
 		/** Sets the intitial matricies that are used to setup OpenGL. */
 		void setDisplayMatricies();
 		
@@ -241,6 +245,7 @@ namespace glutFramework {
 		static void keyboardUpWrapper(unsigned char key, int x, int y);
 		static void specialKeyboardDownWrapper(int key, int x, int y);
 		static void specialKeyboardUpWrapper(int key, int x, int y);
+		static void closeWrapper();
 	};
 	
 } // namespace 

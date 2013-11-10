@@ -1,15 +1,15 @@
 
 
 EXE=viewer
- SOURCES = $(wildcard *.cpp)
- OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
+SOURCES = $(wildcard *.cpp)
+OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 
-#SOURCES = viewer.cpp
-#OBJECTS = viewer.o
+#SOURCES = bla.cpp
+#OBJECTS = bla.o
 
 CXX        = g++-4.8
 LDFLAGS    = -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu
-CFLAGS     = -c -O2 -DLINUXVERSION=1 -std=c++11
+CFLAGS     = -c -O2 -std=c++11
 
 
 default: $(EXE)

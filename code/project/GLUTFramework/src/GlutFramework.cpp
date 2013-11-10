@@ -49,6 +49,9 @@ namespace glutFramework {
 		
 		// Initialize GLUT
 		glutInit(&argc, argv);
+		glutInitContextVersion(3, 3);
+//		glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
+//		glutInitContextProfile(GLUT_CORE_PROFILE);
 		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 		glutInitWindowPosition(WINDOW_X_POSITION, WINDOW_Y_POSITION);
 		glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -63,6 +66,7 @@ namespace glutFramework {
 		glutKeyboardUpFunc(keyboardUpWrapper);
 		glutSpecialFunc(specialKeyboardDownWrapper);
 		glutSpecialUpFunc(specialKeyboardUpWrapper);
+		glutCloseFunc(closeWrapper);
 		
 		init();						// Initialize
 		glutIdleFunc(runWrapper); 	// The program run loop
@@ -109,7 +113,8 @@ namespace glutFramework {
 		// Subclass and override this method
 		printf( "KeyboardDown: %c = %d\n", key, (int)key );
 		if (key==27) { //27 =- ESC key
-			exit (0); 
+			glutLeaveMainLoop();
+//			exit (0);
 		}
 		
 		keyStates.keyDown( (int)key );
@@ -132,6 +137,12 @@ namespace glutFramework {
 	{
 		// Subclass and override this method	
 		printf( "SpecialKeyboardUp: %d \n", key );
+	}
+
+	void GlutFramework::close()
+	{
+		//Subclass and override this method
+		printf("close");
 	}
 
 	// ******************************
@@ -198,6 +209,7 @@ namespace glutFramework {
 	// ** GLUT Setup functions **
 	// **************************
 	void GlutFramework::init() {
+		std::cout << "init" << std::endl;
 		glClearColor(0.0, 0.0, 0.0, 1.0);
 		
 		glEnable(GL_LIGHTING);
@@ -289,4 +301,7 @@ namespace glutFramework {
 		instance->specialKeyboardUp(key,x,y);
 	}
 	
+	void GlutFramework::closeWrapper(){
+		instance->close();
+	}
 } // namespace
