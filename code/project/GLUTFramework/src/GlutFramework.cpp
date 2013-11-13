@@ -68,6 +68,22 @@ namespace glutFramework {
 		glutSpecialUpFunc(specialKeyboardUpWrapper);
 		glutCloseFunc(closeWrapper);
 		
+
+		//Initialize GLEW, after GLUT
+		GLenum GlewInitResult;
+		glewExperimental = GL_TRUE;
+		GlewInitResult = glewInit();
+
+		if (GLEW_OK != GlewInitResult) {
+			fprintf(
+				stderr,
+				"ERROR: %s\n",
+				glewGetErrorString(GlewInitResult)
+			);
+			exit(EXIT_FAILURE);
+		}
+
+
 		init();						// Initialize
 		glutIdleFunc(runWrapper); 	// The program run loop
 		glutMainLoop();				// Start the main GLUT thread
@@ -210,7 +226,7 @@ namespace glutFramework {
 	// **************************
 	void GlutFramework::init() {
 		std::cout << "init" << std::endl;
-		glClearColor(0.0, 0.0, 0.0, 1.0);
+		glClearColor(1.0, 1.0, 1.0, 1.0);
 		
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);

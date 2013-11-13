@@ -32,9 +32,9 @@
 #include <math.h>
 #include <string.h>
 
+//Note: Include GLEW before GLUT
+#include <GL/glew.h>
 // **Note:** Include GLUT after the standard c++ libraries to prevent linker errors
-
-
 #if defined(__APPLE__) || defined(__APPLE_CC__)
 #include <GLUT/glut.h>
 #else
