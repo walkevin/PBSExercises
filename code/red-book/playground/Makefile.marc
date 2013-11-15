@@ -7,7 +7,7 @@ OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 #SOURCES = bla.cpp
 #OBJECTS = bla.o
 
-CXX        = g++-4.8
+CXX        = g++
 LDFLAGS    = -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu
 CFLAGS     = -c -O2 -std=c++11
 
