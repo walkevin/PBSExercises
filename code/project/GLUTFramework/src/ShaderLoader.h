@@ -29,6 +29,7 @@ public:
 	GLuint loadAndUse( const std::string &vertex_file, const std::string &fragment_file );
 	void destroy();
 
+	GLuint getProgramId();
 private:
 	std::string readTextfile(const std::string& filename);
 	GLuint vertexShaderId;

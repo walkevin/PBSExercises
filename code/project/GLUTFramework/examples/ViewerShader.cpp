@@ -24,6 +24,7 @@
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawElements(GL_TRIANGLES, 48, GL_UNSIGNED_BYTE, NULL);
 
+//		glDrawArrays(GL_POINTS, 0, 48);
 		glutSwapBuffers();
 		glutPostRedisplay();
 	}

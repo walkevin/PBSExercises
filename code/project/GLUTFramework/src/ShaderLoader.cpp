@@ -152,3 +152,7 @@ void ShaderLoader::destroy(){
 	}
 }
 
+
+GLuint ShaderLoader::getProgramId(){
+	return programId;
+}

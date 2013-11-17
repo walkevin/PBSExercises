@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "Example1.h"
+#include "ExampleEigen.h"
 //#include "ViewerShader.h"
 //#include "ViewerPoints.h"
 #include "../src/GlutFramework.h"
@@ -39,7 +39,7 @@ using namespace glutFramework;
 int main(int argc, char *argv[]) {
 	
 //    GlutFramework* framework = new ViewerShader();
-	GlutFramework* framework = new Example1();
+	GlutFramework* framework = new ExampleEigen();
 //	GlutFramework* framework = new GlutFramework();
 	framework->setLookAt(0.0, 2.0, 10.0, 0.0, 2.0, 0.0, 0.0, 1.0, 0.0);
 	framework->startFramework(argc, argv);

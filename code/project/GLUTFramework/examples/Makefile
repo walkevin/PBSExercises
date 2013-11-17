@@ -1,9 +1,9 @@
 EXE=viewer
-#EXAMPLE_SRC = main.cpp Example1.cpp
-#EXAMPLE_OBJ = main.o Example1.o
+EXAMPLE_SRC = main.cpp ExampleEigen.cpp
+EXAMPLE_OBJ = main.o ExampleEigen.o
 
-EXAMPLE_SRC = triangles.cpp
-EXAMPLE_OBJ = triangles.o
+#EXAMPLE_SRC = triangles.cpp
+#EXAMPLE_OBJ = triangles.o
 
 FP = ../src/
 FRAMEWORK_SRC = $(FP)GlutFramework.cpp $(FP)PerformanceTimer.cpp $(FP)Keyboard.cpp $(FP)ShaderLoader.cpp
@@ -32,3 +32,5 @@ $(EXE): $(OBJECTS)
 clean:
 	 rm -f *.o $(EXE)
 
+run:
+	./$(EXE)
