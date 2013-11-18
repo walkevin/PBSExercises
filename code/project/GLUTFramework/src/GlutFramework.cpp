@@ -49,9 +49,9 @@ namespace glutFramework {
 		
 		// Initialize GLUT
 		glutInit(&argc, argv);
-//		glutInitContextVersion(3, 3);
-//		glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
-//		glutInitContextProfile(GLUT_CORE_PROFILE);
+		glutInitContextVersion(3, 0);
+		glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
+		glutInitContextProfile(GLUT_CORE_PROFILE);
 		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 		glutInitWindowPosition(WINDOW_X_POSITION, WINDOW_Y_POSITION);
 		glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
