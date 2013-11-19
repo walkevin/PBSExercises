@@ -7,21 +7,6 @@
 
 namespace sph
 {
-  class Attribute
-  {
-    public:
-      static Attribute density() {return Attribute(1); };
-      static Attribute pressure() {return Attribute(2); };
-      static Attribute volume() {return Attribute(3); };
-      static int getNumAttributes() {return numAttributes; };
-      int getVal() {return attribute; };
-    
-    private:
-      explicit Attribute(int attribute) {this->attribute = attribute; };
-      int attribute;
-      static std::size_t const numAttributes = 3;
-  };
-
   class SphSolver;
   class SphCell;
 
@@ -32,17 +17,42 @@ namespace sph
   typedef double attributeValue;
   typedef double entityValue;
   typedef std::array<attributeValue, 3> attributes;
-  typedef attributeValue (*SmoothingKernel)(position, position);
 
-  class KernelPoly6
+  class Attribute
+  {
+    public:
+      static Attribute restDensity() {return Attribute(1); };
+      static Attribute mass() {return Attribute(2); };
+      static Attribute volume() {return Attribute(3); };
+      static Attribute viscosity() {return Attribute(4); };
+      int getVal() {return attribute; };
+    
+    private:
+      explicit Attribute(int attribute) {this->attribute = attribute; };
+      int attribute;
+      static std::size_t const numAttributes = 3;
+  };
+
+  class SmoothingKernel
+  {
+    public:
+      SmoothingKernel(entityValue);
+      virtual attributeValue operator()(position, position) = 0;
+      virtual attributeValue grad(position, position) = 0;
+      virtual attributeValue laplace(position, position) = 0;
+
+    protected:
+      entityValue h2;
+      entityValue coeff;
+  };
+
+  class KernelPoly6 : public SmoothingKernel
   {
     public:
       KernelPoly6(entityValue);
-      attributeValue operator()(position, position);
-
-    private:
-      entityValue h2;
-      entityValue coeff;
+      virtual attributeValue operator()(position, position);
+      virtual attributeValue grad(position, position);
+      virtual attributeValue laplace(position, position);
   };
 }     
 

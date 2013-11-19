@@ -2,6 +2,29 @@
 
 namespace sph
 {
+  SphSolver::SphSolver(entityValue cut, entityValue size, SmoothingKernel& kern)
+  : dummyCell(cut, coordinate::Constant(-1), *this)
+  , cutoff(cut)
+  , gridSize(size)
+  , kernel(kern)
+  , cells()
+  , gravity()
+  {
+    gravity << 0, 0, -9.81;
+    initNeighbourTransitions();
+    for(int k = 0; k < size; k++)
+    {
+      for(int j = 0; j < size; j++)
+      {
+        for(int i = 0; i < size; i++)
+        {
+          coordinate cellCoord;
+          cellCoord << i, j, k;
+          cells.push_back(SphCell(cut, cellCoord, *this));
+        }
+      }
+    }
+  }
   void SphSolver::simulationStep(entityValue deltaT)
   {
     for(int i = 0; i < cells.size(); i++)
@@ -29,6 +52,11 @@ namespace sph
     return returnValues;
   }
 
+  SmoothingKernel& SphSolver::getKernel() const
+  {
+    return kernel;
+  }
+
   void SphSolver::initNeighbourTransitions()
   { 
     int counter = 0; 
@@ -38,12 +66,6 @@ namespace sph
       {
         for(int k = -1; k < 2; k++)
         {
-          if(counter == 26)
-          {
-            neighbourTransitions[13](0,0) = i;
-            neighbourTransitions[13](1,0) = j;
-            neighbourTransitions[13](2,0) = k;
-          }
           neighbourTransitions[counter](0,0) = i;
           neighbourTransitions[counter](1,0) = j;
           neighbourTransitions[counter](2,0) = k;
@@ -75,8 +97,18 @@ namespace sph
     return cells[index];
   }
 
-  const std::array<coordinate, 26>& SphSolver::getTransitions()
+  const std::array<coordinate, 27>& SphSolver::getTransitions()
   {
     return neighbourTransitions;
+  }
+
+  force SphSolver::getGravity() const
+  {
+    return gravity;
+  }
+
+  entityValue SphSolver::getStiffness() const
+  {
+    return stiffness;
   }
 }
