@@ -19,7 +19,7 @@ namespace sph
       2. GridSize in 1D (#Cells GridSize^3 and Domain is [0, Cutoff*GridSize]^3 )
       3. Kernel to compute the Attributes (Poly6 is an option)
       */
-      SphSolver(entityValue, entityValue, SmoothingKernel&);
+      SphSolver(entityValue, discreteValue, SmoothingKernel&);
 
       /*
       Executes a simulation step. So T_new = T_old + deltaT
@@ -37,6 +37,21 @@ namespace sph
       2. The attribute that should be computed {example Attribute::density() }
       */
       std::vector<attributeValue> computeAttribute(std::vector<position>, Attribute) const;
+
+      /*
+      Function that returns the Position of all particles in homogenoues Positions ( x,y,z,1 )
+      */
+      std::vector<homogeneousPosition> getParticles() const;
+
+      /*
+      Inserts Particles of a given liquid, where positions and velocities are specified
+
+      Arguments:
+      1. Vector with the positions of the particles
+      2. Vector with the velocities of the particles
+      3. Liquid of the Particles
+      */
+      void insertParticles(std::vector<position>, std::vector<velocity>, SphLiquid*);
 
       /* 
       Returns a displacement based on a current position
@@ -79,7 +94,7 @@ namespace sph
       static std::array<coordinate, 27> neighbourTransitions;
       SphCell dummyCell;
       entityValue cutoff;
-      entityValue gridSize;
+      discreteValue gridSize;
       SmoothingKernel& kernel;
       std::vector<SphCell> cells;
       force gravity;

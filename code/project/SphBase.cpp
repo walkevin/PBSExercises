@@ -17,7 +17,7 @@ namespace sph
   attributeValue KernelPoly6::operator()(position vec1, position vec2)
   {
     position diff = vec1 - vec2;
-    diff = diff*diff;
+    diff = diff.cwiseProduct(diff);
     double distance2 = diff[0]+diff[1]+diff[2];
     if(distance2 > h2)
       return 0;
@@ -28,7 +28,7 @@ namespace sph
   attributeValue KernelPoly6::grad(position vec1, position vec2)
   {
     position diff = vec1 - vec2;
-    diff = diff*diff;
+    diff = diff.cwiseProduct(diff);
     double distance2 = diff[0]+diff[1]+diff[2];
     if(distance2 > h2)
       return 0;
@@ -40,7 +40,7 @@ namespace sph
   attributeValue KernelPoly6::laplace(position vec1, position vec2)
   {
     position diff = vec1 - vec2;
-    diff = diff*diff;
+    diff = diff.cwiseProduct(diff);
     double distance2 = diff[0]+diff[1]+diff[2];
     if(distance2 > h2)
       return 0;

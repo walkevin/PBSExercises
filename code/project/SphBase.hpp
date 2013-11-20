@@ -10,10 +10,12 @@ namespace sph
   class SphSolver;
   class SphCell;
 
-  typedef Eigen::Array<double, 3, 1> velocity;
-  typedef Eigen::Array<double, 3, 1> position;
-  typedef Eigen::Array<double, 3, 1> force;
+  typedef Eigen::Vector3d velocity;
+  typedef Eigen::Vector3d position;
+  typedef Eigen::Vector3d force;
+  typedef Eigen::Vector4d homogeneousPosition;
   typedef Eigen::Array<int, 3, 1> coordinate;
+  typedef int discreteValue;
   typedef double attributeValue;
   typedef double entityValue;
   typedef std::array<attributeValue, 3> attributes;
