@@ -52,6 +52,31 @@ namespace sph
       Computes the new densities of the particles
       */
       void updateDensity();
+
+      /*
+      Returns the particle positions
+      */
+      const std::vector<position>& getPositions() const;
+
+      /*
+      Returns the number of stored particles
+      */
+      discreteValue getStoredParticles() const;
+
+      /*
+      Adds a particle to the cell
+      
+      Arguments:
+      1. Position of the particle
+      2. Velocity of the particle
+      3. Liquid of the particle
+      */
+      void addParticle(position, velocity, SphLiquid*);
+
+      /*
+      Checks if all particles are still inside the boundaries and else adds them to the right cell
+      */
+      void makeTransitions();
       
     private:
       std::vector<velocity> vel;
@@ -60,13 +85,11 @@ namespace sph
       std::vector<SphLiquid*> liq;
       std::vector<attributeValue> density;
       std::vector<attributeValue> pressure;
-      entityValue storedParticles;
+      discreteValue storedParticles;
       entityValue cellSize;
       coordinate coord;
       SphSolver &solver;
 
-      void addParticle(position, velocity, SphLiquid*);
-      void makeTransitions();
       void updatePositions(entityValue);
       void updateVelocities(entityValue); 
   };

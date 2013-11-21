@@ -146,6 +146,7 @@ namespace sph
         for(int k = 0; k < storedParticles; k++)
         {
           position dirVec = posN - pos[k];
+          dirVec.normalize();
           f[k] -= dirVec * preFactor * 0.5 * (pressureN + pressure[k]) * kernel.grad(posN, pos[k]);
           f[k] += liq[i]->getAttribute(Attribute::viscosity()) * preFactor * (velocityN - vel[k]) * kernel.laplace(posN, pos[k]);          
         }
@@ -173,5 +174,15 @@ namespace sph
     {
       vel[i] = vel[i] + f[i] / liq[i]->getAttribute(Attribute::volume());
     }
+  }
+
+  const std::vector<position>& SphCell::getPositions() const
+  {
+    return pos;
+  }
+
+  discreteValue SphCell::getStoredParticles() const
+  {
+    return storedParticles;
   }
 }

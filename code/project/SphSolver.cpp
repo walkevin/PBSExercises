@@ -2,7 +2,7 @@
 
 namespace sph
 {
-  SphSolver::SphSolver(entityValue cut, entityValue size, SmoothingKernel& kern)
+  SphSolver::SphSolver(entityValue cut, discreteValue size, SmoothingKernel& kern)
   : dummyCell(cut, coordinate::Constant(-1), *this)
   , cutoff(cut)
   , gridSize(size)
@@ -50,6 +50,40 @@ namespace sph
       returnValues[i] = getCell(coords).computeAttribute(points[i], attr, kernel);
     }
     return returnValues;
+  }
+
+  std::vector<homogeneousPosition> SphSolver::getParticles() const
+  {
+    int vectorSize = 0;
+    for(int i = 0; i < cells.size(); i++)
+    {
+      vectorSize += cells[i].getStoredParticles();
+    }
+
+    int index = 0;
+    homogeneousPosition temp;
+    std::vector<homogeneousPosition> positions(vectorSize);
+    for(int i = 0; i < cells.size(); i++)
+    {
+      int particles = cells[i].getStoredParticles();
+      const std::vector<position>& tempPos = cells[i].getPositions();
+      for(int j = 0; j < particles; j++)
+      {
+        temp << tempPos[i], 1;
+        positions[index] = temp;
+        index++;
+      }
+    }
+  }
+
+  void SphSolver::insertParticles(std::vector<position> pos, std::vector<velocity> vel, SphLiquid* liq)
+  {
+    for(int i = 0; i < pos.size(); i++)
+    {
+      dummyCell.addParticle(pos[i], vel[i], liq);
+    }
+  
+    dummyCell.makeTransitions();
   }
 
   SmoothingKernel& SphSolver::getKernel() const
