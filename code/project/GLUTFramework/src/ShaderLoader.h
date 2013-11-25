@@ -26,7 +26,9 @@
 class ShaderLoader
 {
 public:
+	GLuint load( const std::string &vertex_file, const std::string &fragment_file );
 	GLuint loadAndUse( const std::string &vertex_file, const std::string &fragment_file );
+	void use();
 	void destroy();
 
 	GLuint getProgramId();

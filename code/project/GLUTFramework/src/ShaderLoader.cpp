@@ -47,7 +47,7 @@ std::string ShaderLoader::readTextfile(const std::string &fileName)
 // IN:  path to a GLSL vertex shader file, path to a GLSL fragment shader file
 // OUT: GLuint identifier of the (Shader)Program object
 //=======================================================================
-GLuint ShaderLoader::loadAndUse(const std::string &vertex_file, const std::string &fragment_file)
+GLuint ShaderLoader::load(const std::string &vertex_file, const std::string &fragment_file)
 {
 	GLint status;
 
@@ -122,8 +122,23 @@ GLuint ShaderLoader::loadAndUse(const std::string &vertex_file, const std::strin
 		return 0;
 	}
 
-	glUseProgram(programId);
+
 	return programId;
+}
+
+void ShaderLoader::use(){
+	if(glIsProgram(programId)){
+		glUseProgram(programId);
+	}
+	else{
+		std::cerr << "ERROR: Could not use program. Is no program" << std::endl;
+	}
+}
+
+GLuint ShaderLoader::loadAndUse(const std::string &vertex_file, const std::string &fragment_file){
+	GLuint tmp = load(vertex_file, fragment_file);
+	use();
+	return tmp;
 }
 
 void ShaderLoader::destroy(){

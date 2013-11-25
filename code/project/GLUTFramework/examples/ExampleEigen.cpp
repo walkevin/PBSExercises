@@ -9,7 +9,28 @@
 	ExampleEigen::~ExampleEigen(){}
 
 	void ExampleEigen::load(){
-		sh.loadAndUse("shaders/exampleEigen.glslv","shaders/exampleEigen.glslf");
+		sh.load("shaders/exampleEigen.glslv","shaders/exampleEigen.glslf");
+		sh.use();
+		// Set model matrix
+		GLfloat model_mat[16] = {
+			 1.000000f,  0.000000f,  0.000000f, 0.000000f,
+			 0.000000f,  1.000000f,  0.000000f, 0.000000f,
+			 0.000000f,  0.000000f,  1.000000f, 0.000000f,
+			 0.000000f,  0.000000f,  0.000000f, 1.0000000f
+		};
+
+		GLint location = glGetUniformLocation(sh.getProgramId(), "Model_mat");
+		glUniformMatrix4fv(location, 1, false, model_mat);
+
+		// Set projection*view Matrix
+		GLfloat projview_mat[16] = {
+			2.747478f, 0.000000f,  0.000000f,  0.000000f,
+			0.000000f, 2.457419f,  0.546594f,  0.447214f,
+			0.000000f, 1.228709f, -1.093189f, -0.894427f,
+			0.000000f, 0.000000f,  1.877236f,  3.354102f
+		};
+		location = glGetUniformLocation(sh.getProgramId(), "ProjectView_mat");
+		glUniformMatrix4fv(location, 1, false, projview_mat);
 		createVBO();
 	}
 	void ExampleEigen::display(float dTime){
@@ -75,7 +96,7 @@
 				gluErrorString(ErrorCheckValue)
 			);
 
-			exit(-1);
+			//exit(-1);
 		}
 
 	}

@@ -18,7 +18,7 @@ FRAMEWORK_OBJ = $(FP)GlutFramework.o $(FP)PerformanceTimer.o $(FP)Keyboard.o $(F
 SOURCES = $(EXAMPLE_SRC) $(FRAMEWORK_SRC)
 OBJECTS = $(EXAMPLE_OBJ) $(FRAMEWORK_OBJ)
 
-CXX        = g++
+CXX        = g++-4.8
 LDFLAGS    = -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu
 INC        = -I/usr/include/eigen3
 CFLAGS     = -c -std=c++11

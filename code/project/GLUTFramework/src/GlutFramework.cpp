@@ -35,7 +35,7 @@ namespace glutFramework {
 	GlutFramework::GlutFramework() { 
 		elapsedTimeInSeconds = 0;
 		frameTimeElapsed = 0;
-		title = "GLUT Framework: Paul Solt 2010";
+		title = "Paintball Shot 2013";
 		eyeVector = Vector<float>(0.0, 0.0, -10.0); // move the eye position back
 		position = 0.0f;
 		direction = 1.0 / FRAME_TIME;
@@ -49,9 +49,9 @@ namespace glutFramework {
 		
 		// Initialize GLUT
 		glutInit(&argc, argv);
-		glutInitContextVersion(3, 0);
-		glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
-		glutInitContextProfile(GLUT_CORE_PROFILE);
+//		glutInitContextVersion(3, 0);
+//		glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
+//		glutInitContextProfile(GLUT_CORE_PROFILE);
 		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 		glutInitWindowPosition(WINDOW_X_POSITION, WINDOW_Y_POSITION);
 		glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
