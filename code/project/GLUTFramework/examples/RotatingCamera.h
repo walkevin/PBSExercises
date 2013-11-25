@@ -3,6 +3,8 @@
  *
  *  Created on: Nov 10, 2013
  *      Author: kevin
+ *      		//blakommentar
+ *
  */
 
 #ifndef ROTATINGCAMERA_H_

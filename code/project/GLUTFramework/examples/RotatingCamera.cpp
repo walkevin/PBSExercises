@@ -16,6 +16,7 @@
 	}
 
 	void RotatingCamera::load(){
+		//blakommentar
 		foreground_sh.load("shaders/rotatingCamera.glslv","shaders/rotatingCamera.glslf");
 		foreground_sh.use();
 
