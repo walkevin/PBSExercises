@@ -666,8 +666,8 @@ static inline Tmat4<T> lookat(vecN<T,3> eye, vecN<T,3> center, vecN<T,3> up)
 {
     const Tvec3<T> f = normalize(center - eye);
     const Tvec3<T> upN = normalize(up);
-    const Tvec3<T> s = cross(f, upN);
-    const Tvec3<T> u = cross(s, f);
+    const Tvec3<T> s = normalize(cross(f, upN));
+    const Tvec3<T> u = normalize(cross(s, f));
     const Tmat4<T> M = Tmat4<T>(Tvec4<T>(s[0], u[0], -f[0], T(0)),
                                 Tvec4<T>(s[1], u[1], -f[1], T(0)),
                                 Tvec4<T>(s[2], u[2], -f[2], T(0)),
