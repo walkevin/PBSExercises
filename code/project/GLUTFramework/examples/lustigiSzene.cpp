@@ -49,7 +49,11 @@
 	void RotatingCamera::display(float dTime){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 //		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_BYTE, NULL);
+		//glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_BYTE, NULL);
+		glBindVertexArray(VaoId[0]);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindVertexArray(VaoId[1]);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 		glutSwapBuffers();
 		glutPostRedisplay();
@@ -166,18 +170,18 @@
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
 	// Setup whole quad
-//	glBindVertexArray(VaoId[1]);
-//
-//	glBindBuffer(GL_ARRAY_BUFFER, BufferId[2]);
-//	glBufferData(GL_ARRAY_BUFFER, 12*sizeof(float), fQuad, GL_STATIC_DRAW);
-//	glEnableVertexAttribArray(0);
-//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-//
-//	glBindBuffer(GL_ARRAY_BUFFER, BufferId[3]);
-//	glBufferData(GL_ARRAY_BUFFER, 12*sizeof(float), fQuadColor, GL_STATIC_DRAW);
-//	glEnableVertexAttribArray(1);
-//	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-//
+	glBindVertexArray(VaoId[1]);
+
+	glBindBuffer(GL_ARRAY_BUFFER, BufferId[2]);
+	glBufferData(GL_ARRAY_BUFFER, 12*sizeof(float), fQuad, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, BufferId[3]);
+	glBufferData(GL_ARRAY_BUFFER, 12*sizeof(float), fQuadColor, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
 	//warning, possible double declaration
 	GLenum	ErrorCheckValue = glGetError();
 		if (ErrorCheckValue != GL_NO_ERROR)
