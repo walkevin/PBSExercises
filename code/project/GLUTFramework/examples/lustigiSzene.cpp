@@ -2,15 +2,14 @@
 #include <iostream>
 #include <cmath>
 #include "vmath.h"
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-	RotatingCamera::RotatingCamera() : distance(3.), azimuth(M_PI *0.5), polar(M_PI * 0.5), angleChangeSpeed(M_PI * 0.1), zoomSpeed(0.3){}
-	RotatingCamera::~RotatingCamera(){}
 
-//3d declare
 float fRotationAngle = 0.0f;
 const float PIover180 = 3.1415f/180.0f;
+
+	RotatingCamera::RotatingCamera() : distance(3.), azimuth(M_PI *0.5), polar(M_PI * 0.5), angleChangeSpeed(M_PI * 0.1), zoomSpeed(0.3){}
+	RotatingCamera::~RotatingCamera(){}
 
 	vmath::mat4 RotatingCamera::getProjectionViewMatrix(double azimuth, double polar, double distance){
 		float aspectRatio = glutGet( GLUT_WINDOW_WIDTH ) / glutGet( GLUT_WINDOW_HEIGHT );
@@ -23,8 +22,10 @@ const float PIover180 = 3.1415f/180.0f;
 	}
 
 	void RotatingCamera::load(){
-		foreground_sh.load("shaders/going3D.vert","shaders/going3D.frag");
+		// 2d
 		//foreground_sh.load("shaders/lustigiSzene.vert","shaders/lustigiSzene.frag");
+		// 3d
+		foreground_sh.load("shaders/going3D.vert","shaders/going3D.frag");
 		foreground_sh.use();
 
 		// Set model matrix
@@ -45,7 +46,8 @@ const float PIover180 = 3.1415f/180.0f;
 //			0.000000f, 1.228709f, -1.093189f, -0.894427f,
 //			0.000000f, 0.000000f,  1.877236f,  3.354102f
 //		};
-//
+
+
 		vmath::mat4 projview_mat = getProjectionViewMatrix(azimuth, polar, distance);
 		location = glGetUniformLocation(foreground_sh.getProgramId(), "ProjectView_mat");
 		glUniformMatrix4fv(location, 1, false, (float*)(projview_mat));
@@ -55,66 +57,45 @@ const float PIover180 = 3.1415f/180.0f;
 	void RotatingCamera::display(float dTime){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 //		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		//glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_BYTE, NULL);
+//////////////////////
+//// original kevin //
+//////////////////////
+
+//		glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_BYTE, NULL);
+
+////////////////////////////
+// 2d triangles and quads //
+////////////////////////////
+
+//		glBindVertexArray(VaoId[0]);
+//		glDrawArrays(GL_TRIANGLES, 0, 3);
+//		glBindVertexArray(VaoId[1]);
+//		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+////////////////////////////
+// 3d pyramids and quads //
+////////////////////////////
 		glBindVertexArray(VaoId[0]);
-		// 2D: triangle draw
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		// 3D: pyramid draw
-		//glDrawArrays(GL_TRIANGLES, 0, 12);
-		//glBindVertexArray(VaoId[1]);
-		//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-		//3D stuff
-		int iModelViewLoc = glGetUniformLocation(foreground_sh.getProgramId(), "modelViewMatrix");
-		int iProjectionLoc = glGetUniformLocation(foreground_sh.getProgramId(), "projectionMatrix");
+	glm::mat4 mModelView = glm::lookAt(glm::vec3(0, 15, 40), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-		glm::mat4 mModelView = glm::lookAt(glm::vec3(0, 15, 40), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		GLint iModelViewLoc = glGetUniformLocation(foreground_sh.getProgramId(), "modelViewMatrix");
+		GLint iProjectionLoc = glGetUniformLocation(foreground_sh.getProgramId(), "projectionMatrix");
 
 		// Render rotating pyramid in the middle
 
-		// comment out other pyramids with ////
+
 		glm::mat4 mCurrent = glm::rotate(mModelView, fRotationAngle, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mCurrent));
+		//glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mCurrent));
 		glDrawArrays(GL_TRIANGLES, 0, 12);
 
-//		// Render translating pyramids
-//
-//		// One on the left
-////		mCurrent = glm::translate(mModelView, glm::vec3(-20.0f, 10.0f*float(sin(fRotationAngle*PIover180)), 0.0f));
-////		glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mCurrent));
-////		glDrawArrays(GL_TRIANGLES, 0, 12);
-////
-////		// One on the right
-////		mCurrent = glm::translate(mModelView, glm::vec3(20.0f, -10.0f*float(sin(fRotationAngle*PIover180)), 0.0f));
-////		glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mCurrent));
-////		glDrawArrays(GL_TRIANGLES, 0, 12);
-////
-////		// And one translating and rotating on top
-////
-////		mCurrent = glm::translate(mModelView, glm::vec3(20.0f*float(sin(fRotationAngle*PIover180)), 10.0f, 0.0f));
-////		mCurrent = glm::rotate(mCurrent, fRotationAngle, glm::vec3(1.0f, 0.0f, 0.0f));
-////		glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mCurrent));
-////		glDrawArrays(GL_TRIANGLES, 0, 12);
-////
-////		// And lastly - render scaling pyramid that rotates
-////
-////		float fScaleValue = 1.5f+float(sin(fRotationAngle*PIover180))*0.5f;
-////		mCurrent = glm::translate(mModelView, glm::vec3(0.0f, -10.0f, 0.0f));
-////		mCurrent = glm::scale(mCurrent, glm::vec3(fScaleValue, fScaleValue, fScaleValue));
-////		mCurrent = glm::rotate(mCurrent, fRotationAngle, glm::vec3(1.0f, 0.0f, 0.0f));
-////		mCurrent = glm::rotate(mCurrent, fRotationAngle, glm::vec3(0.0f, 1.0f, 0.0f));
-////		mCurrent = glm::rotate(mCurrent, fRotationAngle, glm::vec3(0.0f, 0.0f, 1.0f));
-////		glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mCurrent));
-////		glDrawArrays(GL_TRIANGLES, 0, 12);
-////
-////		//fRotationAngle += appMain.sof(120.0f);
-////		fRotationAngle += 0.1f;
+		// Rendetranslating pyramids
 
-=======
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindVertexArray(VaoId[1]);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
->>>>>>> 26647a7f64cf707ac07b1a316aa4e6254b5d1803
+		// One on the left
+		mCurrent = glm::translate(mModelView, glm::vec3(-20.0f, 10.0f*float(sin(fRotationAngle*PIover180)), 0.0f));
+		//glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mCurrent));
+		glDrawArrays(GL_TRIANGLES, 0, 12);
+
 
 		glutSwapBuffers();
 		glutPostRedisplay();
@@ -129,7 +110,6 @@ const float PIover180 = 3.1415f/180.0f;
 ////////////////////////////////////////////////////////////////////////////////////
 // original Kevin camera example
 ////////////////////////////////////////////////////////////////////////////////////
-
 //		Vertex Vertices[] =
 //		{
 //			//Back
@@ -188,7 +168,6 @@ const float PIover180 = 3.1415f/180.0f;
 ////////////////////////////////////////////////////////////////////////////////////
 // 2d Triangle and Quad
 ////////////////////////////////////////////////////////////////////////////////////
-//
 //	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 //
 //	float fTriangle[9]; // Data to render triangle (3 vertices, each has 3 floats)
@@ -250,10 +229,11 @@ const float PIover180 = 3.1415f/180.0f;
 //	glBufferData(GL_ARRAY_BUFFER, 12*sizeof(float), fQuadColor, GL_STATIC_DRAW);
 //	glEnableVertexAttribArray(1);
 //	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-//
-////////////////////////////////////////////////////////////////////////////////////
-// 3d pyramid and Quad
-////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////
+// 3d pyramids //
+/////////////////
+
 	float fPyramid[36]; // Pyramid data - 4 triangles of 3 vertices of 3 floats
 	float fPyramidColor[36]; // Same for color
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -280,8 +260,6 @@ const float PIover180 = 3.1415f/180.0f;
 	fPyramid[30] = 0.3f; fPyramid[31] = 0.0f; fPyramid[32] = 0.3f;
 	fPyramid[33] = 0.3f; fPyramid[34] = 0.0f; fPyramid[35] = -0.3f;
 
-	// Setup pyramid color
-
 	for(int i=0;i<4;i++)
 	{
 		fPyramidColor[i*9] = 1.0f; fPyramidColor[i*9+1] = 0.0f; fPyramidColor[i*9+2] = 0.0f;
@@ -296,11 +274,11 @@ const float PIover180 = 3.1415f/180.0f;
 			fPyramidColor[i*9+1] = 0.0f; fPyramidColor[i*9+4] = 0.0f; fPyramidColor[i*9+5] = 1.0f;
 		}
 	}
- 
+
+	// Setup whole pyramid
 	glGenVertexArrays(1, VaoId);
 	glGenBuffers(2, BufferId);
 
-	// Setup whole pyramid
 	glBindVertexArray(VaoId[0]);
 
 	glBindBuffer(GL_ARRAY_BUFFER, BufferId[0]);
@@ -313,20 +291,6 @@ const float PIover180 = 3.1415f/180.0f;
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	// Setup whole quad
-	glBindVertexArray(VaoId[1]);
-
-	glBindBuffer(GL_ARRAY_BUFFER, BufferId[2]);
-	glBufferData(GL_ARRAY_BUFFER, 12*sizeof(float), fQuad, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, BufferId[3]);
-	glBufferData(GL_ARRAY_BUFFER, 12*sizeof(float), fQuadColor, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
->>>>>>> 26647a7f64cf707ac07b1a316aa4e6254b5d1803
 	//warning, possible double declaration
 	GLenum	ErrorCheckValue = glGetError();
 		if (ErrorCheckValue != GL_NO_ERROR)
@@ -347,20 +311,13 @@ const float PIover180 = 3.1415f/180.0f;
 		glDisableVertexAttribArray(0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		//glDeleteBuffers(4, &BufferId[0]);
-		glDeleteBuffers(2, &BufferId[0]);
+		glDeleteBuffers(4, &BufferId[0]);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glDeleteBuffers(1, &IndexBufferId[0]);
 
 		glBindVertexArray(0);
-		//glDeleteVertexArrays(2, &VaoId[0]);
-		glDeleteVertexArrays(1, &VaoId[0]);
-
-
-		glBindVertexArray(VaoId[0]);
-
-
+		glDeleteVertexArrays(2, &VaoId[0]);
 
 		ErrorCheckValue = glGetError();
 		if (ErrorCheckValue != GL_NO_ERROR)
