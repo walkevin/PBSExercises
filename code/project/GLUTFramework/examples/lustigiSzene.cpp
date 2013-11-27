@@ -56,7 +56,6 @@ const float PIover180 = 3.1415f/180.0f;
 	}
 	void RotatingCamera::display(float dTime){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 //////////////////////
 //// original kevin //
 //////////////////////
@@ -87,6 +86,7 @@ const float PIover180 = 3.1415f/180.0f;
 
 		glm::mat4 mCurrent = glm::rotate(mModelView, fRotationAngle, glm::vec3(0.0f, 1.0f, 0.0f));
 		//glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mCurrent));
+		//glDrawArrays(GL_TRIANGLES, 0, 12);
 		glDrawArrays(GL_TRIANGLES, 0, 12);
 
 		// Rendetranslating pyramids
