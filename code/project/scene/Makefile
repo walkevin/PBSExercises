@@ -1,6 +1,6 @@
 EXE=viewer
-EXAMPLE_SRC = main.cpp Example1.cpp
-EXAMPLE_OBJ = main.o Example1.o
+EXAMPLE_SRC = main.cpp 03-shaders-are-coming.cpp
+EXAMPLE_OBJ = main.o 03-shaders-are-coming.o
 
 #EXAMPLE_SRC = main.cpp 02-firstTriangle.cpp
 #EXAMPLE_OBJ = main.o 02-firstTriangle.o
