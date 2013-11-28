@@ -14,7 +14,7 @@ namespace sph
   class SphWater : public SphLiquid
   {
     public:
-      virtual attributeValue getAttribute(Attribute) = 0;
+      virtual attributeValue getAttribute(Attribute);
 
     private:
       static constexpr attributeValue restDensity = 1000;

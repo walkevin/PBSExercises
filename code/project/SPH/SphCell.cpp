@@ -1,6 +1,7 @@
 #include "SphCell.hpp"
 #include "SphSolver.hpp"
 #include <cmath>
+#include <iostream>
 
 namespace sph
 { 
@@ -26,7 +27,7 @@ namespace sph
     double temp = 0;
     for(int i = 0; i < transitions.size(); i++)
     {
-      SphCell neighbour = solver.getNeighbour(coord, transitions[i]);
+      SphCell& neighbour = solver.getNeighbour(coord, transitions[i]);
       for(int j = 0; j < neighbour.attr.size(); j++)
       {
         temp += neighbour.attr[j].getAttribute(volume)*kernel(point, neighbour.pos[j])*neighbour.attr[j][attrib.getVal()];
@@ -50,12 +51,25 @@ namespace sph
     }
   }
 
+	void SphCell::clear()
+	{
+		makeTransitions();
+		for(int i = storedParticles; i > 0; i--)
+		{
+			std::cout << pos.size() << " " << vel.size() << " " << liq.size() << " " << storedParticles << " " << i << std::endl;
+			pos.pop_back();
+			vel.pop_back();
+			liq.pop_back();
+			storedParticles--;
+		}
+	}
+
   void SphCell::updateDensity()
   {
     if(density.size() != storedParticles)
       density.reserve(storedParticles);
 
-  for(int i = 0; i < storedParticles; i++)
+    for(int i = 0; i < storedParticles; i++)
     {
       density[i] = 0;
     }
@@ -64,7 +78,7 @@ namespace sph
     for(int i = 0; i < transitions.size(); i++)
     {
       SmoothingKernel &kernel = solver.getKernel();
-      SphCell neighbour = solver.getNeighbour(coord, transitions[i]);
+      SphCell& neighbour = solver.getNeighbour(coord, transitions[i]);
       for(int j = 0; j < neighbour.storedParticles; j++)
       {
         attributeValue massN = neighbour.liq[j]->getAttribute(Attribute::mass());
@@ -84,7 +98,7 @@ namespace sph
     makeTransitions();
   }
 
-  void SphCell::addParticle(position pos, velocity vel, SphLiquid *liq)
+  void SphCell::addParticle(position pos, velocity vel, std::shared_ptr<SphLiquid> liq)
   {
     this->pos.push_back(pos);
     this->vel.push_back(vel);
@@ -92,11 +106,12 @@ namespace sph
     this->liq.push_back(liq);
     this->density.push_back(0);
     this->pressure.push_back(0);
+    storedParticles++;
   }
 
   void SphCell::makeTransitions() 
   {
-    for(int i = 0; i < storedParticles; i++)
+    for(int i = storedParticles-1; i >= 0; i--)
     {
       coordinate transition;
       for(int j = 0; j < 3; j++)
@@ -105,16 +120,23 @@ namespace sph
       }
       if(transition(0,0) != 0 || transition(1,0) != 0 || transition(2,0) != 0)
       {
-        SphCell neighbour = solver.getNeighbour(coord, transition);
+        SphCell& neighbour = solver.getNeighbour(coord, transition);
         neighbour.addParticle(pos[i], vel[i], liq[i]);
         int last = pos.size() - 1;
-        pos[i] = pos[last]; pos.pop_back();
-        vel[i] = vel[last]; vel.pop_back();
-        liq[i] = liq[last]; liq.pop_back();
-        density[i] = density[last]; density.pop_back();
+        if(last != i)
+        {
+          pos[i] = pos[last];
+          vel[i] = vel[last];
+          liq[i] = liq[last];
+          density[i] = density[last];
+        }
+        pos.pop_back();
+        vel.pop_back();
+        liq.pop_back();
+        density.pop_back();        
         f.pop_back();
+        pressure.pop_back();
         storedParticles--;
-        neighbour.storedParticles++;
       }  
     }
   }
@@ -134,7 +156,7 @@ namespace sph
     std::array<coordinate, 27> transitions = solver.getTransitions();
     for(int i = 0; i < transitions.size(); i++)
     {
-      SphCell neighbour = solver.getNeighbour(coord, transitions[i]);
+      SphCell& neighbour = solver.getNeighbour(coord, transitions[i]);
       for(int j = 0; j < neighbour.storedParticles; j++)
       {
         attributeValue massN = neighbour.liq[j]->getAttribute(Attribute::mass() );
@@ -143,12 +165,16 @@ namespace sph
         velocity velocityN = neighbour.vel[j];
         position posN = neighbour.pos[j];
         attributeValue preFactor = massN/densityN;
+				position nullVec;
+				nullVec << 0,0,0;
         for(int k = 0; k < storedParticles; k++)
         {
           position dirVec = posN - pos[k];
+					if(dirVec == nullVec)
+						continue;
           dirVec.normalize();
           f[k] -= dirVec * preFactor * 0.5 * (pressureN + pressure[k]) * kernel.grad(posN, pos[k]);
-          f[k] += liq[i]->getAttribute(Attribute::viscosity()) * preFactor * (velocityN - vel[k]) * kernel.laplace(posN, pos[k]);          
+          f[k] += liq[k]->getAttribute(Attribute::viscosity()) * preFactor * (velocityN - vel[k]) * kernel.laplace(posN, pos[k]);          
         }
       }
     }

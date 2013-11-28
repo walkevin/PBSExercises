@@ -1,4 +1,5 @@
 #include "SphSolver.hpp"
+#include <iostream>
 
 namespace sph
 {
@@ -25,6 +26,7 @@ namespace sph
       }
     }
   }
+
   void SphSolver::simulationStep(entityValue deltaT)
   {
     for(int i = 0; i < cells.size(); i++)
@@ -35,9 +37,10 @@ namespace sph
     {
       cells[i].update(deltaT);
     }
+		dummyCell.clear();
   }
 
-  std::vector<attributeValue> SphSolver::computeAttribute(std::vector<position> points, Attribute attr) const
+  std::vector<attributeValue> SphSolver::computeAttribute(std::vector<position> points, Attribute attr)
   {
     std::vector<attributeValue> returnValues(points.size());
     for(int i = 0; i < points.size(); i++)
@@ -69,21 +72,22 @@ namespace sph
       const std::vector<position>& tempPos = cells[i].getPositions();
       for(int j = 0; j < particles; j++)
       {
-        temp << tempPos[i], 1;
+        temp << tempPos[j], 1;
         positions[index] = temp;
         index++;
       }
     }
+    return positions;
   }
 
-  void SphSolver::insertParticles(std::vector<position> pos, std::vector<velocity> vel, SphLiquid* liq)
+  void SphSolver::insertParticles(std::vector<position> pos, std::vector<velocity> vel, std::shared_ptr<SphLiquid> liq)
   {
     for(int i = 0; i < pos.size(); i++)
     {
-      dummyCell.addParticle(pos[i], vel[i], liq);
+      cells[0].addParticle(pos[i], vel[i], liq);
     }
   
-    dummyCell.makeTransitions();
+    cells[0].makeTransitions();
   }
 
   SmoothingKernel& SphSolver::getKernel() const
@@ -93,7 +97,7 @@ namespace sph
 
   void SphSolver::initNeighbourTransitions()
   { 
-    int counter = 0; 
+    int counter = 0;
     for(int i = -1; i < 2; i++)
     {
       for(int j = -1; j < 2; j++)
@@ -108,22 +112,23 @@ namespace sph
       }
     }
   }
-  const SphCell& SphSolver::getNeighbour(coordinate center, coordinate translation) const
+
+  SphCell& SphSolver::getNeighbour(coordinate center, coordinate translation)
   {
     for(int i = 0; i < 3; i++)
     {
-      if(center(i,0) + translation(i,0) > gridSize)
+      if(center(i,0) + translation(i,0) > gridSize || center(i,0) + translation(i,0) < 0)
         return dummyCell;
     }
     int index = (center(0,0)+translation(0,0)) + (center(1,0)+translation(1,0))*gridSize + (center(2,0)+translation(2,0))*gridSize*gridSize;
     return cells[index];
   }
 
-  const SphCell& SphSolver::getCell(coordinate center) const
+  SphCell& SphSolver::getCell(coordinate center)
   {
     for(int i = 0; i < 3; i++)
     {
-      if(center(i,0) > gridSize)
+      if(center(i,0) > gridSize || center(i,0) < 0)
         assert(false);
     }
 

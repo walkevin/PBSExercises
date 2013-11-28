@@ -3,6 +3,7 @@
 
 #include "SphBase.hpp"
 #include "SphLiquid.hpp"
+#include <memory>
 
 namespace sph
 {
@@ -71,18 +72,23 @@ namespace sph
       2. Velocity of the particle
       3. Liquid of the particle
       */
-      void addParticle(position, velocity, SphLiquid*);
+      void addParticle(position, velocity, std::shared_ptr<SphLiquid>);
 
       /*
       Checks if all particles are still inside the boundaries and else adds them to the right cell
       */
       void makeTransitions();
-      
+
+			/*
+			Deletes all the particles belonging to the given cell (if the particles fit into another cell, they're not deleted)
+			*/
+			void clear();
+ 
     private:
       std::vector<velocity> vel;
       std::vector<position> pos;
       std::vector<force> f;
-      std::vector<SphLiquid*> liq;
+      std::vector<std::shared_ptr<SphLiquid>> liq;
       std::vector<attributeValue> density;
       std::vector<attributeValue> pressure;
       discreteValue storedParticles;

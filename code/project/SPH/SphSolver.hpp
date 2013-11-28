@@ -36,7 +36,7 @@ namespace sph
       1. A vector of points where the desired attribute is computed
       2. The attribute that should be computed {example Attribute::density() }
       */
-      std::vector<attributeValue> computeAttribute(std::vector<position>, Attribute) const;
+      std::vector<attributeValue> computeAttribute(std::vector<position>, Attribute);
 
       /*
       Function that returns the Position of all particles in homogenoues Positions ( x,y,z,1 )
@@ -51,7 +51,7 @@ namespace sph
       2. Vector with the velocities of the particles
       3. Liquid of the Particles
       */
-      void insertParticles(std::vector<position>, std::vector<velocity>, SphLiquid*);
+      void insertParticles(std::vector<position>, std::vector<velocity>, std::shared_ptr<SphLiquid>);
 
       /* 
       Returns a displacement based on a current position
@@ -60,7 +60,7 @@ namespace sph
       1. Position from which the relative displacement is computed
       2. relative displacement
       */
-      const SphCell& getNeighbour(coordinate, coordinate) const;
+      SphCell& getNeighbour(coordinate, coordinate);
 
       /*
       Returns the cell at the given position
@@ -68,12 +68,12 @@ namespace sph
       Argument:
       1. Requested position
       */
-      const SphCell& getCell(coordinate) const;
+      SphCell& getCell(coordinate);
 
       /*
       Returns an array with the displacements for the 26 neighbours + a zero displacement (self)
       */
-      static const std::array<coordinate, 27>& getTransitions();
+      const std::array<coordinate, 27>& getTransitions();
 
       /*
       Returns the kernel
@@ -91,7 +91,7 @@ namespace sph
       entityValue getStiffness() const;
       
     private:
-      static std::array<coordinate, 27> neighbourTransitions;
+      std::array<coordinate, 27> neighbourTransitions;
       SphCell dummyCell;
       entityValue cutoff;
       discreteValue gridSize;
@@ -100,7 +100,7 @@ namespace sph
       force gravity;
       entityValue stiffness;    
 
-      static void initNeighbourTransitions();
+      void initNeighbourTransitions();
   };
 }
 
