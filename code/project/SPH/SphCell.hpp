@@ -83,6 +83,7 @@ namespace sph
 			Deletes all the particles belonging to the given cell (if the particles fit into another cell, they're not deleted)
 			*/
 			void clear();
+			coordinate coord;
  
     private:
       std::vector<velocity> vel;
@@ -93,7 +94,7 @@ namespace sph
       std::vector<attributeValue> pressure;
       discreteValue storedParticles;
       entityValue cellSize;
-      coordinate coord;
+      //coordinate coord;
       SphSolver &solver;
 
       void updatePositions(entityValue);

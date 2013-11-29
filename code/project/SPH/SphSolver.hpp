@@ -9,9 +9,9 @@ namespace sph
 {
   class SphSolver
   {
-    public:
-
-      /*
+    public:	
+			
+			/*
       Constructor
 
       Arguments:

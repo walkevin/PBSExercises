@@ -13,7 +13,7 @@ namespace sph
   typedef Eigen::Vector3d velocity;
   typedef Eigen::Vector3d position;
   typedef Eigen::Vector3d force;
-  typedef Eigen::Vector4d homogeneousPosition;
+  typedef Eigen::Array<float, 4, 1> homogeneousPosition;
   typedef Eigen::Array<int, 3, 1> coordinate;
   typedef int discreteValue;
   typedef double attributeValue;

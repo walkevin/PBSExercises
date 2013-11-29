@@ -1,6 +1,18 @@
 //EXAMPLE_SRC = main.cpp ExampleAnimInstanced.cpp Ball.cpp
 //EXAMPLE_OBJ = main.o ExampleAnimInstanced.o Ball.o
 
+#ifdef SIMULATION
+
+#define PATH_VERT "../GLUTFramework/examples/shaders/exampleAnimInstanced.vert"
+#define PATH_FRAG "../GLUTFramework/examples/shaders/exampleAnimInstanced.frag"
+
+#else
+
+#define PATH_VERT "shaders/exampleAnimInstanced.vert"
+#define PATH_FRAG "shaders/exampleAnimInstanced.frag"
+
+#endif
+
 #include "ExampleAnimInstanced.h"
 #include <iostream>
 
@@ -12,7 +24,10 @@
 #include "../src/RotatingView.h"
 #include "Ball.h"
 
-	ExampleAnimInstanced::ExampleAnimInstanced(){
+using namespace sph;
+
+	ExampleAnimInstanced::ExampleAnimInstanced(SphSolver* solver){
+		this->solver = solver;
 		pos.reserve(n_points);
 		for(int i = 0; i < n_points; i++){
 			pos[i] << (float)i/n_points, 0.0f, 0.0f, 1.0f;
@@ -22,14 +37,13 @@
 	ExampleAnimInstanced::~ExampleAnimInstanced(){}
 
 	void ExampleAnimInstanced::updatePositions(){
-		for(int i = 0; i < n_points; i++){
-			//pos[i][0] -= 0.01f;
-		}
+		pos = solver->getParticles();
+		solver->simulationStep(0.001);
 	}
 
 
 	void ExampleAnimInstanced::load(){
-		sh.load("shaders/exampleAnimInstanced.vert","shaders/exampleAnimInstanced.frag");
+		sh.load(PATH_VERT, PATH_FRAG);
 		sh.use();
 
 		//Create RotatingView Object after shader have been loaded

@@ -72,7 +72,7 @@ namespace sph
       const std::vector<position>& tempPos = cells[i].getPositions();
       for(int j = 0; j < particles; j++)
       {
-        temp << tempPos[j], 1;
+        temp << tempPos[j](0), tempPos[j](1), tempPos[j](2), 1;
         positions[index] = temp;
         index++;
       }
