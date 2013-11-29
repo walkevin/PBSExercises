@@ -13,7 +13,7 @@
 
 #include "../src/GlutFramework.h"
 #include "../src/ShaderLoader.h"
-
+#include "../src/RotatingView.h"
 
 typedef struct
 {
@@ -33,15 +33,19 @@ public:
 private:
 	std::vector<Eigen::Array<float, 4, 1> > pos;
 	static const int n_points = 20;
-	GLuint
-	   VaoId,
-	   BufferId,
-	   IndexBufferId;
+
+	std::vector<GLuint> vaoId, bufferId, indexBufferId;
+	std::vector<GLint> locs;
+	unsigned int numElements;
 
 	ShaderLoader sh;
+	RotatingView* rv;
+
 	void createVBO();
 	void destroyVBO();
 	void updatePositions();
+	void specialKeyboardDown(int key, int x, int y );
+
 };
 
 

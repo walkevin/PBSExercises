@@ -11,7 +11,7 @@
 
 	void ExampleAnim::updatePositions(){
 		for(int i = 0; i < n_points; i++){
-			//pos[i][0] -= 0.01f;
+			pos[i][0] -= 0.01f;
 		}
 	}
 

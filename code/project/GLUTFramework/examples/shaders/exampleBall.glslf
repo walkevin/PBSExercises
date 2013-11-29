@@ -14,12 +14,15 @@ uniform vec3 light_position = vec3(12.0f, 32.0f, 560.0f);
 
 void main(void)
 {
+/*
     vec3 light_direction = normalize(light_position - vs_worldpos);
     vec3 normal = normalize(vs_normal);
     vec3 half_vector = normalize(light_direction + normalize(vs_worldpos));
     float diffuse = max(0.0, dot(normal, light_direction));
     float specular = pow(max(0.0, dot(vs_normal, half_vector)), shininess);
     color = color_ambient + diffuse * color_diffuse + specular * color_specular;
+*/
+    color = vec4(0.0, 1.0, 0.0, 1.0);
 }
 
 
