@@ -120,7 +120,11 @@ namespace sph
       if(center(i,0) + translation(i,0) > gridSize || center(i,0) + translation(i,0) < 0)
         return dummyCell;
     }
+
+    //THIS IS A BUG. index produces values larger than cells.size()
     int index = (center(0,0)+translation(0,0)) + (center(1,0)+translation(1,0))*gridSize + (center(2,0)+translation(2,0))*gridSize*gridSize;
+    //THIS IS THE END OF THE BUG.
+
     return cells[index];
   }
 
