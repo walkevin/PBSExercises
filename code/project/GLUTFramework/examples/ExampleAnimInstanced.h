@@ -34,7 +34,7 @@ public:
 	void close();
 private:
 	std::vector<Eigen::Array<float, 4, 1> > pos;
-	static const int n_points = 27;
+	static const int n_points = 125;
 
 	sph::SphSolver* solver;
 

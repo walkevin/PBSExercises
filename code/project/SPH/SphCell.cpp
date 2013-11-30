@@ -80,13 +80,13 @@ namespace sph
       SmoothingKernel &kernel = solver.getKernel();
       SphCell& neighbour = solver.getNeighbour(coord, transitions[i]);
       for(int j = 0; j < neighbour.storedParticles; j++)
-      {/*
+      {
         attributeValue massN = neighbour.liq[j]->getAttribute(Attribute::mass());
         position posN = neighbour.pos[j];
         for(int k = 0; k < storedParticles; k++)
         {
           density[k] += massN * kernel(posN, pos[k]);
-        }*/
+        }
       }
     }
   }
@@ -158,7 +158,7 @@ namespace sph
     {
       SphCell& neighbour = solver.getNeighbour(coord, transitions[i]);
       for(int j = 0; j < neighbour.storedParticles; j++)
-      {/*
+      {
         attributeValue massN = neighbour.liq[j]->getAttribute(Attribute::mass() );
         attributeValue densityN = neighbour.density[j];
         attributeValue pressureN = neighbour.pressure[j];
@@ -175,7 +175,7 @@ namespace sph
           dirVec.normalize();
           f[k] -= dirVec * preFactor * 0.5 * (pressureN + pressure[k]) * kernel.grad(posN, pos[k]);
           f[k] += liq[k]->getAttribute(Attribute::viscosity()) * preFactor * (velocityN - vel[k]) * kernel.laplace(posN, pos[k]);          
-        }*/
+        }
       }
     }
   

@@ -42,11 +42,11 @@ int main(int argc, char *argv[])
   std::vector<position> pos;
   std::vector<velocity> vel;
 
-  for(int i = 0; i < 3; i++)
+  for(int i = 0; i < 5; i++)
   {
-    for(int j = 0; j < 3; j++)
+    for(int j = 0; j < 5; j++)
     {
-      for(int k = 0; k < 3; k++)
+      for(int k = 0; k < 5; k++)
       {
         position tempPos;
         tempPos << 1 + i*0.1, 1 + j*0.1, 1 + k*0.1;
