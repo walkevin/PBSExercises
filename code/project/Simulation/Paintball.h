@@ -1,21 +1,14 @@
-/*
- * ViewerShader.h
- *
- *  Created on: Nov 10, 2013
- *      Author: kevin
- */
-
-#ifndef EXAMPLEANIMINSTANCED_H_
-#define EXAMPLEANIMINSTANCED_H_
+#ifndef PAINTBALL_H_
+#define PAINTBALL_H_
 
 #include <Eigen/Core>
 #include <array>
 
-#include "../src/GlutFramework.h"
-#include "../src/ShaderLoader.h"
-#include "../src/RotatingView.h"
+#include "../GLUTFramework/src/GlutFramework.h"
+#include "../GLUTFramework/src/ShaderLoader.h"
+#include "../GLUTFramework/src/RotatingView.h"
 
-#include "../../SPH/SphSolver.hpp"
+#include "../SPH/SphSolver.hpp"
 
 typedef struct
 {
@@ -24,10 +17,10 @@ typedef struct
 } Vertex;
 
 
-class ExampleAnimInstanced : public glutFramework::GlutFramework{
+class Paintball : public glutFramework::GlutFramework{
 public:
-	ExampleAnimInstanced(sph::SphSolver*);
-	~ExampleAnimInstanced();
+	Paintball(sph::SphSolver*);
+	~Paintball();
 
 	void display(float dTime);
 	void load();
@@ -54,4 +47,4 @@ private:
 
 
 
-#endif /* EXAMPLEANIMINSTANCED_H_ */
+#endif /* PAINTBALL_H_ */

@@ -24,9 +24,7 @@
  * THE SOFTWARE.
  */
 
-#include "../GLUTFramework/examples/ExampleAnimInstanced.h"
-//#include "ViewerShader.h"
-//#include "ViewerPoints.h"
+#include "Paintball.h"
 #include "../GLUTFramework/src/GlutFramework.h"
 
 #include "../SPH/SphSolver.hpp"
@@ -69,9 +67,7 @@ int main(int argc, char *argv[])
  * @author Paul Solt 8-22-10
  */
 
-//  GlutFramework* framework = new ViewerShader();
-	GlutFramework* framework = new ExampleAnimInstanced(&simulation);
-//	GlutFramework* framework = new GlutFramework();
+	GlutFramework* framework = new Paintball(&simulation);
 	framework->setLookAt(0.0, 2.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 	framework->startFramework(argc, argv);
 	// **Note** No code below startFramework() will get executed 

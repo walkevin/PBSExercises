@@ -1,14 +1,13 @@
 EXE=viewer
-FPEX = ../GLUTFramework/examples/
-EXAMPLE_SRC = main.cpp $(FPEX)ExampleAnimInstanced.cpp $(FPEX)Ball.cpp
-EXAMPLE_OBJ = main.o $(FPEX)ExampleAnimInstanced.o $(FPEX)Ball.o
+EXAMPLE_SRC = main.cpp Paintball.cpp
+EXAMPLE_OBJ = main.o Paintball.o
 
 #EXAMPLE_SRC = triangles.cpp
 #EXAMPLE_OBJ = triangles.o
 
 FP = ../GLUTFramework/src/
-FRAMEWORK_SRC = $(FP)GlutFramework.cpp $(FP)PerformanceTimer.cpp $(FP)Keyboard.cpp $(FP)ShaderLoader.cpp $(FP)RotatingView.cpp
-FRAMEWORK_OBJ = $(FP)GlutFramework.o $(FP)PerformanceTimer.o $(FP)Keyboard.o $(FP)ShaderLoader.o $(FP)RotatingView.o
+FRAMEWORK_SRC = $(FP)GlutFramework.cpp $(FP)PerformanceTimer.cpp $(FP)Keyboard.cpp $(FP)ShaderLoader.cpp $(FP)RotatingView.cpp $(FP)Ball.cpp
+FRAMEWORK_OBJ = $(FP)GlutFramework.o $(FP)PerformanceTimer.o $(FP)Keyboard.o $(FP)ShaderLoader.o $(FP)RotatingView.o $(FP)Ball.o
 
 FPS = ../SPH/
 SOLVER_SRC = $(FPS)SphSolver.cpp $(FPS)SphBase.cpp $(FPS)SphCell.cpp $(FPS)SphLiquid.cpp
@@ -18,7 +17,7 @@ SOLVER_OBJ = $(FPS)SphSolver.o $(FPS)SphBase.o $(FPS)SphCell.o $(FPS)SphLiquid.o
 #OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 
 SOURCES = $(EXAMPLE_SRC) $(FRAMEWORK_SRC) $(SOLVER_SRC)
-OBJECTS = $(EXAMPLE_OBJ) $(FRAMEWORK_OBJ)	$(SOLVER_OBJ)
+OBJECTS = $(EXAMPLE_OBJ) $(FRAMEWORK_OBJ) $(SOLVER_OBJ)
 
 CXX        = g++-4.8
 LDFLAGS    = -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu

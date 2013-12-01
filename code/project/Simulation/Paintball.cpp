@@ -1,19 +1,7 @@
-//EXAMPLE_SRC = main.cpp ExampleAnimInstanced.cpp Ball.cpp
-//EXAMPLE_OBJ = main.o ExampleAnimInstanced.o Ball.o
+//EXAMPLE_SRC = main.cpp Paintball.cpp Ball.cpp
+//EXAMPLE_OBJ = main.o Paintball.o Ball.o
 
-#ifdef SIMULATION
-
-#define PATH_VERT "../GLUTFramework/examples/shaders/exampleAnimInstanced.vert"
-#define PATH_FRAG "../GLUTFramework/examples/shaders/exampleAnimInstanced.frag"
-
-#else
-
-#define PATH_VERT "shaders/exampleAnimInstanced.vert"
-#define PATH_FRAG "shaders/exampleAnimInstanced.frag"
-
-#endif
-
-#include "ExampleAnimInstanced.h"
+#include "Paintball.h"
 #include <iostream>
 
 //OpenGL Math
@@ -21,12 +9,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "../src/RotatingView.h"
-#include "../src/Ball.h"
+#include "../GLUTFramework/src/RotatingView.h"
+#include "../GLUTFramework/src/Ball.h"
 
 using namespace sph;
 
-	ExampleAnimInstanced::ExampleAnimInstanced(SphSolver* solver){
+	Paintball::Paintball(SphSolver* solver){
 		this->solver = solver;
 		n_points = 125;
 		pos.reserve(n_points);
@@ -35,16 +23,16 @@ using namespace sph;
 // 			pos[i] << (float)i/n_points, (float)(i)/n_points, (float)(i)/n_points, 1.0f;
 		}
 	}
-	ExampleAnimInstanced::~ExampleAnimInstanced(){}
+	Paintball::~Paintball(){}
 
-	void ExampleAnimInstanced::updatePositions(){
+	void Paintball::updatePositions(){
 		pos = solver->getParticles();
 		solver->simulationStep(0.001);
 	}
 
 
-	void ExampleAnimInstanced::load(){
-		sh.load(PATH_VERT, PATH_FRAG);
+	void Paintball::load(){
+		sh.load("shaders/paintball.vert", "shaders/paintball.frag");
 		sh.use();
 
 		//Create RotatingView Object after shader have been loaded
@@ -54,7 +42,7 @@ using namespace sph;
 
 		createVBO();
 	}
-	void ExampleAnimInstanced::display(float dTime){
+	void Paintball::display(float dTime){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		updatePositions();
@@ -89,12 +77,12 @@ using namespace sph;
 		glutPostRedisplay();
 	}
 
-	void ExampleAnimInstanced::close(){
-		std::cout << "ExampleAnimInstanced::close" << std::endl;
+	void Paintball::close(){
+		std::cout << "Paintball::close" << std::endl;
 		sh.destroy();
 		destroyVBO();
 	}
-	void ExampleAnimInstanced::createVBO(){
+	void Paintball::createVBO(){
 		//Initialize Buffers
 		unsigned int numVao = 1;
 		unsigned int numBuf = 2;
@@ -157,7 +145,7 @@ using namespace sph;
 		}
 
 	}
-	void ExampleAnimInstanced::destroyVBO(){
+	void Paintball::destroyVBO(){
 		GLenum ErrorCheckValue = glGetError();
 
 		for(std::vector<GLint>::iterator it = locs.begin(); it != locs.end(); ++it){
@@ -188,6 +176,6 @@ using namespace sph;
 		}
 	}
 
-	void ExampleAnimInstanced::specialKeyboardDown(int key, int x, int y ){
+	void Paintball::specialKeyboardDown(int key, int x, int y ){
 		rv->keyboardEvent(key);
 	}

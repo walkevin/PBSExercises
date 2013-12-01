@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include "vmath.h"
-#include "Ball.h"
+#include "../src/Ball.h"
 	ExampleBall::ExampleBall(){}
 	ExampleBall::~ExampleBall(){}
 
