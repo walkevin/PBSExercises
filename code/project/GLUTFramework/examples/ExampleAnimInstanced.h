@@ -15,8 +15,6 @@
 #include "../src/ShaderLoader.h"
 #include "../src/RotatingView.h"
 
-#include "../../SPH/SphSolver.hpp"
-
 typedef struct
 {
 	float XYZW[4];
@@ -26,7 +24,7 @@ typedef struct
 
 class ExampleAnimInstanced : public glutFramework::GlutFramework{
 public:
-	ExampleAnimInstanced(sph::SphSolver*);
+	ExampleAnimInstanced();
 	~ExampleAnimInstanced();
 
 	void display(float dTime);
@@ -34,9 +32,7 @@ public:
 	void close();
 private:
 	std::vector<Eigen::Array<float, 4, 1> > pos;
-	unsigned int n_points;
-
-	sph::SphSolver* solver;
+	static const int n_points = 20;
 
 	std::vector<GLuint> vaoId, bufferId, indexBufferId;
 	std::vector<GLint> locs;
