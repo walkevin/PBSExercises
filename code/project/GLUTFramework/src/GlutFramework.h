@@ -88,12 +88,10 @@ namespace glutFramework {
 		static GlutFramework *instance;
 		
 		
-		Vector<float> eyeVector;
-		Vector<float> centerVector;
-		Vector<float> upVector;
+//		Vector<float> eyeVector;
+//		Vector<float> centerVector;
+//		Vector<float> upVector;
 		
-		float position;
-		float direction;
 		
 	public:
 		// Constants
@@ -182,39 +180,9 @@ namespace glutFramework {
 		 */
 		virtual void close();
 
-		/** Sets the intitial matricies that are used to setup OpenGL. */
-		void setDisplayMatricies();
-		
-		/** Sets up basic lighting */
-		void setupLights();
-		
-		/** A helper function that allows the camera position and orientation to be changed. 
-		 @param eyeX, eyeY, eyeZ - the vector describing the "eye" or camera position 
-		 @param centerX, centerY, centerZ - the vector describing the "object" that the eye is looking at
-		 @param upX, upY, upZ - the vector describing orientation. Normally (0,1,0) 
-		 */
-		void setLookAt(float eyeX, float eyeY, float eyeZ, 
-					   float centerX, float centerY, float centerZ,
-					   float upX, float upY, float upZ);
-		
-		/** The position of the "eye" or camera in 3D space 
-		 @return a 3D vector
-		 */
-		Vector<float> getEyeVector() const;
-		
-		/** The position that the "eye" or camera is looking at in 3D space 
-		 @return a 3D vector
-		 */
-		Vector<float> getCenterVector() const;
-		
-		/** The up vector, used to determine orientation. Normally set to (0,1,0) 
-		 @return a 3D vector
-		 */
-		Vector<float> getUpVector() const;
-		
-		/** Sets the title of the window to a specific string. Invoke before startFramework() 
-		 @param title - the name of the window 
-		 */
+//		/** Sets the title of the window to a specific string. Invoke before startFramework()
+//		 @param title - the name of the window
+//		 */
 		void setTitle(std::string theTitle);
 		
 		/** Initializes GLUT and registers the callback functions. */
@@ -246,6 +214,10 @@ namespace glutFramework {
 		static void specialKeyboardDownWrapper(int key, int x, int y);
 		static void specialKeyboardUpWrapper(int key, int x, int y);
 		static void closeWrapper();
+
+		//Compatibility, to be deleted
+		void setLookAt(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ);
+
 	};
 	
 } // namespace 

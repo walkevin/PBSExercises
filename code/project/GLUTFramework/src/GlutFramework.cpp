@@ -36,9 +36,6 @@ namespace glutFramework {
 		elapsedTimeInSeconds = 0;
 		frameTimeElapsed = 0;
 		title = "Paintball Shot 2013";
-		eyeVector = Vector<float>(0.0, 0.0, -10.0); // move the eye position back
-		position = 0.0f;
-		direction = 1.0 / FRAME_TIME;
 	}
 	
 	GlutFramework::~GlutFramework() {
@@ -75,14 +72,9 @@ namespace glutFramework {
 		GlewInitResult = glewInit();
 
 		if (GLEW_OK != GlewInitResult) {
-			fprintf(
-				stderr,
-				"ERROR: %s\n",
-				glewGetErrorString(GlewInitResult)
-			);
+			std::cerr << "ERROR: " << glewGetErrorString(GlewInitResult) << std::endl;
 			exit(EXIT_FAILURE);
 		}
-
 
 		init();						// Initialize
 		glutIdleFunc(runWrapper); 	// The program run loop
@@ -97,18 +89,11 @@ namespace glutFramework {
 		// Subclass and override this method
 		
 		static int frame = 0;
-		std::cout << "GlutFramework Display: Frame: " << frame << ", dt(sec): " << dTime << ", Position: " << position << std::endl;
+		std::cout << "GlutFramework Display: Frame: " << frame << ", dt(sec): " << dTime << std::endl;
 		++frame;
 		
-		// DEMO: Create a teapot and move it back and forth on the x-axis
-		glTranslatef(position, 0.0f, 0.0f);
+		// DEMO: Create a teapot
 		glutSolidTeapot(2.5); 
-		if(position > 4 && direction > 0) {
-			direction = -1.0 / FRAME_TIME;
-		} else if(position < -4 && direction < 0) {
-			direction = 1.0 / FRAME_TIME;
-		}		
-		position += direction;
 	}
 	
 	void GlutFramework::reshape(int width, int height) {
@@ -116,18 +101,18 @@ namespace glutFramework {
 	}
 	
 	void GlutFramework::mouseButtonPress(int button, int state, int x, int y) {
-		printf("MouseButtonPress: x: %d y: %d\n", x, y);
+		std::cout << "MouseButtonPress: x: " << x << "y: " << y << std::endl;
 		
 	}
 	
 	void GlutFramework::mouseMove(int x, int y) {
-		printf("MouseMove: x: %d y: %d\n", x, y);
+		std::cout << "MouseMove: x: " << x << "y: " << y << std::endl;
 	}
 	
 	void GlutFramework::keyboardDown( unsigned char key, int x, int y ) 
 	{
 		// Subclass and override this method
-		printf( "KeyboardDown: %c = %d\n", key, (int)key );
+		std::cout << "KeyboardDown: " << key << " = " << (int)key << std::endl;
 		if (key==27) { //27 =- ESC key
 			glutLeaveMainLoop();
 //			exit (0);
@@ -139,82 +124,26 @@ namespace glutFramework {
 	void GlutFramework::keyboardUp( unsigned char key, int x, int y ) 
 	{
 		// Subclass and override this method
-		printf( "KeyboardUp: %c \n", key );
+		std::cout << "KeyboardUp" << key << std::endl;
 		keyStates.keyUp( (int)key );
 	}
 	
 	void GlutFramework::specialKeyboardDown( int key, int x, int y ) 
 	{
 		// Subclass and override this method
-		printf( "SpecialKeyboardDown: %d\n", key );
+		std::cout << "SpecialKeyboardDown: " << key << std::endl;
 	}
 	
 	void GlutFramework::specialKeyboardUp( int key, int x, int y ) 
 	{
 		// Subclass and override this method	
-		printf( "SpecialKeyboardUp: %d \n", key );
+		std::cout << "SpecialKeyboardUp: " << key << std::endl;
 	}
 
 	void GlutFramework::close()
 	{
 		//Subclass and override this method
-		printf("close");
-	}
-
-	// ******************************
-	// ** Graphics helper routines **
-	// ******************************
-	
-	// Initialize the projection/view matricies.
-	void GlutFramework::setDisplayMatricies() {
-		/* Setup the projection and model view matricies */
-		int width = glutGet( GLUT_WINDOW_WIDTH );
-		int height = glutGet( GLUT_WINDOW_HEIGHT );
-		float aspectRatio = width/height;
-		glViewport( 0, 0, width, height );
-		glMatrixMode( GL_PROJECTION );
-		glLoadIdentity();
-		gluPerspective( 60, aspectRatio, 1, 500.0 );
-		
-		glMatrixMode( GL_MODELVIEW );
-		glLoadIdentity();
-		gluLookAt(eyeVector.x, eyeVector.y, eyeVector.z,
-				  centerVector.x, centerVector.y, centerVector.z,
-				  upVector.x, upVector.y, upVector.z);
-	}
-	
-	void GlutFramework::setupLights() {
-		GLfloat light1_position[] = { 0.0, 1.0, 1.0, 0.0 };
-		GLfloat white_light[] = { 1.0, 1.0, 1.0, 1.0 };
-		GLfloat lmodel_ambient[] = { 0.4, 0.4, 0.4, 1.0 };
-		GLfloat ambient_light[] = { 0.8, 0.8, 0.8, 1.0 };
-		
-		glLightfv( GL_LIGHT0, GL_POSITION, light1_position );
-		glLightfv( GL_LIGHT0, GL_AMBIENT, ambient_light );
-		glLightfv( GL_LIGHT0, GL_DIFFUSE, white_light );
-		glLightfv( GL_LIGHT0, GL_SPECULAR, white_light );
-		
-		glLightModelfv( GL_LIGHT_MODEL_AMBIENT, lmodel_ambient );
-	}
-	
-	void GlutFramework::setLookAt(float eyeX, float eyeY, float eyeZ, 
-								  float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
-		
-		eyeVector = Vector<float>(eyeX, eyeY, eyeZ);
-		centerVector = Vector<float>(centerX, centerY, centerZ);
-		upVector = Vector<float>(upX, upY, upZ);
-	}
-	
-	Vector<float> GlutFramework::getEyeVector() const {
-		return eyeVector;
-	}
-	
-	Vector<float> GlutFramework::getCenterVector() const {
-		return centerVector;
-	}
-	
-	Vector<float> GlutFramework::getUpVector() const {
-		return upVector;
+		std::cout << "close" << std::endl;
 	}
 	
 	void GlutFramework::setTitle(std::string theTitle) {
@@ -268,9 +197,6 @@ namespace glutFramework {
 		displayTimer.stop();		// Stop the timer and get the elapsed time in seconds
 		elapsedTimeInSeconds = displayTimer.getElapsedSeconds(); // seconds
 		
-		setupLights();
-		setDisplayMatricies();
-		
 		display(elapsedTimeInSeconds);
 		
 		glutSwapBuffers();
@@ -320,4 +246,8 @@ namespace glutFramework {
 	void GlutFramework::closeWrapper(){
 		instance->close();
 	}
+
+	//Compatibility, to be deleted
+	void GlutFramework::setLookAt(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ){
+	 }
 } // namespace
