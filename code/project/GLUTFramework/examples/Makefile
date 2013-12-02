@@ -1,14 +1,14 @@
 EXE=viewer
 
-EXAMPLE_SRC = main.cpp ExampleAnimInstanced.cpp Ball.cpp
-EXAMPLE_OBJ = main.o ExampleAnimInstanced.o Ball.o
+EXAMPLE_SRC = main.cpp ExampleBall.cpp
+EXAMPLE_OBJ = main.o ExampleBall.o
 
 #EXAMPLE_SRC = triangles.cpp
 #EXAMPLE_OBJ = triangles.o
 
 FP = ../src/
-FRAMEWORK_SRC = $(FP)GlutFramework.cpp $(FP)PerformanceTimer.cpp $(FP)Keyboard.cpp $(FP)ShaderLoader.cpp $(FP)RotatingView.cpp
-FRAMEWORK_OBJ = $(FP)GlutFramework.o $(FP)PerformanceTimer.o $(FP)Keyboard.o $(FP)ShaderLoader.o $(FP)RotatingView.o
+FRAMEWORK_SRC = $(FP)GlutFramework.cpp $(FP)PerformanceTimer.cpp $(FP)Keyboard.cpp $(FP)ShaderLoader.cpp $(FP)RotatingView.cpp $(FP)Ball.cpp
+FRAMEWORK_OBJ = $(FP)GlutFramework.o $(FP)PerformanceTimer.o $(FP)Keyboard.o $(FP)ShaderLoader.o $(FP)RotatingView.o $(FP)Ball.o
 
 #SOURCES = $(wildcard *.cpp)
 #OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))

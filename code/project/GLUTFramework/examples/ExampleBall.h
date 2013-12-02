@@ -10,6 +10,7 @@
 
 #include "../src/GlutFramework.h"
 #include "../src/ShaderLoader.h"
+#include "../src/RotatingView.h"
 
 typedef struct
 {
@@ -27,15 +28,16 @@ public:
 	void load();
 	void close();
 private:
-	GLuint
-	   VaoId,
-	   BufferId,
-	   IndexBufferId;
+	std::vector<GLuint> vaoId, bufferId, indexBufferId;
+	std::vector<GLint> locs;
+	unsigned int numElements;
 
 	ShaderLoader sh;
+	RotatingView* rv;
 	void createVBO();
 	void destroyVBO();
-	unsigned int numElements;
+	void specialKeyboardDown(int key, int x, int y );
+
 };
 
 
