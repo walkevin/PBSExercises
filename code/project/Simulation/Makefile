@@ -35,7 +35,7 @@ $(EXE): $(OBJECTS)
 	$(CXX) $(CFLAGS) $(INC) -o $@ $< $(DEFINES)
 
 clean:
-	 rm -f $(FP)*.o $(FPEX)*.o $(FPS)*.o *.o $(EXE)
+	 rm -f $(FP)*.o $(FPS)*.o *.o $(EXE)
 
 run:
 	./$(EXE)

@@ -55,14 +55,19 @@ namespace sph
     return returnValues;
   }
 
+	int SphSolver::getParticleNumber() const
+	{
+		int size = 0;
+		for(int i = 0; i < cells.size(); i++)
+    {
+      size += cells[i].getStoredParticles();
+    }
+		return size;
+	}
+
   std::vector<homogeneousPosition> SphSolver::getParticles() const
   {
-    int vectorSize = 0;
-    for(int i = 0; i < cells.size(); i++)
-    {
-      vectorSize += cells[i].getStoredParticles();
-    }
-
+    int vectorSize = getParticleNumber();
     int index = 0;
     homogeneousPosition temp;
     std::vector<homogeneousPosition> positions(vectorSize);

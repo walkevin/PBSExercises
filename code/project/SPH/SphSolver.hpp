@@ -43,6 +43,11 @@ namespace sph
       */
       std::vector<homogeneousPosition> getParticles() const;
 
+			/*
+			Returns the current amount of stored Particles
+			*/
+			int getParticleNumber() const;
+
       /*
       Inserts Particles of a given liquid, where positions and velocities are specified
 
