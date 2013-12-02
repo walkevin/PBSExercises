@@ -28,7 +28,6 @@ using namespace sph;
 	void Paintball::updatePositions(){
 		n_points = solver->getParticleNumber();
 		pos.reserve(n_points);
-		std::cout << "hallo: " << solver->getParticleNumber() << std::endl;
 		pos = solver->getParticles();
 
 		solver->simulationStep(0.001);
