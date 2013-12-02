@@ -16,17 +16,21 @@ using namespace sph;
 
 	Paintball::Paintball(SphSolver* solver){
 		this->solver = solver;
-		n_points = 125;
-		pos.reserve(n_points);
-		for(int i = 0; i < n_points; i++){
-			pos[i] << (float)i/n_points, 0.0f, 0.0f, 1.0f;
+		n_points = solver->getParticleNumber();
+//		pos.reserve(solver->getParticleNumber());
+//		for(int i = 0; i < n_points; i++){
+//			pos[i] << (float)i/n_points, 0.0f, 0.0f, 1.0f;
 // 			pos[i] << (float)i/n_points, (float)(i)/n_points, (float)(i)/n_points, 1.0f;
-		}
+//		}
 	}
 	Paintball::~Paintball(){}
 
 	void Paintball::updatePositions(){
+		n_points = solver->getParticleNumber();
+		pos.reserve(n_points);
+		std::cout << "hallo: " << solver->getParticleNumber() << std::endl;
 		pos = solver->getParticles();
+
 		solver->simulationStep(0.001);
 	}
 
