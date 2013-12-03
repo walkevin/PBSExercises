@@ -34,20 +34,20 @@ using namespace sph;
 
 int main(int argc, char *argv[])
 {
-  KernelPoly6 kernel(0.5);
-  SphSolver simulation(0.5, 5, kernel);
+  KernelSpiky kernel(0.1);
+  SphSolver simulation(0.1, 20, kernel);
   
   std::vector<position> pos;
   std::vector<velocity> vel;
 
-  for(int i = 0; i < 5; i++)
+  for(int i = 0; i < 10; i++)
   {
-    for(int j = 0; j < 5; j++)
+    for(int j = 0; j < 10; j++)
     {
-      for(int k = 0; k < 5; k++)
+      for(int k = 0; k < 15; k++)
       {
         position tempPos;
-        tempPos << 1 + i*0.1, 1 + j*0.1, 1 + k*0.1;
+        tempPos << 0.8 + i*0.05, 0.8 + j*0.05, 0.2 + k*0.05;
         pos.push_back(tempPos);
         velocity tempVel;
         tempVel << 0, 0, 0;

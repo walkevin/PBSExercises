@@ -4,12 +4,14 @@
 namespace sph
 {
   SphSolver::SphSolver(entityValue cut, discreteValue size, SmoothingKernel& kern)
-  : dummyCell(cut, coordinate::Constant(-1), *this)
+	: neighbourTransitions()
+  , dummyCell(cut, coordinate::Constant(-1), *this)
   , cutoff(cut)
   , gridSize(size)
   , kernel(kern)
   , cells()
   , gravity()
+	, stiffness(1000)
   {
     gravity << 0, 0, -9.81;
     initNeighbourTransitions();
@@ -29,6 +31,10 @@ namespace sph
 
   void SphSolver::simulationStep(entityValue deltaT)
   {
+		for(int i = 0; i < cells.size(); i++)
+		{
+			cells[i].updateDensity();
+		}
     for(int i = 0; i < cells.size(); i++)
     {
       cells[i].computeForces();
@@ -37,6 +43,10 @@ namespace sph
     {
       cells[i].update(deltaT);
     }
+		for(int i = 0; i < cells.size(); i++)
+		{
+			cells[i].makeTransitions();
+		}
 		dummyCell.clear();
   }
 
@@ -69,6 +79,7 @@ namespace sph
   {
     int vectorSize = getParticleNumber();
     int index = 0;
+		double linTransFac = 2./(cutoff*gridSize);
     homogeneousPosition temp;
     std::vector<homogeneousPosition> positions(vectorSize);
     for(int i = 0; i < cells.size(); i++)
@@ -77,7 +88,10 @@ namespace sph
       const std::vector<position>& tempPos = cells[i].getPositions();
       for(int j = 0; j < particles; j++)
       {
-        temp << tempPos[j](0), tempPos[j](1), tempPos[j](2), 1;
+				position onePos = tempPos[j];
+				onePos = onePos*linTransFac;
+        temp << onePos(0), onePos(2), onePos(1), 2;
+				temp = temp - 1.;
         positions[index] = temp;
         index++;
       }
@@ -157,4 +171,9 @@ namespace sph
   {
     return stiffness;
   }
+
+	discreteValue SphSolver::getGridSize() const
+	{
+		return gridSize;
+	}
 }

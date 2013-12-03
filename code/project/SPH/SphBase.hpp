@@ -44,7 +44,7 @@ namespace sph
       virtual attributeValue laplace(position, position) = 0;
 
     protected:
-      entityValue h2;
+      entityValue h;
       entityValue coeff;
   };
 
@@ -55,7 +55,19 @@ namespace sph
       virtual attributeValue operator()(position, position);
       virtual attributeValue grad(position, position);
       virtual attributeValue laplace(position, position);
+		private:
+			entityValue h2;
   };
+
+	class KernelSpiky : public SmoothingKernel
+	{
+		public:
+			KernelSpiky(entityValue);
+			virtual attributeValue operator()(position, position);
+      virtual attributeValue grad(position, position);
+      virtual attributeValue laplace(position, position);
+	};
+			
 }     
 
 #endif

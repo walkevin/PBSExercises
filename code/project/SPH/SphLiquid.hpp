@@ -18,9 +18,9 @@ namespace sph
 
     private:
       static constexpr attributeValue restDensity = 1000;
-      static constexpr attributeValue mass = 1;
+      static constexpr attributeValue mass = 0.125;
       static constexpr attributeValue volume = 1000;
-      static constexpr attributeValue viscosity = 0.05;
+      static constexpr attributeValue viscosity = 25;
   };
 } 
 

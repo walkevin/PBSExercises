@@ -95,6 +95,11 @@ namespace sph
       */
       entityValue getStiffness() const;
       
+			/*
+			Returns gridSize
+			*/
+			discreteValue getGridSize() const;
+
     private:
       std::array<coordinate, 27> neighbourTransitions;
       SphCell dummyCell;

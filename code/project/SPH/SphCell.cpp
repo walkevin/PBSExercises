@@ -38,8 +38,6 @@ namespace sph
 
   void SphCell::updatePressure()
   {
-    updateDensity();
-
     if(pressure.size() != storedParticles)
       pressure.reserve(storedParticles);
 
@@ -56,11 +54,15 @@ namespace sph
 		makeTransitions();
 		for(int i = storedParticles; i > 0; i--)
 		{
-			std::cout << pos.size() << " " << vel.size() << " " << liq.size() << " " << storedParticles << " " << i << std::endl;
 			pos.pop_back();
 			vel.pop_back();
 			liq.pop_back();
+			density.pop_back();
 			storedParticles--;
+			assert(storedParticles == pos.size());
+			assert(storedParticles == vel.size());
+			assert(storedParticles == liq.size());
+			assert(storedParticles == density.size());
 		}
 	}
 
@@ -95,18 +97,21 @@ namespace sph
   {
     updateVelocities(deltaT);
     updatePositions(deltaT);
-    makeTransitions();
   }
 
-  void SphCell::addParticle(position pos, velocity vel, std::shared_ptr<SphLiquid> liq)
+  void SphCell::addParticle(position posIn, velocity velIn, std::shared_ptr<SphLiquid> liqIn)
   {
-    this->pos.push_back(pos);
-    this->vel.push_back(vel);
-    this->f.push_back(force());
-    this->liq.push_back(liq);
-    this->density.push_back(0);
-    this->pressure.push_back(0);
+    pos.push_back(posIn);
+    vel.push_back(velIn);
+    f.push_back(force());
+    liq.push_back(liqIn);
+    density.push_back(0);
+    pressure.push_back(0);
     storedParticles++;
+		assert(storedParticles == pos.size());
+		assert(storedParticles == vel.size());
+		assert(storedParticles == liq.size());
+		assert(storedParticles == density.size());
   }
 
   void SphCell::makeTransitions() 
@@ -137,6 +142,10 @@ namespace sph
         f.pop_back();
         pressure.pop_back();
         storedParticles--;
+				assert(storedParticles == pos.size());
+				assert(storedParticles == vel.size());
+				assert(storedParticles == liq.size());
+				assert(storedParticles == density.size());
       }  
     }
   }
@@ -169,12 +178,15 @@ namespace sph
 				nullVec << 0,0,0;
         for(int k = 0; k < storedParticles; k++)
         {
-          position dirVec = posN - pos[k];
+          position dirVec = pos[k] - posN;
 					if(dirVec == nullVec)
 						continue;
           dirVec.normalize();
+					assert(!isnan(dirVec(0)));
           f[k] -= dirVec * preFactor * 0.5 * (pressureN + pressure[k]) * kernel.grad(posN, pos[k]);
-          f[k] += liq[k]->getAttribute(Attribute::viscosity()) * preFactor * (velocityN - vel[k]) * kernel.laplace(posN, pos[k]);          
+					assert(!isnan(f[k](1)));
+          f[k] += liq[k]->getAttribute(Attribute::viscosity()) * preFactor * (velocityN - vel[k]) * kernel.laplace(posN, pos[k]);
+					assert(!isnan(f[k](2)));    
         }
       }
     }
@@ -188,17 +200,37 @@ namespace sph
 
   void SphCell::updatePositions(entityValue deltaT)
   {
-    for(int i = 0; i < pos.size(); i++)
+    for(int i = 0; i < storedParticles; i++)
     {
+			for(int k = 0; k < 3; k++)
+			{
+				assert(!isnan(pos[i](k)));
+				assert(!isnan(vel[i](k)));
+				assert(!isnan(f[i](k)));
+			}
       pos[i] = pos[i] + vel[i] * deltaT;
+			double gridSize = solver.getGridSize();
+			for(int k = 0; k < 3; k++)
+			{
+				if(pos[i](k) < 0)
+				{
+					pos[i](k) = 0.00001;
+					vel[i](k) = -vel[i](k);
+				}
+				if(pos[i](k) > cellSize*gridSize)
+				{
+					pos[i](k) = cellSize*gridSize - 0.000001;
+					vel[i](k) = -vel[i](k);
+				}
+			}
     }
   }
 
   void SphCell::updateVelocities(entityValue deltaT)
   {
-    for(int i = 0; i < vel.size(); i++)
+    for(int i = 0; i < storedParticles; i++)
     {
-      vel[i] = vel[i] + f[i] / liq[i]->getAttribute(Attribute::volume());
+      vel[i] = vel[i] + f[i] * liq[i]->getAttribute(Attribute::mass()) / density[i];
     }
   }
 
