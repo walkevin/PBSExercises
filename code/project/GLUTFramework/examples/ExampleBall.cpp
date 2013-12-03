@@ -1,30 +1,34 @@
 #include "ExampleBall.h"
 #include <iostream>
-#include <cmath>
-#include "vmath.h"
+
+//OpenGL Math
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "../src/Ball.h"
+#include "../src/RotatingView.h"
+
 	ExampleBall::ExampleBall(){}
 	ExampleBall::~ExampleBall(){}
 
 	void ExampleBall::load(){
-		sh.load("shaders/exampleBall.glslv","shaders/exampleBall.glslf");
+		sh.load("shaders/exampleBall.vert","shaders/exampleBall.frag");
 		sh.use();
 
 		double viewDistance = 3.;
 		double viewAzimuthAngle = 0.;
 
-		// Set projection*view Matrix
-		vmath::mat4 projview_mat = vmath::perspective(60.0f, float(WINDOW_WIDTH/WINDOW_HEIGHT), 1.0f, 500.0f) *
-				                   vmath::lookat(vmath::vec3(std::cos(viewAzimuthAngle) * viewDistance, std::sin(viewAzimuthAngle) * viewDistance, 2.0f), vmath::vec3(0.0f, 0.0f, 0.0f), vmath::vec3(0.0f, 0.0f, 1.0f));
+		//Create RotatingView Object AFTER shader have been loaded
+		rv = new RotatingView(sh, "ProjectView_mat");
+		//Send default projection view matrix to GPU
+		rv->updateView();
 
-
-		GLint location = glGetUniformLocation(sh.getProgramId(), "ProjectView_mat");
-		glUniformMatrix4fv(location, 1, false, (float*)(projview_mat));
 		createVBO();
 	}
 	void ExampleBall::display(float dTime){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, NULL);
 
 //		glPointSize(3.0f);
@@ -40,7 +44,24 @@
 		destroyVBO();
 	}
 	void ExampleBall::createVBO(){
+		//Initialize Buffers
+		unsigned int numVao = 1;
+		unsigned int numBuf = 2;
+		unsigned int numIBuf = 1;
+		vaoId.reserve(numVao);
+		bufferId.reserve(numBuf);
+		indexBufferId.reserve(numIBuf);
 
+		//One vertex array object for all buffers
+		glGenVertexArrays(numVao, vaoId.data());
+		glBindVertexArray(vaoId[0]);
+
+		//Generate buffers
+		glGenBuffers(numBuf, bufferId.data());
+		glGenBuffers(numIBuf, indexBufferId.data());
+		GLint tmp;
+
+		//Load ball
 		const GLuint N = 36; //#vertices on longitude (without poles)
 		const GLuint M = 24; //#vertices on latitude
 		const float R = 1.; //Radius
@@ -52,30 +73,39 @@
 		numElements = b.getNumElements();
 
 		GLenum ErrorCheckValue = glGetError();
-		const size_t vertexSize = 4* sizeof(vertices[0]);
-		const size_t bufferSize = vertices.size() * vertexSize;
+		const size_t vertexSize = 4 * sizeof(vertices[0]);
+		const size_t bufferSizeVertices = vertices.size() * vertexSize;
+		const size_t normalSize = 3 * sizeof(normals[0]);
+		const size_t bufferSizeNormals = normals.size() * normalSize;
 
-		glGenVertexArrays(1, &VaoId);
-		glBindVertexArray(VaoId);
+		//Upload vertices
+		glBindBuffer(GL_ARRAY_BUFFER, bufferId[0]);
+		glBufferData(GL_ARRAY_BUFFER, bufferSizeVertices, vertices.data(), GL_STATIC_DRAW);
+		tmp = glGetAttribLocation(sh.getProgramId(),"position");
+		if(tmp != -1)
+			locs.push_back(tmp);
+		else{
+			std::cerr << "ERROR: Could not find location of position" << std::endl;
+			exit(0);
+		}
+		glVertexAttribPointer(locs.back(), 4, GL_FLOAT, GL_FALSE, vertexSize, 0);
+		glEnableVertexAttribArray(locs.back());
 
-		glGenBuffers(1, &BufferId);
-		glBindBuffer(GL_ARRAY_BUFFER, BufferId);
-		glBufferData(GL_ARRAY_BUFFER, bufferSize, vertices.data(), GL_STATIC_DRAW);
-		GLint posLoc = glGetAttribLocation(sh.getProgramId(),"position");
-		glVertexAttribPointer(posLoc, 4, GL_FLOAT, GL_FALSE, vertexSize, 0);
-		glEnableVertexAttribArray(posLoc);
+		//Upload normals
+		glBindBuffer(GL_ARRAY_BUFFER, bufferId[1]);
+		glBufferData(GL_ARRAY_BUFFER, bufferSizeNormals, normals.data(), GL_STATIC_DRAW);
+		tmp = glGetAttribLocation(sh.getProgramId(),"normal");
+		if(tmp != -1)
+			locs.push_back(tmp);
+		else{
+			std::cerr << "ERROR: Could not find location of normal" << std::endl;
+			exit(0);
+		}
+		glVertexAttribPointer(locs.back(), 3, GL_FLOAT, GL_FALSE, normalSize, 0);
+		glEnableVertexAttribArray(locs.back());
 
-
-//		//glGenBuffers(1, &BufferId);
-//		glBindBuffer(GL_ARRAY_BUFFER, BufferId);
-//		glBufferData(GL_ARRAY_BUFFER, bufferSize, normals.data(), GL_STATIC_DRAW);
-//		GLint norLoc = glGetAttribLocation(sh.getProgramId(),"normal");
-//		glVertexAttribPointer(norLoc, 3, GL_FLOAT, GL_FALSE, vertexSize, 0);
-//		glEnableVertexAttribArray(norLoc);
-
-
-		glGenBuffers(1, &IndexBufferId);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IndexBufferId);
+		//Upload indices
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId[0]);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
 		ErrorCheckValue = glGetError();
@@ -93,17 +123,21 @@
 	void ExampleBall::destroyVBO(){
 		GLenum ErrorCheckValue = glGetError();
 
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(0);
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glDeleteBuffers(1, &BufferId);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		glDeleteBuffers(1, &IndexBufferId);
-
-		glBindVertexArray(0);
-		glDeleteVertexArrays(1, &VaoId);
+		for(std::vector<GLint>::iterator it = locs.begin(); it != locs.end(); ++it){
+			glDisableVertexAttribArray(*it);
+		}
+		if(bufferId.size() > 0){
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glDeleteBuffers(bufferId.size(), bufferId.data());
+		}
+		if(indexBufferId.size() > 0){
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			glDeleteBuffers(indexBufferId.size(), indexBufferId.data());
+		}
+		if(vaoId.size() > 0){
+			glBindVertexArray(0);
+			glDeleteVertexArrays(vaoId.size(), vaoId.data());
+		}
 
 		ErrorCheckValue = glGetError();
 		if (ErrorCheckValue != GL_NO_ERROR)
@@ -116,4 +150,8 @@
 
 			exit(-1);
 		}
+	}
+
+	void ExampleBall::specialKeyboardDown(int key, int x, int y ){
+		rv->keyboardEvent(key);
 	}

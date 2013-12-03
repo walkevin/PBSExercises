@@ -3,8 +3,8 @@
 uniform mat4 model_matrix = mat4(1.0);
 uniform mat4 ProjectView_mat;
 
-in vec4 position;
 in vec3 normal;
+in vec4 position;
 
 out vec3 vs_worldpos;
 out vec3 vs_normal;
@@ -14,7 +14,7 @@ void main(void)
     vec4 position = ProjectView_mat * model_matrix * position;
     gl_Position = position;
     vs_worldpos = position.xyz;
-    vs_normal = mat3(model_matrix) * normal;
+    vs_normal = mat3(model_matrix) * normal.xyz;
 }
 
 

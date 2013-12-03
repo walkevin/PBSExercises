@@ -8,7 +8,7 @@
  *  Example
  *
  *  	Ball b(N, M, R);
-		std::vector<float> vertices = b.getVertices();
+		std::vector<ball_type> vertices = b.getVertices();
 		std::vector<GLuint> indices = b.getIndices();
 		numElements = b.getNumElements();
 
@@ -22,24 +22,24 @@
 #include <vector>
 #include <cmath>
 
-Ball::Ball(int N_, int M_, float R_) : N(N_), M(M_), R(R_), numElements(N_ * M_ * 6){}
+Ball::Ball(int N_, int M_, ball_type R_) : N(N_), M(M_), R(R_), numElements(N_ * M_ * 6){}
 
 Ball::~Ball() {}
 
-std::vector<float> Ball::getVertices(){
-	//Specify vertices for sphere (latitude-longitude discretization)
-	std::vector<float> vertices;
+std::vector<ball_type> Ball::getVertices(){
+	//Specify vertices for sphere (displaced latitude-longitude discretization)
+	std::vector<ball_type> vertices;
 
 	//North Pole
-	vertices.push_back(0.0f); vertices.push_back(0.0f); vertices.push_back(R); vertices.push_back(1.0f);
+	vertices.push_back(0.0f); vertices.push_back(R); vertices.push_back(0.0f); vertices.push_back(1.0f);
 
 	double theta = M_PI/(N+1), phi;
 	for(int n = 0; n < N; n++){//loop over theta
 		phi = 0.;
 		for(int m = 0; m < M; m++){//loop over phi
-			vertices.push_back(R * std::sin(theta) * std::cos(phi));
-			vertices.push_back(R * std::sin(theta) * std::sin(phi));
+			vertices.push_back(R * std::sin(theta) * std::cos(phi + n  * (M_PI/M)) );
 			vertices.push_back(R * std::cos(theta));
+			vertices.push_back(R * std::sin(theta) * std::sin(phi + n  * (M_PI/M)) );
 			vertices.push_back(1.0f);
 
 			phi += 2*M_PI/M;
@@ -47,32 +47,31 @@ std::vector<float> Ball::getVertices(){
 		theta += M_PI/(N+1);
 	}
 	//South pole
-	vertices.push_back(0.0f); vertices.push_back(0.0f); vertices.push_back(-R); vertices.push_back(1.0f);
+	vertices.push_back(0.0f); vertices.push_back(-R); vertices.push_back(0.0f); vertices.push_back(1.0f);
 
 	return vertices;
 }
 
-std::vector<float> Ball::getNormals(){
-	std::vector<float> normals;
+std::vector<ball_type> Ball::getNormals(){
+	std::vector<ball_type> normals;
 
 	//North Pole
-	normals.push_back(0.0f); normals.push_back(1.0f); normals.push_back(0.0f); normals.push_back(1.0f);
+	normals.push_back(0.0f); normals.push_back(1.0f); normals.push_back(0.0f);
 
 	double theta = M_PI/(N+1), phi;
 	for(int n = 0; n < N; n++){//loop over theta
 		phi = 0.;
 		for(int m = 0; m < M; m++){//loop over phi
-			normals.push_back(std::sin(theta) * std::cos(phi));
-			normals.push_back(std::sin(theta) * std::sin(phi));
+			normals.push_back(std::sin(theta) * std::cos(phi + n  * (M_PI/M) ));
 			normals.push_back(std::cos(theta));
-			normals.push_back(1.0f);
+			normals.push_back(std::sin(theta) * std::sin(phi + n  * (M_PI/M) ));
 
 			phi += 2*M_PI/M;
 		}
 		theta += M_PI/(N+1);
 	}
 	//South pole
-	normals.push_back(0.0f); normals.push_back(-1.0f); normals.push_back(-R); normals.push_back(1.0f);
+	normals.push_back(0.0f); normals.push_back(-1.0f); normals.push_back(0.0f);
 
 	return normals;
 }
@@ -112,4 +111,3 @@ std::vector<unsigned int> Ball::getIndices(){
 unsigned int Ball::getNumElements(){
 	return numElements;
 }
-
