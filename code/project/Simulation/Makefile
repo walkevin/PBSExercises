@@ -22,7 +22,7 @@ OBJECTS = $(EXAMPLE_OBJ) $(FRAMEWORK_OBJ) $(SOLVER_OBJ)
 CXX        = g++-4.8
 LDFLAGS    = -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu
 INC        = -I/usr/include/eigen3
-CFLAGS     = -c -std=c++11 -O3 -fopenmp
+CFLAGS     = -c -std=c++11 -O3
 
 
 default: $(EXE)
