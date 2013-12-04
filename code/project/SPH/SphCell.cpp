@@ -214,13 +214,15 @@ namespace sph
 			{
 				if(pos[i](k) < 0)
 				{
-					pos[i](k) = 0.00001;
+					pos[i](k) = 0.000001;
 					vel[i](k) = -vel[i](k);
+					vel[i] = 0.9*vel[i];
 				}
 				if(pos[i](k) > cellSize*gridSize)
 				{
 					pos[i](k) = cellSize*gridSize - 0.000001;
 					vel[i](k) = -vel[i](k);
+					vel[i] = 0.9*vel[i];
 				}
 			}
     }

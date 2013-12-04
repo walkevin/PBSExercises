@@ -22,8 +22,7 @@ OBJECTS = $(EXAMPLE_OBJ) $(FRAMEWORK_OBJ) $(SOLVER_OBJ)
 CXX        = g++-4.8
 LDFLAGS    = -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu
 INC        = -I/usr/include/eigen3
-CFLAGS     = -c -std=c++11
-DEFINES    = -DSIMULATION
+CFLAGS     = -c -std=c++11 -O3 -fopenmp
 
 
 default: $(EXE)
@@ -32,7 +31,7 @@ $(EXE): $(OBJECTS)
 	$(CXX) -o $(EXE) $(OBJECTS) $(LDFLAGS)
 
 %.o : %.cpp
-	$(CXX) $(CFLAGS) $(INC) -o $@ $< $(DEFINES)
+	$(CXX) $(CFLAGS) $(INC) -o $@ $<
 
 clean:
 	 rm -f $(FP)*.o $(FPS)*.o *.o $(EXE)

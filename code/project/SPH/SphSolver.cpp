@@ -1,5 +1,6 @@
 #include "SphSolver.hpp"
 #include <iostream>
+#include <omp.h>
 
 namespace sph
 {
@@ -31,21 +32,31 @@ namespace sph
 
   void SphSolver::simulationStep(entityValue deltaT)
   {
-		for(int i = 0; i < cells.size(); i++)
+		#pragma omp parallel
 		{
-			cells[i].updateDensity();
-		}
-    for(int i = 0; i < cells.size(); i++)
-    {
-      cells[i].computeForces();
-    }
-    for(int i = 0; i < cells.size(); i++)
-    {
-      cells[i].update(deltaT);
-    }
-		for(int i = 0; i < cells.size(); i++)
-		{
-			cells[i].makeTransitions();
+			#pragma omp for schedule(dynamic)
+			for(int i = 0; i < cells.size(); i++)
+			{
+				cells[i].updateDensity();
+			}
+			#pragma omp barrier
+			#pragma omp for schedule(dynamic)
+		  for(int i = 0; i < cells.size(); i++)
+		  {
+		    cells[i].computeForces();
+		  }
+			#pragma omp barrier
+			#pragma omp for schedule(dynamic)
+		  for(int i = 0; i < cells.size(); i++)
+		  {
+		    cells[i].update(deltaT);
+		  }
+			#pragma omp barrier
+			#pragma omp for schedule(dynamic)
+			for(int i = 0; i < cells.size(); i++)
+			{
+				cells[i].makeTransitions();
+			}
 		}
 		dummyCell.clear();
   }

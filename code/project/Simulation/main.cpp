@@ -35,19 +35,19 @@ using namespace sph;
 int main(int argc, char *argv[])
 {
   KernelSpiky kernel(0.1);
-  SphSolver simulation(0.1, 20, kernel);
+  SphSolver simulation(0.1, 10, kernel);
   
   std::vector<position> pos;
   std::vector<velocity> vel;
 
-  for(int i = 0; i < 10; i++)
+  for(int i = 0; i < 19; i++)
   {
-    for(int j = 0; j < 10; j++)
+    for(int j = 0; j < 19; j++)
     {
       for(int k = 0; k < 15; k++)
       {
         position tempPos;
-        tempPos << 0.8 + i*0.05, 0.8 + j*0.05, 0.2 + k*0.05;
+        tempPos << 0.05 + i*0.05, 0.05 + j*0.05, 0.2 + k*0.05;
         pos.push_back(tempPos);
         velocity tempVel;
         tempVel << 0, 0, 0;

@@ -33,7 +33,8 @@ using namespace sph;
 		pos.reserve(n_points);
 		pos = solver->getParticles();
 
-		solver->simulationStep(0.001);
+		for(int i = 0; i < 10; i++)
+			solver->simulationStep(0.0001);
 		
    	//std::chrono::milliseconds dura( 1000 );
     //std::this_thread::sleep_for( dura );
@@ -104,8 +105,8 @@ using namespace sph;
 		glGenBuffers(numIBuf, indexBufferId.data());
 
 		//Load ball
-		const GLuint N = 3; //#vertices on longitude (without poles)
-		const GLuint M = 3; //#vertices on latitude
+		const GLuint N = 5; //#vertices on longitude (without poles)
+		const GLuint M = 5; //#vertices on latitude
 		const float R = 0.05f; //Radius
 
 		Ball b(N, M, R);
