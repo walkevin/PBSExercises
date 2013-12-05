@@ -84,17 +84,38 @@ const float PIover180 = 3.1415f/180.0f;
 		// Render rotating pyramid in the middle
 
 
-		glm::mat4 mCurrent = glm::rotate(mModelView, fRotationAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+//		glm::mat4 mCurrent = glm::rotate(mModelView, fRotationAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 mCurrent = glm::rotate(mModelView, fRotationAngle+135, glm::vec3(0.0f, 1.0f, 0.0f));
+		std::cout << "modelview:" << std::endl;
+		for (int i = 0; i < 4; i++)
+		{
+			std::cout << std::endl;
+			for (int j = 0; j < 4; j++)
+				std::cout << mModelView[i][j] << " ";
+		}
+		std::cout << "mcurrnet:"<< std::endl;
+		for (int i = 0; i < 4; i++)
+		{
+			std::cout << std::endl;
+			for (int j = 0; j < 4; j++)
+				std::cout << mCurrent[i][j] << " ";
+		}
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glLoadIdentity();
+		glLoadMatrixf(glm::value_ptr(mCurrent));
+		glScaled(10,10,10);
 		//glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mCurrent));
 		//glDrawArrays(GL_TRIANGLES, 0, 12);
 		glDrawArrays(GL_TRIANGLES, 0, 12);
+		glPopMatrix();
 
 		// Rendetranslating pyramids
 
 		// One on the left
-		mCurrent = glm::translate(mModelView, glm::vec3(-20.0f, 10.0f*float(sin(fRotationAngle*PIover180)), 0.0f));
-		//glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mCurrent));
-		glDrawArrays(GL_TRIANGLES, 0, 12);
+//		mCurrent = glm::translate(mModelView, glm::vec3(-20.0f, 10.0f*float(sin(fRotationAngle*PIover180)), 0.0f));
+//		glUniformMatrix4fv(iModelViewLoc, 1, GL_FALSE, glm::value_ptr(mCurrent));
+//		glDrawArrays(GL_TRIANGLES, 0, 12);
 
 
 		glutSwapBuffers();
