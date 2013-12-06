@@ -62,7 +62,7 @@ namespace sph
 		dummyCell.clear();
   }
 
-	void SphSolver::createSphere(entityValue radius, position center)
+	void SphSolver::createSphere(entityValue radius, position center, velocity vel)
 	{
 		double dist = cutoff/2;
 		double dist2 = dist*dist;
@@ -81,14 +81,12 @@ namespace sph
 					position tempPos;
         	tempPos << center(0) + i*dist, center(1) + j*dist, center(2) + k*dist;
         	positions.push_back(tempPos);
-       		velocity tempVel;
-       		tempVel << 5, 5, 5;
-       		velocities.push_back(tempVel);
+       		velocities.push_back(vel);
 				}
 			}
 		}
 		std::shared_ptr<SphWater> water = std::make_shared<SphWater>();
-  	this->insertParticles(positions, velocities, water);
+  	this->insertParticles(positions, velocities, water, true);
 	}
 		
 
@@ -164,11 +162,11 @@ namespace sph
 		return trash.getStoredParticles();
 	}
 
-  void SphSolver::insertParticles(std::vector<position> pos, std::vector<velocity> vel, std::shared_ptr<SphLiquid> liq)
+  void SphSolver::insertParticles(std::vector<position> pos, std::vector<velocity> vel, std::shared_ptr<SphLiquid> liq, bond bondIn)
   {
     for(int i = 0; i < pos.size(); i++)
     {
-      cells[0].addParticle(pos[i], vel[i], liq);
+      cells[0].addParticle(pos[i], vel[i], liq, bondIn);
     }
   
     cells[0].makeTransitions();

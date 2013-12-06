@@ -35,7 +35,7 @@ namespace sph
 			Arguments:
 			1. Radius of the sphere
 			*/
-			void createSphere(entityValue, position);
+			void createSphere(entityValue, position, velocity);
 
       /*
       Function that returns the desired attribute at given positions
@@ -64,7 +64,7 @@ namespace sph
       2. Vector with the velocities of the particles
       3. Liquid of the Particles
       */
-      void insertParticles(std::vector<position>, std::vector<velocity>, std::shared_ptr<SphLiquid>);
+      void insertParticles(std::vector<position>, std::vector<velocity>, std::shared_ptr<SphLiquid>, bond);
 
 			/*
 			Returns the number of currently dead Particles
