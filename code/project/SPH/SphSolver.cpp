@@ -62,6 +62,36 @@ namespace sph
 		dummyCell.clear();
   }
 
+	void SphSolver::createSphere(entityValue radius, position center)
+	{
+		double dist = cutoff/2;
+		double dist2 = dist*dist;
+		double radius2 = radius*radius;
+		int range = std::floor(radius/dist);
+		std::vector<position> positions(0);
+		std::vector<velocity> velocities(0);
+		for(int i = -range; i <= range; i++)
+		{
+			for(int j = -range; j <= range; j++)
+			{
+				for(int k = -range; k <= range; k++)
+				{
+					if((i*i + j*j + k*k)*dist2 > radius2)
+						continue;
+					position tempPos;
+        	tempPos << center(0) + i*dist, center(1) + j*dist, center(2) + k*dist;
+        	positions.push_back(tempPos);
+       		velocity tempVel;
+       		tempVel << 5, 5, 5;
+       		velocities.push_back(tempVel);
+				}
+			}
+		}
+		std::shared_ptr<SphWater> water = std::make_shared<SphWater>();
+  	this->insertParticles(positions, velocities, water);
+	}
+		
+
   std::vector<attributeValue> SphSolver::computeAttribute(std::vector<position> points, Attribute attr)
   {
     std::vector<attributeValue> returnValues(points.size());

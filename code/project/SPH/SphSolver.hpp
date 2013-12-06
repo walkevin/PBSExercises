@@ -29,6 +29,14 @@ namespace sph
       */
       void simulationStep(entityValue);
 
+			/*
+			Inserts Particles in form of a sphere
+			
+			Arguments:
+			1. Radius of the sphere
+			*/
+			void createSphere(entityValue, position);
+
       /*
       Function that returns the desired attribute at given positions
 
