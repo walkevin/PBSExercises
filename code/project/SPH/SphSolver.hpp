@@ -58,6 +58,16 @@ namespace sph
       */
       void insertParticles(std::vector<position>, std::vector<velocity>, std::shared_ptr<SphLiquid>);
 
+			/*
+			Returns the number of currently dead Particles
+			*/
+			int getDeadParticleNumber() const;
+
+			/*
+			A function to read out dead particles (no motion and on a surface)
+			*/
+			std::vector<homogeneousPosition> getDeadParticles();
+
       /* 
       Returns a displacement based on a current position
       
@@ -103,6 +113,7 @@ namespace sph
     private:
       std::array<coordinate, 27> neighbourTransitions;
       SphCell dummyCell;
+			SphCell trash;
       entityValue cutoff;
       discreteValue gridSize;
       SmoothingKernel& kernel;

@@ -7,6 +7,7 @@ namespace sph
   SphSolver::SphSolver(entityValue cut, discreteValue size, SmoothingKernel& kern)
 	: neighbourTransitions()
   , dummyCell(cut, coordinate::Constant(-1), *this)
+	, trash(cut, coordinate::Constant(-2), *this)
   , cutoff(cut)
   , gridSize(size)
   , kernel(kern)
@@ -109,6 +110,29 @@ namespace sph
     }
     return positions;
   }
+
+	std::vector<homogeneousPosition> SphSolver::getDeadParticles() 
+	{
+		int vectorSize = getDeadParticleNumber();
+		double linTransFac = 2./(cutoff*gridSize);
+		std::vector<homogeneousPosition> positions(vectorSize);
+		const std::vector<position>& tempPos = trash.getPositions();
+		homogeneousPosition temp;
+		for(int i = 0; i < vectorSize; i++)
+		{
+			position onePos = tempPos[i];
+			onePos = onePos*linTransFac;
+      temp << onePos(0), onePos(2), onePos(1), 2;
+			temp = temp - 1.;
+      positions[i] = temp;
+    }
+		trash.clear();
+	}
+
+	int SphSolver::getDeadParticleNumber() const
+	{
+		return trash.getStoredParticles();
+	}
 
   void SphSolver::insertParticles(std::vector<position> pos, std::vector<velocity> vel, std::shared_ptr<SphLiquid> liq)
   {
