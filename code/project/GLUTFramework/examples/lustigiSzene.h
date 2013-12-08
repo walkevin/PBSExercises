@@ -3,52 +3,51 @@
  *
  *  Created on: Nov 10, 2013
  *      Author: kevin
- *      		//blakommentar
- *
  */
 
-#ifndef ROTATINGCAMERA_H_
-#define ROTATINGCAMERA_H_
+#ifndef LUSTIGISZENE_H_
+#define LUSTIGISZENE_H_
 
 #include "../src/GlutFramework.h"
 #include "../src/ShaderLoader.h"
-#include "vmath.h"
+#include "../src/RotatingView.h"
+#include <string>
+#include <map>
 
-typedef struct
-{
-	float XYZW[4];
-	float RGBA[4];
-} Vertex;
+//typedef struct
+//{
+//	float XYZW[4];
+//	float RGBA[4];
+//} Vertex;
 
 
-class RotatingCamera : public glutFramework::GlutFramework{
+class LustigiSzene : public glutFramework::GlutFramework{
 public:
-	RotatingCamera();
-	~RotatingCamera();
+	LustigiSzene();
+	~LustigiSzene();
 
 	void display(float dTime);
 	void load();
 	void close();
-	void specialKeyboardDown( int key, int x, int y);
-
 private:
-	GLuint
-	   VaoId[2],
-	   BufferId[4],
-	   IndexBufferId[1];
+	static const int nVao = 2;
+	static const int nBuffer = 4;
+	static const int nIndexBuffer = 1;
+    GLuint
+     VaoId[nVao],
+     BufferId[nBuffer],
+     IndexBufferId[nIndexBuffer];
+	std::map<std::string, GLint> locs;
+	unsigned int numElements;
 
-	ShaderLoader foreground_sh;
+	ShaderLoader sh;
+	RotatingView* rv;
+
 	void createVBO();
 	void destroyVBO();
-
-	vmath::mat4 getProjectionViewMatrix(double azimuth, double polar, double distance);
-	double azimuth;//Note: Since y-coord is up, azimuth is angle between x and z
-	double polar;//All angles in radians
-	double distance;
-	double zoomSpeed;
-	double angleChangeSpeed;
+	void specialKeyboardDown(int key, int x, int y );
 };
 
 
 
-#endif /* ROTATINGCAMERA_H_ */
+#endif /* LUSTIGISZENE_H_ */
