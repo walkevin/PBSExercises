@@ -23,11 +23,10 @@
  */
 
 //#include "ExampleAnimInstanced.h"
+#include "lustigiSzene.h"
 //#include "ViewerShader.h"
 //#include "ViewerPoints.h"
-//#include "RotatingCamera.h"
-#include "lustigiSzene.h"
-#include "../src/GlutFramework.h"
+#include "../GLUTFramework/src/GlutFramework.h"
 
 using namespace glutFramework;
 

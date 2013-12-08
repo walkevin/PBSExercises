@@ -8,9 +8,9 @@
 #ifndef LUSTIGISZENE_H_
 #define LUSTIGISZENE_H_
 
-#include "../src/GlutFramework.h"
-#include "../src/ShaderLoader.h"
-#include "../src/RotatingView.h"
+#include "../GLUTFramework/src/GlutFramework.h"
+#include "../GLUTFramework/src/ShaderLoader.h"
+#include "../GLUTFramework/src/RotatingView.h"
 #include <string>
 #include <map>
 

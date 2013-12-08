@@ -9,8 +9,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "../src/RotatingView.h"
-#include "../src/Ball.h"
+#include "../GLUTFramework/src/RotatingView.h"
+#include "../GLUTFramework/src/Ball.h"
 
 	LustigiSzene::LustigiSzene(){}
 	LustigiSzene::~LustigiSzene(){}
