@@ -10,17 +10,12 @@
 
 #include <Eigen/Core>
 #include <array>
+#include <map>
+#include <string>
 
 #include "../src/GlutFramework.h"
 #include "../src/ShaderLoader.h"
 #include "../src/RotatingView.h"
-
-typedef struct
-{
-	float XYZW[4];
-	float RGBA[4];
-} Vertex;
-
 
 class ExampleAnimInstanced : public glutFramework::GlutFramework{
 public:
@@ -34,8 +29,12 @@ private:
 	std::vector<Eigen::Array<float, 4, 1> > pos;
 	static const int n_points = 20;
 
-	std::vector<GLuint> vaoId, bufferId, indexBufferId;
-	std::vector<GLint> locs;
+	static const int nVao = 1;
+	static const int nBuffer = 3;
+	static const int nIndexBuffer = 1;
+
+	GLuint vaoId[nVao], bufferId[nBuffer], indexBufferId[nIndexBuffer];
+	std::map<std::string, GLint> locs;
 	unsigned int numElements;
 
 	ShaderLoader sh;

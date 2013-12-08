@@ -32,7 +32,7 @@
 		sh.load("shaders/exampleAnimInstanced.vert","shaders/exampleAnimInstanced.frag");
 		sh.use();
 
-		//Create RotatingView Object after shader have been loaded
+		//Create RotatingView Object AFTER shader have been loaded
 		rv = new RotatingView(sh, "ProjectView_mat");
 		//Send default projection view matrix to GPU
 		rv->updateView();
@@ -43,10 +43,11 @@
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		updatePositions();
+
+		glBindVertexArray(vaoId[0]);
 		//vertexSize and bufferSize for std::vector<Eigen::Array<float,4> >
 		const size_t vertexSize = sizeof(pos[0]);//ok for std::array (size known at compile time), otherwise 4 * sizeof(pos[0][0])
 		const size_t bufferSize = n_points * vertexSize;
-		void* dataPointer = pos.data();
 
 		// Map the buffer
 		glm::mat4* matrices = (glm::mat4 *)glMapBuffer(GL_ARRAY_BUFFER,GL_WRITE_ONLY);
@@ -64,7 +65,7 @@
 
 		// Activate instancing progr
 		glUseProgram(sh.getProgramId());
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		//Draw n_points instances of balls.
 		glDrawElementsInstanced(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, NULL, n_points);
@@ -80,47 +81,54 @@
 		destroyVBO();
 	}
 	void ExampleAnimInstanced::createVBO(){
-		//Initialize Buffers
-		unsigned int numVao = 1;
-		unsigned int numBuf = 2;
-		unsigned int numIBuf = 1;
-		vaoId.reserve(numVao);
-		bufferId.reserve(numBuf);
-		indexBufferId.reserve(numIBuf);
-		glGenVertexArrays(numVao, vaoId.data());
-		glGenBuffers(numBuf, bufferId.data());
-		glGenBuffers(numIBuf, indexBufferId.data());
+		//One vertex array object for the ball
+		glGenVertexArrays(nVao, vaoId);
+		glGenBuffers(nBuffer, bufferId);
+		glGenBuffers(nIndexBuffer, indexBufferId);
+
+		//Upload Ball
+		glBindVertexArray(vaoId[0]);
+
+		GLint tmp;
 
 		//Load ball
 		const GLuint N = 10; //#vertices on longitude (without poles)
 		const GLuint M = 10; //#vertices on latitude
-		const float R = 0.05f; //Radius
+		const float R = 0.05; //Radius
 
 		Ball b(N, M, R);
 		std::vector<float> vertices = b.getVertices();
 		std::vector<float> normals = b.getNormals();
 		std::vector<GLuint> indices = b.getIndices();
-		//numElements is needed in display-function
 		numElements = b.getNumElements();
 
 		GLenum ErrorCheckValue = glGetError();
-		const size_t vertexSize = 4* sizeof(vertices[0]);
-		const size_t bufferSize = vertices.size() * vertexSize;
+		const size_t vertexSize = 4 * sizeof(vertices[0]);
+		const size_t bufferSizeVertices = vertices.size() * vertexSize;
+		const size_t normalSize = 3 * sizeof(normals[0]);
+		const size_t bufferSizeNormals = normals.size() * normalSize;
 
-		glBindVertexArray(vaoId[0]);
-		//Upload vertices of ball
+		//Upload vertices
 		glBindBuffer(GL_ARRAY_BUFFER, bufferId[0]);
-		glBufferData(GL_ARRAY_BUFFER, bufferSize, vertices.data(), GL_STATIC_DRAW);
-		locs.push_back(glGetAttribLocation(sh.getProgramId(),"position"));
-		glVertexAttribPointer(locs.back(), 4, GL_FLOAT, GL_FALSE, vertexSize, 0);
-		glEnableVertexAttribArray(locs.back());
+		glBufferData(GL_ARRAY_BUFFER, bufferSizeVertices, vertices.data(), GL_STATIC_DRAW);
+		locs["position"] = glGetAttribLocation(sh.getProgramId(),"position");
+		if(locs["position"] == -1){
+			std::cerr << "ERROR: Could not find location of position" << std::endl;
+			exit(-1);
+		}
+		glVertexAttribPointer(locs["position"], 4, GL_FLOAT, GL_FALSE, vertexSize, 0);
+		glEnableVertexAttribArray(locs["position"]);
 
-//		//Upload normals of ball
-//		glBindBuffer(GL_ARRAY_BUFFER, bufferId[0]);
-//		glBufferData(GL_ARRAY_BUFFER, bufferSize, normals.data(), GL_STATIC_DRAW);
-//		locs.push_back(glGetAttribLocation(sh.getProgramId(),"normal"));
-//		glVertexAttribPointer(locs.back(), 4, GL_FLOAT, GL_FALSE, vertexSize, 0);
-//		glEnableVertexAttribArray(locs.back());
+		//Upload normals
+		glBindBuffer(GL_ARRAY_BUFFER, bufferId[1]);
+		glBufferData(GL_ARRAY_BUFFER, bufferSizeNormals, normals.data(), GL_STATIC_DRAW);
+		locs["normal"] = glGetAttribLocation(sh.getProgramId(),"normal");
+		if(locs["normal"] == -1){
+			std::cerr << "ERROR: Could not find location of normal" << std::endl;
+			exit(-1);
+		}
+		glVertexAttribPointer(locs["normal"], 3, GL_FLOAT, GL_FALSE, normalSize, 0);
+		glEnableVertexAttribArray(locs["normal"]);
 
 		//Upload indices of ball
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId[0]);
@@ -128,47 +136,39 @@
 
 		//Prepare model matrix
 		//Model matrix contains information of position of particles.
-		glBindBuffer(GL_ARRAY_BUFFER, bufferId[1]);
-		glBufferData(GL_ARRAY_BUFFER, n_points * sizeof(glm::mat4), vertices.data(), GL_STATIC_DRAW);
-		locs.push_back(glGetAttribLocation(sh.getProgramId(),"modelMat"));
+		glBindBuffer(GL_ARRAY_BUFFER, bufferId[2]);
+		glBufferData(GL_ARRAY_BUFFER, n_points * sizeof(glm::mat4), vertices.data(), GL_STATIC_DRAW);//Fill with any data
+		locs["modelMat"] = glGetAttribLocation(sh.getProgramId(),"modelMat");
 		// Loop over each column of the matrix...
 		for (int i = 0; i < 4; i++)	{
 			// Set up the vertex attribute
-			glVertexAttribPointer(locs.back() + i,	4, GL_FLOAT, GL_FALSE,	sizeof(glm::mat4),(void *)(sizeof(glm::vec4) * i));
+			glVertexAttribPointer(locs["modelMat"] + i,	4, GL_FLOAT, GL_FALSE,	sizeof(glm::mat4),(void *)(sizeof(glm::vec4) * i));
 			// Enable it
-			glEnableVertexAttribArray(locs.back() + i);
+			glEnableVertexAttribArray(locs["modelMat"] + i);
 			// Make it instanced
-			glVertexAttribDivisor(locs.back() + i, 1);
+			glVertexAttribDivisor(locs["modelMat"] + i, 1);
 		}
+
 
 	}
 	void ExampleAnimInstanced::destroyVBO(){
 		GLenum ErrorCheckValue = glGetError();
 
-		for(std::vector<GLint>::iterator it = locs.begin(); it != locs.end(); ++it){
-			glDisableVertexAttribArray(*it);
+		for(std::map<std::string, GLint>::iterator it = locs.begin(); it != locs.end(); ++it){
+			glDisableVertexAttribArray((*it).second);
 		}
-		if(bufferId.size() > 0){
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glDeleteBuffers(bufferId.size(), bufferId.data());
-		}
-		if(indexBufferId.size() > 0){
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			glDeleteBuffers(indexBufferId.size(), indexBufferId.data());
-		}
-		if(vaoId.size() > 0){
-			glBindVertexArray(0);
-			glDeleteVertexArrays(vaoId.size(), vaoId.data());
-		}
-		ErrorCheckValue = glGetError();
-		if (ErrorCheckValue != GL_NO_ERROR)
-		{
-			fprintf(
-				stderr,
-				"ERROR: Could not destroy the VBO: %s \n",
-				gluErrorString(ErrorCheckValue)
-			);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDeleteBuffers(nBuffer, bufferId);
 
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glDeleteBuffers(nIndexBuffer, indexBufferId);
+
+		glBindVertexArray(0);
+		glDeleteVertexArrays(nVao, vaoId);
+
+		ErrorCheckValue = glGetError();
+		if (ErrorCheckValue != GL_NO_ERROR){
+			std::cerr << "ERROR: Could not destroy the VBO: " << gluErrorString(ErrorCheckValue) << "\n";
 			exit(-1);
 		}
 	}
