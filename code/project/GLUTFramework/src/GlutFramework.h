@@ -41,7 +41,7 @@
 #include <GL/freeglut.h>	// Also includes GL/gl.h and GL/glu.h
 #endif
 
-#include "Keyboard.h"
+//#include "Keyboard.h"
 #include "PerformanceTimer.h"
 #include "Vector.h"
 
@@ -79,19 +79,12 @@ namespace glutFramework {
 		double frameTimeElapsed;
 		
 	protected:
-		Keyboard keyStates;
 		PerformanceTimer frameRateTimer;
 		PerformanceTimer displayTimer;
 		
 		std::string title;
 		double elapsedTimeInSeconds;  
 		static GlutFramework *instance;
-		
-		
-//		Vector<float> eyeVector;
-//		Vector<float> centerVector;
-//		Vector<float> upVector;
-		
 		
 	public:
 		// Constants

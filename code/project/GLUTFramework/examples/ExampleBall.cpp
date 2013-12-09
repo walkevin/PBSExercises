@@ -28,7 +28,7 @@
 	}
 	void ExampleBall::display(float dTime){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, NULL);
 
 //		glPointSize(3.0f);
