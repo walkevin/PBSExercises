@@ -254,4 +254,9 @@ namespace sph
 	{
 		return lastTimestep;
 	}
+
+	std::shared_ptr<CollisionHandlerNS::CollisionHandler> SphSolver::getCollisionHandler()
+	{
+		return collisionHandler;
+	}
 }

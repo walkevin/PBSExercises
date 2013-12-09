@@ -135,6 +135,11 @@ namespace sph
 			*/
 			entityValue getLastTimestep() const;
 
+			/*
+			Returns collision Handler
+			*/
+			std::shared_ptr<CollisionHandlerNS::CollisionHandler> getCollisionHandler();
+
     private:
       std::array<coordinate, 27> neighbourTransitions;
       SphCell dummyCell;
