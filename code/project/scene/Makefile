@@ -1,7 +1,7 @@
 EXE=viewer
 
-EXAMPLE_SRC = main.cpp lustigiSzene.cpp
-EXAMPLE_OBJ = main.o lustigiSzene.o
+EXAMPLE_SRC = main.cpp testTriangle.cpp
+EXAMPLE_OBJ = main.o testTriangle.o
 
 FP = ../GLUTFramework/src/
 FRAMEWORK_SRC = $(FP)GlutFramework.cpp $(FP)PerformanceTimer.cpp $(FP)Keyboard.cpp $(FP)ShaderLoader.cpp $(FP)RotatingView.cpp $(FP)Ball.cpp
