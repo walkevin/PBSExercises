@@ -3,6 +3,7 @@
 
 #include "testTriangle.h"
 #include <iostream>
+#include <vector>
 
 //OpenGL Math
 #include <glm/glm.hpp>
@@ -14,69 +15,94 @@
 
 GLuint car;
 float carrot;
+std::vector<float> objVertices;
+std::vector<float> objFaces;
 
 	LustigiSzene::LustigiSzene(){}
 	LustigiSzene::~LustigiSzene(){}
 
 void LustigiSzene::loadObj(char *fname) {
-   FILE *fp;
-   int read;
-   GLfloat x, y, z;
-   char ch;
-   car=glGenLists(1);
-   fp=fopen(fname,"r");
-   if (!fp)
-  {
-    printf("can't open file %s\n", fname);
-    exit(1);
-  }
-   glPointSize(2.0);
-   glNewList(car, GL_COMPILE);
-   {
-    glPushMatrix();
-    glBegin(GL_POINTS);
-    while(!(feof(fp)))
-    {
-     read=fscanf(fp,"%c %f %f %f",&ch,&x,&y,&z);
-     if(read==4&&ch=='v')
-    {
-     glVertex3f(x,y,z);
-     }
-   }
-   glEnd();
-   }
-   glPopMatrix();
-   glEndList();
-   fclose(fp);
+	FILE *fp;
+	int read;
+	int read2;
+  GLfloat x,y,z;
+  GLfloat xx,xy,yx,yy,zx,zy;
+  char ch, cha, chb, chc, chd;
+	car=glGenLists(1);
+	fp=fopen(fname,"r");
+	if (!fp)
+	{
+		printf("can't open file %s\n", fname);
+		exit(1);
+	}
+	glPointSize(2.0);
+	glNewList(car, GL_COMPILE);
+	{
+		glPushMatrix();
+		glBegin(GL_POINTS);
+		while(!(feof(fp)))
+		{
+			read=fscanf(fp,"%c %f %f %f",&ch,&x,&y,&z);
+			if(read==4&&ch=='v')
+			{
+				objVertices.push_back(x);
+				objVertices.push_back(y);
+				objVertices.push_back(z);
+				glVertex3f(x,y,z);
+			}
+			read2=fscanf(fp,"%c %f %[/] %f %f %[/] %f %f %[/] %f",&cha,&xx,&chb,&xy,&yx,&chc,&yy,&zx,&chd,&zy);
+//			if(read2==10&&ch=='f')
+			std::cout << cha;
+			if(read2==10&&cha=='f')
+			{
+				objFaces.push_back(xx);
+				objFaces.push_back(yx);
+				objFaces.push_back(zx);
+			}
+		}
+		glEnd();
+	}
+//	for ( int i = 0; i < objVertices.size(); i++ )
+//	{
+//		std::cout << objVertices[i];
+//	}
+//	for ( int i = 0; i < objFaces.size(); i++ )
+//	{
+//		std::cout << objFaces[i] << std::endl;
+//	}
+//	std::cout << std::endl;
+	glPopMatrix();
+	glEndList();
+	fclose(fp);
 }
 
 void LustigiSzene::drawCar() {
-   glPushMatrix();
-   glTranslatef(0,-40.00,-105);
-   glColor3f(1.0,0.23,0.27);
-   glScalef(0.1,0.1,0.1);
-   glRotatef(carrot,0,1,0);
-   glCallList(car);
-   glPopMatrix();
-   carrot=carrot+0.6;
-   if(carrot>360)carrot=carrot-360;
+ glPushMatrix();
+ glTranslatef(0,-40.00,-105);
+ glColor3f(1.0,0.23,0.27);
+ glScalef(0.1,0.1,0.1);
+ glRotatef(carrot,0,1,0);
+ glCallList(car);
+ glPopMatrix();
+ carrot=carrot+0.6;
+ if(carrot>360)carrot=carrot-360;
 }
 
-	void LustigiSzene::load(){
-		sh.load("shaders/lustigiSzene.vert","shaders/lustigiSzene.frag");
-		sh.use();
+void LustigiSzene::load(){
+	sh.load("shaders/lustigiSzene.vert","shaders/lustigiSzene.frag");
+	sh.use();
 
-		//Create RotatingView Object AFTER shader have been loaded
-		rv = new RotatingView(sh, "ProjectView_mat");
-		//Send default projection view matrix to GPU
-		rv->updateView();
+	//Create RotatingView Object AFTER shader have been loaded
+	rv = new RotatingView(sh, "ProjectView_mat");
+	//Send default projection view matrix to GPU
+	rv->updateView();
 
-		createVBO();
-	}
-	void LustigiSzene::display(float dTime){
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	createVBO();
+}
+void LustigiSzene::display(float dTime){
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 //		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		//glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_BYTE, NULL);
+	//glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_BYTE, NULL);
 //////////////////////////////////////
 // Draw Triangle and Quad 
 //////////////////////////////////////   
@@ -91,7 +117,7 @@ void LustigiSzene::drawCar() {
 		glClearColor (0.0,1.0,0.0,1.0);
 		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
-		loadObj("data/woman.obj");//replace porsche.obj with radar.obj or any other .obj to display it
+		loadObj("data/cylinder.obj");//replace porsche.obj with radar.obj or any other .obj to display it
 		drawCar();
 
 		glutSwapBuffers();
