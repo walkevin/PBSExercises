@@ -79,6 +79,8 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 
 			//Correct position
 			position_t correctedPos = trianglePlane.projection(newParticlePos);
+			std::cout << "correctedPos: " << correctedPos << std::endl;
+
 
 			//Check whether the projected point is still in the triangle. If not, clamp it to the triangle's boundary
 			if(!pointInsideTriangle(correctedPos, triangle_t(v1,v2,v3))){

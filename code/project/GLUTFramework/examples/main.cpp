@@ -22,26 +22,17 @@
  * THE SOFTWARE.
  */
 
-#include "ExampleAnimInstanced.h"
+#include "ExampleCollision.h"
 //#include "ViewerShader.h"
 //#include "ViewerPoints.h"
 #include "../src/GlutFramework.h"
 
 using namespace glutFramework;
 
-/**
- * A sample program start that uses the base class GlutFramework to create a
- * graphics window that displays a teapot moving side to side.
- * Create a subclass of the GlutFramework and override the virtual methods.
- * 
- * @author Paul Solt 8-22-10
- */
 int main(int argc, char *argv[]) {
 	
-//    GlutFramework* framework = new ViewerShader();
-	GlutFramework* framework = new ExampleAnimInstanced();
+	GlutFramework* framework = new ExampleCollision();
 //	GlutFramework* framework = new GlutFramework();
-//	framework->setLookAt(0.0, 2.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 	framework->startFramework(argc, argv);
 	// **Note** No code below startFramework() will get executed 
 	
