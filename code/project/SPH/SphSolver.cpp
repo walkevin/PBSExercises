@@ -95,7 +95,7 @@ namespace sph
 	{
 		for(int i = 0; i < vertices.size(); i++)
 		{
-			vertices[i] = 0.5 * gridSize*cutoff * vertices[i] + 1;
+			vertices[i] = 0.5 * gridSize*cutoff * (vertices[i] + 1);
 		}
 		collisionHandler->addObject(vertices, stride, indices);
 	}
