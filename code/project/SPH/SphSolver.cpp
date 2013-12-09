@@ -4,7 +4,7 @@
 
 namespace sph
 {
-  SphSolver::SphSolver(entityValue cut, discreteValue size, SmoothingKernel& kern)
+  SphSolver::SphSolver(entityValue cut, discreteValue size, SmoothingKernel& kern, std::shared_ptr<CollisionHandlerNS::CollisionHandler> handler)
 	: neighbourTransitions()
   , dummyCell(cut, coordinate::Constant(-1), *this)
 	, trash(cut, coordinate::Constant(-2), *this)
@@ -14,6 +14,7 @@ namespace sph
   , cells()
   , gravity()
 	, stiffness(1000)
+	, collisionHandler(handler)
   {
     gravity << 0, 0, -9.81;
     initNeighbourTransitions();
@@ -33,6 +34,7 @@ namespace sph
 
   void SphSolver::simulationStep(entityValue deltaT)
   {
+		lastTimestep = deltaT;
 		#pragma omp parallel
 		{
 			#pragma omp for schedule(dynamic)
@@ -62,6 +64,42 @@ namespace sph
 		dummyCell.clear();
   }
 
+	void SphSolver::createSphere(entityValue radius, position center, velocity vel)
+	{
+		double dist = cutoff/2;
+		double dist2 = dist*dist;
+		double radius2 = radius*radius;
+		int range = std::floor(radius/dist);
+		std::vector<position> positions(0);
+		std::vector<velocity> velocities(0);
+		for(int i = -range; i <= range; i++)
+		{
+			for(int j = -range; j <= range; j++)
+			{
+				for(int k = -range; k <= range; k++)
+				{
+					if((i*i + j*j + k*k)*dist2 > radius2)
+						continue;
+					position tempPos;
+        	tempPos << center(0) + i*dist, center(1) + j*dist, center(2) + k*dist;
+        	positions.push_back(tempPos);
+       		velocities.push_back(vel);
+				}
+			}
+		}
+		std::shared_ptr<SphWater> water = std::make_shared<SphWater>();
+  	this->insertParticles(positions, velocities, water, true);
+	}
+
+	void SphSolver::addObject(std::vector<CollisionHandlerNS::collision_t> vertices, int stride, std::vector<unsigned int> indices)
+	{
+		for(int i = 0; i < vertices.size(); i++)
+		{
+			vertices[i] = 0.5 * gridSize*cutoff * vertices[i] + 1;
+		}
+		collisionHandler->addObject(vertices, stride, indices);
+	}
+		
   std::vector<attributeValue> SphSolver::computeAttribute(std::vector<position> points, Attribute attr)
   {
     std::vector<attributeValue> returnValues(points.size());
@@ -134,11 +172,11 @@ namespace sph
 		return trash.getStoredParticles();
 	}
 
-  void SphSolver::insertParticles(std::vector<position> pos, std::vector<velocity> vel, std::shared_ptr<SphLiquid> liq)
+  void SphSolver::insertParticles(std::vector<position> pos, std::vector<velocity> vel, std::shared_ptr<SphLiquid> liq, bond bondIn)
   {
     for(int i = 0; i < pos.size(); i++)
     {
-      cells[0].addParticle(pos[i], vel[i], liq);
+      cells[0].addParticle(pos[i], vel[i], liq, bondIn);
     }
   
     cells[0].makeTransitions();
@@ -210,5 +248,15 @@ namespace sph
 	discreteValue SphSolver::getGridSize() const
 	{
 		return gridSize;
+	}
+
+	entityValue SphSolver::getLastTimestep() const
+	{
+		return lastTimestep;
+	}
+
+	std::shared_ptr<CollisionHandlerNS::CollisionHandler> SphSolver::getCollisionHandler()
+	{
+		return collisionHandler;
 	}
 }

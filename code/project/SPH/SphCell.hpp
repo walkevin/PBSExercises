@@ -72,7 +72,7 @@ namespace sph
       2. Velocity of the particle
       3. Liquid of the particle
       */
-      void addParticle(position, velocity, std::shared_ptr<SphLiquid>);
+      void addParticle(position, velocity, std::shared_ptr<SphLiquid>, bond);
 
       /*
       Checks if all particles are still inside the boundaries and else adds them to the right cell
@@ -91,6 +91,7 @@ namespace sph
       std::vector<std::shared_ptr<SphLiquid>> liq;
       std::vector<attributeValue> density;
       std::vector<attributeValue> pressure;
+			std::vector<bond> bonds;
       discreteValue storedParticles;
       entityValue cellSize;
       coordinate coord;

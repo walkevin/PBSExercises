@@ -13,11 +13,15 @@ FPS = ../SPH/
 SOLVER_SRC = $(FPS)SphSolver.cpp $(FPS)SphBase.cpp $(FPS)SphCell.cpp $(FPS)SphLiquid.cpp
 SOLVER_OBJ = $(FPS)SphSolver.o $(FPS)SphBase.o $(FPS)SphCell.o $(FPS)SphLiquid.o
 
+FPC = ../Collision/
+COLLISION_SRC = $(FPC)CollisionHandler.cpp
+COLLISION_OBJ = $(FPC)CollisionHandler.o
+
 #SOURCES = $(wildcard *.cpp)
 #OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 
-SOURCES = $(EXAMPLE_SRC) $(FRAMEWORK_SRC) $(SOLVER_SRC)
-OBJECTS = $(EXAMPLE_OBJ) $(FRAMEWORK_OBJ) $(SOLVER_OBJ)
+SOURCES = $(EXAMPLE_SRC) $(FRAMEWORK_SRC) $(SOLVER_SRC) $(COLLISION_SRC)
+OBJECTS = $(EXAMPLE_OBJ) $(FRAMEWORK_OBJ) $(SOLVER_OBJ) $(COLLISION_OBJ)
 
 CXX        = g++-4.8
 LDFLAGS    = -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu

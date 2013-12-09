@@ -35,9 +35,10 @@ using namespace sph;
 int main(int argc, char *argv[])
 {
   KernelSpiky kernel(0.1);
-  SphSolver simulation(0.1, 10, kernel);
+	std::shared_ptr<CollisionHandlerNS::CollisionHandler> handler = std::make_shared<CollisionHandlerNS::CollisionHandler>();
+  SphSolver simulation(0.1, 20, kernel, handler);
   
-  std::vector<position> pos;
+  /*std::vector<position> pos;
   std::vector<velocity> vel;
 
   for(int i = 0; i < 19; i++)
@@ -57,7 +58,15 @@ int main(int argc, char *argv[])
   }
 
   std::shared_ptr<SphWater> water = std::make_shared<SphWater>();
-  simulation.insertParticles(pos, vel, water);
+  simulation.insertParticles(pos, vel, water, false);*/
+
+	position center;
+	center << 0.4, 0.4, 1;
+
+	velocity vel;
+	vel << 100, 0, 80;
+
+	simulation.createSphere(0.2, center, vel);
 
  /**
  * A sample program start that uses the base class GlutFramework to create a

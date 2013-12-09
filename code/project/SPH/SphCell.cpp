@@ -12,6 +12,7 @@ namespace sph
   , liq(0)
   , density(0)
   , pressure(0)
+	, bonds(0)
   , storedParticles(0)
   , cellSize(size)
   , coord(cellCoord)
@@ -57,7 +58,10 @@ namespace sph
 			pos.pop_back();
 			vel.pop_back();
 			liq.pop_back();
+			f.pop_back();
 			density.pop_back();
+			pressure.pop_back();
+			bonds.pop_back();
 			storedParticles--;
 			assert(storedParticles == pos.size());
 			assert(storedParticles == vel.size());
@@ -99,7 +103,7 @@ namespace sph
     updatePositions(deltaT);
   }
 
-  void SphCell::addParticle(position posIn, velocity velIn, std::shared_ptr<SphLiquid> liqIn)
+  void SphCell::addParticle(position posIn, velocity velIn, std::shared_ptr<SphLiquid> liqIn, bond bondIn)
   {
     pos.push_back(posIn);
     vel.push_back(velIn);
@@ -107,6 +111,7 @@ namespace sph
     liq.push_back(liqIn);
     density.push_back(0);
     pressure.push_back(0);
+		bonds.push_back(bondIn);
     storedParticles++;
 		assert(storedParticles == pos.size());
 		assert(storedParticles == vel.size());
@@ -126,7 +131,7 @@ namespace sph
       if(transition(0,0) != 0 || transition(1,0) != 0 || transition(2,0) != 0)
       {
         SphCell& neighbour = solver.getNeighbour(coord, transition);
-        neighbour.addParticle(pos[i], vel[i], liq[i]);
+        neighbour.addParticle(pos[i], vel[i], liq[i], bonds[i]);
         int last = pos.size() - 1;
         if(last != i)
         {
@@ -134,6 +139,7 @@ namespace sph
           vel[i] = vel[last];
           liq[i] = liq[last];
           density[i] = density[last];
+					bonds[i] = bonds[last];
         }
         pos.pop_back();
         vel.pop_back();
@@ -141,6 +147,7 @@ namespace sph
         density.pop_back();        
         f.pop_back();
         pressure.pop_back();
+				bonds.pop_back();
         storedParticles--;
 				assert(storedParticles == pos.size());
 				assert(storedParticles == vel.size());
@@ -181,6 +188,8 @@ namespace sph
           position dirVec = pos[k] - posN;
 					if(dirVec == nullVec)
 						continue;
+					if(bonds[k])
+						continue;
           dirVec.normalize();
 					assert(!isnan(dirVec(0)));
           f[k] -= dirVec * preFactor * 0.5 * (pressureN + pressure[k]) * kernel.grad(posN, pos[k]);
@@ -217,12 +226,16 @@ namespace sph
 					pos[i](k) = 0.000001;
 					vel[i](k) = -vel[i](k);
 					vel[i] = 0.9*vel[i];
+					if(bonds[i])
+						bonds[i] = false;
 				}
 				if(pos[i](k) > cellSize*gridSize)
 				{
 					pos[i](k) = cellSize*gridSize - 0.000001;
 					vel[i](k) = -vel[i](k);
 					vel[i] = 0.9*vel[i];
+					if(bonds[i])
+						bonds[i] = false;
 				}
 			}
     }
