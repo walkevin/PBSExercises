@@ -117,7 +117,7 @@ void LustigiSzene::display(float dTime){
 		glClearColor (0.0,1.0,0.0,1.0);
 		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
-		loadObj("data/cylinder.obj");//replace porsche.obj with radar.obj or any other .obj to display it
+		loadObj("data/woman.obj");//replace porsche.obj with radar.obj or any other .obj to display it
 		drawCar();
 
 		glutSwapBuffers();
