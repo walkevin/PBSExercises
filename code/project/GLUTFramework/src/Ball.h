@@ -8,17 +8,17 @@
 #ifndef BALL_H_
 #define BALL_H_
 
-typedef float ball_type;
+//typedef float ball_type;
 
 #include <vector>
-
-class Ball {
+#include "GeometricObject.h"
+class Ball : public GeometricObject {
 public:
-	Ball(int N, int M, ball_type R);
+	Ball(int N, int M, geometry_type R);
 	virtual ~Ball();
 
-	std::vector<ball_type> getVertices();
-	std::vector<ball_type> getNormals();
+	std::vector<geometry_type> getVertices();
+	std::vector<geometry_type> getNormals();
 	std::vector<unsigned int> getIndices();
 
 	unsigned int getNumElements();
