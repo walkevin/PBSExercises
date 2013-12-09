@@ -14,7 +14,7 @@
 #include <Eigen/Core>
 #include <tuple>
 
-namespace CollisionHandlerNS {
+namespace CollisionHandlerNS{
 
 typedef float collision_t;
 

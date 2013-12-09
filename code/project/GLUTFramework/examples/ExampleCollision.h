@@ -39,7 +39,7 @@ private:
 	std::vector<Eigen::Matrix<float, 4, 1> > pos;
 	std::vector<Eigen::Matrix<float, 4, 1> > vel;
 
-	int n_points = 20;
+	int n_points;
 
 	int nVao;
 	int nBuffer;

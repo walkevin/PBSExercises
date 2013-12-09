@@ -38,6 +38,7 @@
 	ExampleCollision::~ExampleCollision(){}
 
 	void ExampleCollision::updatePositions(){
+		using namespace CollisionHandlerNS;
 		for(int i = 0; i < n_points; i++){
 			position_t oldPos(pos[i].head<3>());
 			pos[i] += vel[i];
@@ -93,11 +94,11 @@
 
 		glDrawElementsInstanced(GL_TRIANGLES, objInfo[0].numElements, GL_UNSIGNED_INT, NULL, objInfo[0].numInstances);
 
-//		glBindVertexArray(vaoId[1]);
-//		glDrawElementsInstanced(GL_TRIANGLES, objInfo[1].numElements, GL_UNSIGNED_INT, NULL, objInfo[1].numInstances);
+		glBindVertexArray(vaoId[1]);
+		glDrawElementsInstanced(GL_TRIANGLES, objInfo[1].numElements, GL_UNSIGNED_INT, NULL, objInfo[1].numInstances);
 
 		glBindVertexArray(vaoId[2]);
-		glDrawElementsInstanced(GL_TRIANGLES, objInfo[1].numElements, GL_UNSIGNED_INT, NULL, objInfo[1].numInstances);
+		glDrawElementsInstanced(GL_TRIANGLES, objInfo[2].numElements, GL_UNSIGNED_INT, NULL, objInfo[2].numInstances);
 
 //		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, NULL);
 		glutSwapBuffers();
@@ -134,17 +135,19 @@
 
 		//BEGIN: Upload Pyramid
 		//Load pyramid
-//		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
-//
-//		glBindVertexArray(vaoId[1]);
-//		std::vector<glm::mat4> pyrTransforms;
-//		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0,0.0)));
-//		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, 1);
-//		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
-//		objInfo.push_back(pyrinfo);
-//
-//		ch.addObject(pyr->getVertices(), 4, pyr->getIndices());
-		//ENd: Upload pyramid
+		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
+
+		glBindVertexArray(vaoId[1]);
+		std::vector<glm::mat4> pyrTransforms;
+		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0,0.0)));
+//		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.0,0.0,0.0)));
+		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1))
+		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, 1);
+		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
+		objInfo.push_back(pyrinfo);
+
+		ch.addObject(pyr->getVertices(), 4, pyr->getIndices());
+//		ENd: Upload pyramid
 
 
 		//BEGIN: Upload cuboid
