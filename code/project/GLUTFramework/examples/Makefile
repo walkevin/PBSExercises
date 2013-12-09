@@ -1,6 +1,6 @@
 EXE=viewer
 
-#EXAMPLE_SRC = main.cpp ExampleBall.cpp ../../Collision/CollisionHandler.cpp
+#blaEXAMPLE_SRC = main.cpp ExampleBall.cpp ../../Collision/CollisionHandler.cpp
 #EXAMPLE_OBJ = main.o ExampleBall.o ../../Collision/CollisionHandler.o
 EXAMPLE_SRC = main.cpp ExampleCollision.cpp ../../Collision/CollisionHandler.cpp
 EXAMPLE_OBJ = main.o ExampleCollision.o ../../Collision/CollisionHandler.o
