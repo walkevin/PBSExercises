@@ -29,6 +29,7 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsAllObjects(
 		std::tuple<bool, position_t, velocity_t> res = particleVsOneObject(newParticlePos, oldParticlePos, particleVel, *it);
 		if(std::get<0>(res) == true){
 			tmp = res;
+			break;
 		}
 	}
 
@@ -39,11 +40,10 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsAllObjects(
 std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(position_t newParticlePos, position_t oldParticlePos, velocity_t particleVel, object_t object){
 
 	//If particle is not inside AABB box: return
-	if(!pointInsideCube(newParticlePos, object.AABB)){
+//	if(!( pointInsideCube(newParticlePos, object.AABB) || pointInsideCube(oldParticlePos, object.AABB) )){
 //		std::cout << "CollisionHandler::particleVsOneObject: Early return: newParticlePos outside AABB box" << std::endl;
-		return std::make_tuple(false, newParticlePos, particleVel);
-	}
-
+//		return std::make_tuple(false, newParticlePos, particleVel);
+//	}
 	//Init RNG
 	std::mt19937 randEng(42);
 	//For each triangle, check intersection and correct if necessary
@@ -55,16 +55,13 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 		position_t v3(object.vertices[object.vertexStride * vInd3], object.vertices[object.vertexStride * vInd3 + 1], object.vertices[object.vertexStride * vInd3 + 2]);
 
 		//Compute (not normalized) triangle normal by vector product
-		vec3 triangleNormal = ((v2-v1).cross(v3-v1)); //note: normal always points away from the plane
-
+		vec3 triangleNormal = ((v2-v1).cross(v3-v1)).normalized(); //note: normal always points away from the plane
 
 		//Check intersection
 		bool intersects = false;
-		std::cout << "oldParticlePos:\n" << oldParticlePos << std::endl;
-		std::cout << "newParticlePos:\n" << newParticlePos << std::endl;
 		std::pair<bool, position_t> inters = intersectPlane(line_t(oldParticlePos, newParticlePos), triangleNormal, v1);
-		std::cout << "intersectsPlane?: " << inters.first << std::endl;
-		std::cout << "intersection At: " << inters.second << std::endl;
+//		std::cout << "intersectsPlane?: " << inters.first << std::endl;
+//		std::cout << "intersection At: " << inters.second << std::endl;
 		if(inters.first == true){
 			intersects = pointInsideTriangle(inters.second, triangle_t(v1, v2, v3));//Watch out!
 //			std::cout << "CollisionHandler::particleVsOneObject: Check if point is inside triangle" << std::endl;
@@ -79,6 +76,8 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 
 			//Correct position
 			position_t correctedPos = trianglePlane.projection(newParticlePos);
+//			std::cout << "correctedPos: " << correctedPos << std::endl;
+
 
 			//Check whether the projected point is still in the triangle. If not, clamp it to the triangle's boundary
 			if(!pointInsideTriangle(correctedPos, triangle_t(v1,v2,v3))){
@@ -102,18 +101,19 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 			}
 
 			//Correct velocity
-			std::cout << "particleVel:\n" << particleVel << std::endl;
-			std::cout << "triangleNormal:\n" << triangleNormal << std::endl;
-			velocity_t correctedVel = trianglePlane.projection(particleVel);
-			//Add some random perturbation
-			collision_t factor = 0.05 * particleVel.squaredNorm();
+			velocity_t correctedVel = 0.7 * (trianglePlane.projection(v1 + particleVel) - v1);//v1: particleVel is only a direction vector
+			//			velocity_t velocityDir = (correctedPos - inters.second);
+//			std::cout << "velocityDir\n" << velocityDir << std::endl;
+//			velocity_t correctedVel = velocityDir.normalized() * particleVel.norm();
+		    std::cout << "correctedVel:\n" << correctedVel << std::endl;
+
+		    //Add some random perturbation
+			collision_t factor = 0.2 * particleVel.norm();
 		    std::uniform_real_distribution<collision_t> uniformDist(-factor, factor);
 		    collision_t rand0 = uniformDist(randEng);
 		    collision_t rand1 = uniformDist(randEng);
 
-		    std::cout << "correctedVel:\n" << correctedVel << std::endl;
 		    correctedVel += rand0 * (v2-v1) + rand1 * (v2-v3);
-
 			return std::make_tuple(true, correctedPos, correctedVel);
 		}
 	}
@@ -134,14 +134,13 @@ std::pair<bool, position_t> CollisionHandler::intersectPlane(line_t lineSegment,
 	collision_t divisor = planeNormal.dot(diff);
 
 	if(diff == intersectionPoint || divisor == 0.){//line(1) == line(0) || line is on or parallel to the plane
-		std::cout << "Line is on plane" << std::endl;
 		return std::make_pair(intersects, intersectionPoint);
 	}
 
 	collision_t s = -(planeNormal.dot(lineSegment(0) - planePoint) ) / divisor;
 
 	//Check whether intersection point lies between line(0) and line(1)
-	if(s > 0. && s <= 1.0005){
+	if(s > 0. && s <= 1.){
 		intersects = true;
 		intersectionPoint = lineSegment(0) + s * (lineSegment(1) - lineSegment(0));
 	}
@@ -224,7 +223,8 @@ bool CollisionHandler::pointInsideTriangle(position_t x, triangle_t tri){
 }
 
 bool CollisionHandler::pointInsideCube(position_t x, cube_t c){
-	return x(0) > c(0) && x(0) < c(1) && x(1) > c(2) && x(1) < c(3) && x(2) > c(4) && x(2) < c(5);
+	double tol = 0.001;
+	return x(0) > c(0) - tol && x(0) < c(1) + tol && x(1) > c(2) - tol && x(1) < c(3) + tol && x(2) > c(4) - tol && x(2) < c(5) + tol;
 }
 
 void CollisionHandler::addObject(std::vector<collision_t> vertices, int vertexStride, std::vector<unsigned int> indices){

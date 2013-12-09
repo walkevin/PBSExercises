@@ -52,7 +52,7 @@ void RotatingView::updateView(){
 void RotatingView::keyboardEvent(int key)
 {
 	// Subclass and override this method
-	printf( "KeyboardDown: %c = %d\n", key, (int)key );
+	//printf( "KeyboardDown: %c = %d\n", key, (int)key );
 		if(key == 100)//Arrow left
 			azimuth += angleChangeSpeed;
 		else if(key == 102)//Arrow right
