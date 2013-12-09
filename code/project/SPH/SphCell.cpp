@@ -224,16 +224,20 @@ namespace sph
 				if(pos[i](k) < 0)
 				{
 					pos[i](k) = 0.000001;
-					vel[i](k) = -vel[i](k);
-					vel[i] = 0.9*vel[i];
+					double absVel = pos[i].norm();
+					vel[i](k) = 0;
+					vel[i].normalize();
+					vel[i] = 0.9*absVel*vel[i];
 					if(bonds[i])
 						bonds[i] = false;
 				}
 				if(pos[i](k) > cellSize*gridSize)
 				{
 					pos[i](k) = cellSize*gridSize - 0.000001;
-					vel[i](k) = -vel[i](k);
-					vel[i] = 0.9*vel[i];
+					double absVel = pos[i].norm();
+					vel[i](k) = 0;
+					vel[i].normalize();
+					vel[i] = 0.9*absVel*vel[i];
 					if(bonds[i])
 						bonds[i] = false;
 				}
