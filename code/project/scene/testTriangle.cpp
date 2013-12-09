@@ -88,7 +88,7 @@ void LustigiSzene::drawCar() {
 //		glutSolidTeapot(1);
 //////////////////////////////////////   
 //
-		glClearColor (0.0,0.0,0.0,1.0);
+		glClearColor (0.0,1.0,0.0,1.0);
 		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 		loadObj("data/woman.obj");//replace porsche.obj with radar.obj or any other .obj to display it
