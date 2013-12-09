@@ -135,14 +135,22 @@ using namespace sph;
 
 		glBindVertexArray(vaoId[2]);
 		std::vector<glm::mat4> pyrTransforms;
-		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0,0.0)));
-//		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.0,0.0,0.0)));
+		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(2.0,0.0,0.0)));
+		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.0,0.0,0.0)));
 		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1))
 		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, 1);
 		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
 		objInfo.push_back(pyrinfo);
 
-		ch->addObject(pyr->getVertices(), 4, pyr->getIndices());
+		//Perform transformation of vertices for Collision Handler
+		for(int i = 0; i < pyrTransforms.size(); i++){
+			using namespace Eigen;
+			std::vector<geometry_type> pyrData = pyr->getVertices();
+			Map<MatrixXf> rawVertices(pyrData.data(), 4, pyrData.size() / 4);//rawVertices operates on the same data as pyrData
+			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(pyrTransforms[i]));
+			rawVertices = transform * rawVertices;
+			ch->addObject(pyrData, 4, pyr->getIndices());
+		}
 //		ENd: Upload pyramid
 //
 //
@@ -156,7 +164,15 @@ using namespace sph;
 		uploadGeometricObject(cub, cubTransforms.size(), cubTransforms, 2);
 		objectInfo cubinfo(cub->getNumElements(), cubTransforms.size());
 		objInfo.push_back(cubinfo);
-		ch->addObject(cub->getVertices(), 4, cub->getIndices());
+		//Perform transformation of vertices for Collision Handler
+		for(int i = 0; i < cubTransforms.size(); i++){
+			using namespace Eigen;
+			std::vector<geometry_type> cubData = cub->getVertices();
+			Map<MatrixXf> rawVertices(cubData.data(), 4, cubData.size() / 4);//rawVertices operates on the same data as cubData
+			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(pyrTransforms[i]));
+			rawVertices = transform * rawVertices;
+			ch->addObject(cubData, 4, cub->getIndices());
+		}
 
 		//ENd: Upload cuboid
 	}
