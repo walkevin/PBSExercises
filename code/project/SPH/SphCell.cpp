@@ -226,6 +226,7 @@ namespace sph
 			{
 				pos[i] = std::get<1>(res);
 				vel[i] = std::get<2>(res);
+				bonds[i] = true;
 			}
     }
   }
