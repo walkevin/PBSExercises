@@ -117,15 +117,12 @@ namespace glutFramework {
 			glutLeaveMainLoop();
 //			exit (0);
 		}
-		
-		keyStates.keyDown( (int)key );
 	}
 	
 	void GlutFramework::keyboardUp( unsigned char key, int x, int y ) 
 	{
 		// Subclass and override this method
 		std::cout << "KeyboardUp" << key << std::endl;
-		keyStates.keyUp( (int)key );
 	}
 	
 	void GlutFramework::specialKeyboardDown( int key, int x, int y ) 
