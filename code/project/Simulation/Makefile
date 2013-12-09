@@ -23,6 +23,7 @@ CXX        = g++-4.8
 LDFLAGS    = -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu
 INC        = -I/usr/include/eigen3
 CFLAGS     = -c -std=c++11 -O3
+DEFINES    = -DNDEBUG
 
 
 default: $(EXE)
@@ -31,7 +32,7 @@ $(EXE): $(OBJECTS)
 	$(CXX) -o $(EXE) $(OBJECTS) $(LDFLAGS)
 
 %.o : %.cpp
-	$(CXX) $(CFLAGS) $(INC) -o $@ $<
+	$(CXX) $(CFLAGS) $(INC) -o $@ $< $(DEFINES)
 
 clean:
 	 rm -f $(FP)*.o $(FPS)*.o *.o $(EXE)
