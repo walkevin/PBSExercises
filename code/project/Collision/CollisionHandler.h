@@ -12,6 +12,9 @@
 #include <vector>
 #include <utility>
 #include <Eigen/Core>
+#include <tuple>
+
+namespace CollisionHandlerNS {
 
 typedef float collision_t;
 
@@ -29,11 +32,6 @@ struct object_t{
 	std::vector<unsigned int> indices;
 	cube_t AABB;
 };
-
-#include <array>
-#include <utility>
-#include <tuple>
-namespace CollisionHandlerNS {
 
 class CollisionHandler {
 public:

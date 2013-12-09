@@ -35,7 +35,8 @@ using namespace sph;
 int main(int argc, char *argv[])
 {
   KernelSpiky kernel(0.1);
-  SphSolver simulation(0.1, 20, kernel);
+	std::shared_ptr<CollisionHandlerNS::CollisionHandler> handler = std::make_shared<CollisionHandlerNS::CollisionHandler>();
+  SphSolver simulation(0.1, 20, kernel, handler);
   
   /*std::vector<position> pos;
   std::vector<velocity> vel;

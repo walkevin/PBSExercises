@@ -4,6 +4,7 @@
 #include "SphBase.hpp"
 #include "SphCell.hpp"
 #include "SphLiquid.hpp"
+#include "../Collision/CollisionHandler.h"
 
 namespace sph
 {
@@ -18,8 +19,9 @@ namespace sph
       1. Cutoff (Determines size of cells)
       2. GridSize in 1D (#Cells GridSize^3 and Domain is [0, Cutoff*GridSize]^3 )
       3. Kernel to compute the Attributes (Poly6 is an option)
+			4. CollisionHandler
       */
-      SphSolver(entityValue, discreteValue, SmoothingKernel&);
+      SphSolver(entityValue, discreteValue, SmoothingKernel&, std::shared_ptr<CollisionHandlerNS::CollisionHandler>);
 
       /*
       Executes a simulation step. So T_new = T_old + deltaT
@@ -36,6 +38,16 @@ namespace sph
 			1. Radius of the sphere
 			*/
 			void createSphere(entityValue, position, velocity);
+
+			/*
+			Inserts static objects into the collision handler
+			
+			Arguments:
+			1. vertices, list of vertices
+			2. vertex stride (entweder 3 oder 4)
+	 		3. indices, list of indices (must be divisble by three) 
+			*/
+			void addObject(std::vector<CollisionHandlerNS::collision_t>, int, std::vector<unsigned int>);
 
       /*
       Function that returns the desired attribute at given positions
@@ -133,7 +145,8 @@ namespace sph
       std::vector<SphCell> cells;
       force gravity;
       entityValue stiffness;
-			entityValue lastTimestep;  
+			entityValue lastTimestep;
+			std::shared_ptr<CollisionHandlerNS::CollisionHandler> collisionHandler;  
 
       void initNeighbourTransitions();
   };
