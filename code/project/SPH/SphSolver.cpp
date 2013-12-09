@@ -33,6 +33,7 @@ namespace sph
 
   void SphSolver::simulationStep(entityValue deltaT)
   {
+		lastTimestep = deltaT;
 		#pragma omp parallel
 		{
 			#pragma omp for schedule(dynamic)
@@ -210,5 +211,10 @@ namespace sph
 	discreteValue SphSolver::getGridSize() const
 	{
 		return gridSize;
+	}
+
+	entityValue SphSolver::getLastTimestep() const
+	{
+		return lastTimestep;
 	}
 }

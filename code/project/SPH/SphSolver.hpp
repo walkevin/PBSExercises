@@ -110,6 +110,11 @@ namespace sph
 			*/
 			discreteValue getGridSize() const;
 
+			/*
+			Returns the last timestep
+			*/
+			entityValue getLastTimestep() const;
+
     private:
       std::array<coordinate, 27> neighbourTransitions;
       SphCell dummyCell;
@@ -119,7 +124,8 @@ namespace sph
       SmoothingKernel& kernel;
       std::vector<SphCell> cells;
       force gravity;
-      entityValue stiffness;    
+      entityValue stiffness;
+			entityValue lastTimestep;  
 
       void initNeighbourTransitions();
   };
