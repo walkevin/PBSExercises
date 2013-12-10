@@ -125,11 +125,11 @@ namespace sph
 		int last = storedParticles -1;
 		if(index != last)
 		{
-			pos[i] = pos[last];
-			vel[i] = vel[last];
-			liq[i] = liq[last];
-			density[i] = density[last];
-			bonds[i] = bonds[last];
+			pos[index] = pos[last];
+			vel[index] = vel[last];
+			liq[index] = liq[last];
+			density[index] = density[last];
+			bonds[index] = bonds[last];
 		}
 		pos.pop_back();
 		vel.pop_back();
