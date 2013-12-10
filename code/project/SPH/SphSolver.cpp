@@ -167,6 +167,11 @@ namespace sph
 		trash.clear();
 	}
 
+	SphCell& SphSolver::getTrashCell()
+	{
+		return trash;
+	}
+
 	int SphSolver::getDeadParticleNumber() const
 	{
 		return trash.getStoredParticles();

@@ -88,6 +88,11 @@ namespace sph
 			*/
 			std::vector<homogeneousPosition> getDeadParticles();
 
+			/*
+			A function that returns a reference to the trash cell
+			*/
+			SphCell& getTrashCell();
+
       /* 
       Returns a displacement based on a current position
       
