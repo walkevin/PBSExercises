@@ -8,7 +8,7 @@
  *  Example
  *
  *  	Ball b(N, M, R);
-		std::vector<ball_type> vertices = b.getVertices();
+		std::vector<geometry_type> vertices = b.getVertices();
 		std::vector<GLuint> indices = b.getIndices();
 		numElements = b.getNumElements();
 
@@ -17,18 +17,19 @@
 		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, NULL);
 
  */
+//TODO: Move computation of vertices and indices into constructor, create private variables vertices and indices
 
 #include "Ball.h"
 #include <vector>
 #include <cmath>
 
-Ball::Ball(int N_, int M_, ball_type R_) : N(N_), M(M_), R(R_), numElements(N_ * M_ * 6){}
+Ball::Ball(int N_, int M_, geometry_type R_) : N(N_), M(M_), R(R_), numElements(N_ * M_ * 6){}
 
 Ball::~Ball() {}
 
-std::vector<ball_type> Ball::getVertices(){
+std::vector<geometry_type> Ball::getVertices(){
 	//Specify vertices for sphere (displaced latitude-longitude discretization)
-	std::vector<ball_type> vertices;
+	std::vector<geometry_type> vertices;
 
 	//North Pole
 	vertices.push_back(0.0f); vertices.push_back(R); vertices.push_back(0.0f); vertices.push_back(1.0f);
@@ -37,9 +38,9 @@ std::vector<ball_type> Ball::getVertices(){
 	for(int n = 0; n < N; n++){//loop over theta
 		phi = 0.;
 		for(int m = 0; m < M; m++){//loop over phi
-			vertices.push_back(R * std::sin(theta) * std::cos(phi + n  * (M_PI/M)) );
+			vertices.push_back(R * std::sin(theta) * std::cos(phi + n * (M_PI/M)) );
 			vertices.push_back(R * std::cos(theta));
-			vertices.push_back(R * std::sin(theta) * std::sin(phi + n  * (M_PI/M)) );
+			vertices.push_back(R * std::sin(theta) * std::sin(phi + n * (M_PI/M)) );
 			vertices.push_back(1.0f);
 
 			phi += 2*M_PI/M;
@@ -52,8 +53,8 @@ std::vector<ball_type> Ball::getVertices(){
 	return vertices;
 }
 
-std::vector<ball_type> Ball::getNormals(){
-	std::vector<ball_type> normals;
+std::vector<geometry_type> Ball::getNormals(){
+	std::vector<geometry_type> normals;
 
 	//North Pole
 	normals.push_back(0.0f); normals.push_back(1.0f); normals.push_back(0.0f);
@@ -62,9 +63,9 @@ std::vector<ball_type> Ball::getNormals(){
 	for(int n = 0; n < N; n++){//loop over theta
 		phi = 0.;
 		for(int m = 0; m < M; m++){//loop over phi
-			normals.push_back(std::sin(theta) * std::cos(phi + n  * (M_PI/M) ));
+			normals.push_back(std::sin(theta) * std::cos(phi +  n * (M_PI/M) ));
 			normals.push_back(std::cos(theta));
-			normals.push_back(std::sin(theta) * std::sin(phi + n  * (M_PI/M) ));
+			normals.push_back(std::sin(theta) * std::sin(phi +  n * (M_PI/M) ));
 
 			phi += 2*M_PI/M;
 		}

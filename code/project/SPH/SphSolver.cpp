@@ -4,7 +4,7 @@
 
 namespace sph
 {
-  SphSolver::SphSolver(entityValue cut, discreteValue size, SmoothingKernel& kern)
+  SphSolver::SphSolver(entityValue cut, discreteValue size, SmoothingKernel& kern, std::shared_ptr<CollisionHandlerNS::CollisionHandler> handler)
 	: neighbourTransitions()
   , dummyCell(cut, coordinate::Constant(-1), *this)
 	, trash(cut, coordinate::Constant(-2), *this)
@@ -14,6 +14,7 @@ namespace sph
   , cells()
   , gravity()
 	, stiffness(1000)
+	, collisionHandler(handler)
   {
     gravity << 0, 0, -9.81;
     initNeighbourTransitions();
@@ -89,8 +90,16 @@ namespace sph
 		std::shared_ptr<SphWater> water = std::make_shared<SphWater>();
   	this->insertParticles(positions, velocities, water, true);
 	}
-		
 
+	void SphSolver::addObject(std::vector<CollisionHandlerNS::collision_t> vertices, int stride, std::vector<unsigned int> indices)
+	{
+		for(int i = 0; i < vertices.size(); i++)
+		{
+			vertices[i] = 0.5 * gridSize*cutoff * (vertices[i] + 1);
+		}
+		collisionHandler->addObject(vertices, stride, indices);
+	}
+		
   std::vector<attributeValue> SphSolver::computeAttribute(std::vector<position> points, Attribute attr)
   {
     std::vector<attributeValue> returnValues(points.size());
@@ -244,5 +253,10 @@ namespace sph
 	entityValue SphSolver::getLastTimestep() const
 	{
 		return lastTimestep;
+	}
+
+	std::shared_ptr<CollisionHandlerNS::CollisionHandler> SphSolver::getCollisionHandler()
+	{
+		return collisionHandler;
 	}
 }

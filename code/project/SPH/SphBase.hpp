@@ -10,9 +10,9 @@ namespace sph
   class SphSolver;
   class SphCell;
 
-  typedef Eigen::Vector3d velocity;
-  typedef Eigen::Vector3d position;
-  typedef Eigen::Vector3d force;
+  typedef Eigen::Vector3f velocity;
+  typedef Eigen::Vector3f position;
+  typedef Eigen::Vector3f force;
 	typedef bool bond;
   typedef Eigen::Array<float, 4, 1> homogeneousPosition;
   typedef Eigen::Array<int, 3, 1> coordinate;

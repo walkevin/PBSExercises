@@ -209,6 +209,7 @@ namespace sph
 
   void SphCell::updatePositions(entityValue deltaT)
   {
+		std::shared_ptr<CollisionHandlerNS::CollisionHandler> handler = solver.getCollisionHandler();
     for(int i = 0; i < storedParticles; i++)
     {
 			for(int k = 0; k < 3; k++)
@@ -217,11 +218,13 @@ namespace sph
 				assert(!isnan(vel[i](k)));
 				assert(!isnan(f[i](k)));
 			}
+			position posOld = pos[i];
       pos[i] = pos[i] + vel[i] * deltaT;
-			double gridSize = solver.getGridSize();
-			for(int k = 0; k < 3; k++)
+			std::tuple<bool, CollisionHandlerNS::position_t, CollisionHandlerNS::velocity_t> res;
+			res = handler->particleVsAllObjects(pos[i], posOld, vel[i]);
+			if(std::get<0>(res))
 			{
-				if(pos[i](k) < 0)
+				/*if(pos[i](k) < 0)
 				{
 					pos[i](k) = 0.000001;
 					double absVel = pos[i].norm();
@@ -240,7 +243,10 @@ namespace sph
 					vel[i] = 0.9*absVel*vel[i];
 					if(bonds[i])
 						bonds[i] = false;
-				}
+				}*/
+				pos[i] = std::get<1>(res);
+				vel[i] = std::get<2>(res);
+				bonds[i] = true;
 			}
     }
   }

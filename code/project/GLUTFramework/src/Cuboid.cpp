@@ -17,6 +17,7 @@
 		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, NULL);
 
  */
+//TODO: Move computation of vertices and indices into constructor, create private variables vertices and indices
 
 #include "Cuboid.h"
 #include <vector>

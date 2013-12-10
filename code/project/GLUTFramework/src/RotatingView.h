@@ -19,7 +19,6 @@ typedef double value_t;
 
 #include "GlutFramework.h"
 #include "ShaderLoader.h"
-//#include "vmath.h"
 
 
 class RotatingView {
