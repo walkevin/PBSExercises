@@ -119,6 +119,22 @@ std::vector<unsigned int> Cuboid::getIndices(){
 	return indices;
 }
 
+std::vector<geometry_type> Cuboid::getColors(){
+	std::vector<geometry_type> colors;
+	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
+	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
+	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
+	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
+
+	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
+	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
+	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
+	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
+
+	return colors;
+}
+
+
 unsigned int Cuboid::getNumElements(){
 	return numElements;
 }

@@ -20,6 +20,7 @@ public:
 	std::vector<geometry_type> getVertices();
 	std::vector<geometry_type> getNormals();
 	std::vector<unsigned int> getIndices();
+	std::vector<geometry_type> getColors();
 
 	unsigned int getNumElements();
 

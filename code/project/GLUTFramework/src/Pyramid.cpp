@@ -90,6 +90,17 @@ unsigned int Pyramid::getNumElements(){
 	return numElements;
 }
 
+std::vector<geometry_type> Pyramid::getColors(){
+	std::vector<geometry_type> colors;
+	colors.push_back(0.4); colors.push_back(0.0); colors.push_back(0.5); colors.push_back(1.0);
+	colors.push_back(0.4); colors.push_back(0.0); colors.push_back(0.5); colors.push_back(1.0);
+	colors.push_back(0.4); colors.push_back(0.0); colors.push_back(0.5); colors.push_back(1.0);
+	colors.push_back(0.4); colors.push_back(0.0); colors.push_back(0.5); colors.push_back(1.0);
+	colors.push_back(0.4); colors.push_back(0.0); colors.push_back(0.5); colors.push_back(1.0);
+
+	return colors;
+}
+
 inline geometry_type Pyramid::distance(geometry_type a1, geometry_type a2, geometry_type a3){//length of a vector (a1, a2, a3)
 	return std::sqrt(a1*a1 + a2*a2 + a3*a3);
 }

@@ -75,7 +75,7 @@ using namespace sph;
 
 		glBindVertexArray(vaoId[0]);
 
-		glBindBuffer(GL_ARRAY_BUFFER, bufferId[2]);
+		glBindBuffer(GL_ARRAY_BUFFER, bufferId[3]);
 		// Map the buffer
 		glm::mat4* matrices = (glm::mat4 *)glMapBuffer(GL_ARRAY_BUFFER,GL_WRITE_ONLY);
 		// Set model matrices for each instance
@@ -210,19 +210,34 @@ using namespace sph;
 	}
 
 	void Paintball::uploadGeometricObject(GeometricObject* obj, int numObj, std::vector<glm::mat4> objTransforms, int bufferStride){
-		std::cout << "Uploading geometric object" << std::endl;
+		const int nBuffers = 4;
+
 		std::vector<float> vertices = obj->getVertices();
 		std::vector<float> normals = obj->getNormals();
 		std::vector<GLuint> indices = obj->getIndices();
+		std::vector<float> colors = obj->getColors();
 
 		GLenum ErrorCheckValue = glGetError();
+		const size_t colorSize = 4 * sizeof(colors[0]);
+		const size_t bufferSizeColors = colors.size() * colorSize / 4;
 		const size_t vertexSize = 4 * sizeof(vertices[0]);
-		const size_t bufferSizeVertices = vertices.size() * vertexSize;
+		const size_t bufferSizeVertices = vertices.size() * vertexSize / 4;
 		const size_t normalSize = 3 * sizeof(normals[0]);
-		const size_t bufferSizeNormals = normals.size() * normalSize;
+		const size_t bufferSizeNormals = normals.size() * normalSize / 3;
 
 		//Upload vertices
-		glBindBuffer(GL_ARRAY_BUFFER, bufferId[bufferStride*3 + 0]);
+		glBindBuffer(GL_ARRAY_BUFFER, bufferId[bufferStride*nBuffers + 0]);
+		glBufferData(GL_ARRAY_BUFFER, bufferSizeColors, colors.data(), GL_STATIC_DRAW);
+		locs["color_body"] = glGetAttribLocation(sh.getProgramId(),"color_body");
+		if(locs["color_body"] == -1){
+			std::cerr << "ERROR: Could not find location of color_body" << std::endl;
+			exit(-1);
+		}
+		glVertexAttribPointer(locs["color_body"], 4, GL_FLOAT, GL_FALSE, colorSize, 0);
+		glEnableVertexAttribArray(locs["color_body"]);
+
+		//Upload vertices
+		glBindBuffer(GL_ARRAY_BUFFER, bufferId[bufferStride*nBuffers + 1]);
 		glBufferData(GL_ARRAY_BUFFER, bufferSizeVertices, vertices.data(), GL_STATIC_DRAW);
 		locs["position"] = glGetAttribLocation(sh.getProgramId(),"position");
 		if(locs["position"] == -1){
@@ -233,7 +248,7 @@ using namespace sph;
 		glEnableVertexAttribArray(locs["position"]);
 
 		//Upload normals
-		glBindBuffer(GL_ARRAY_BUFFER, bufferId[bufferStride*3 + 1]);
+		glBindBuffer(GL_ARRAY_BUFFER, bufferId[bufferStride*nBuffers + 2]);
 		glBufferData(GL_ARRAY_BUFFER, bufferSizeNormals, normals.data(), GL_STATIC_DRAW);
 		locs["normal"] = glGetAttribLocation(sh.getProgramId(),"normal");
 		if(locs["normal"] == -1){
@@ -244,12 +259,12 @@ using namespace sph;
 		glEnableVertexAttribArray(locs["normal"]);
 
 		//Upload indices of ball
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId[bufferStride*3 + 0]);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId[bufferStride * 1+ 0]);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
 		//Prepare model matrix
 		//Model matrix contains information of position of particles.
-		glBindBuffer(GL_ARRAY_BUFFER, bufferId[bufferStride*3 + 2]);
+		glBindBuffer(GL_ARRAY_BUFFER, bufferId[bufferStride*nBuffers + 3]);
 		glBufferData(GL_ARRAY_BUFFER, numObj * sizeof(objTransforms[0]), objTransforms.data(), GL_DYNAMIC_DRAW);
 		locs["modelMat"] = glGetAttribLocation(sh.getProgramId(),"modelMat");
 		// Loop over each column of the matrix...
