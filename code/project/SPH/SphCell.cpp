@@ -119,6 +119,32 @@ namespace sph
 		assert(storedParticles == density.size());
   }
 
+	void SphCell::deleteParticle(int index)
+	{
+		assert(index >= 0 && index < storedParticles);
+		int last = storedParticles -1;
+		if(index != last)
+		{
+			pos[i] = pos[last];
+			vel[i] = vel[last];
+			liq[i] = liq[last];
+			density[i] = density[last];
+			bonds[i] = bonds[last];
+		}
+		pos.pop_back();
+		vel.pop_back();
+		liq.pop_back();
+		density.pop_back();        
+		f.pop_back();
+		pressure.pop_back();
+		bonds.pop_back();
+		storedParticles--;
+		assert(storedParticles == pos.size());
+		assert(storedParticles == vel.size());
+		assert(storedParticles == liq.size());
+		assert(storedParticles == density.size());
+	}
+
   void SphCell::makeTransitions() 
   {
     for(int i = storedParticles-1; i >= 0; i--)
