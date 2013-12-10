@@ -74,7 +74,7 @@ using namespace sph;
 		glm::mat4* matrices = (glm::mat4 *)glMapBuffer(GL_ARRAY_BUFFER,GL_WRITE_ONLY);
 		// Set model matrices for each instance
 
-		for (int n = 0;	n < objInfo[0].numInstances; n++){
+		for (int n = 0;	n < n_points; n++){
 			const float a = pos[n][0];
 			const float b = pos[n][1];
 			const float c = pos[n][2];
@@ -84,6 +84,7 @@ using namespace sph;
 		// Done. Unmap the buffer.
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 
+		objInfo[0].numElements = n_points;
 		glDrawElementsInstanced(GL_TRIANGLES, objInfo[0].numElements, GL_UNSIGNED_INT, NULL, objInfo[0].numInstances);
 
 		//Note: vaoId[1] is broken for some reason.
