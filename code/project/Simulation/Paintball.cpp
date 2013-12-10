@@ -21,7 +21,9 @@ using namespace sph;
 
 	Paintball::Paintball(SphSolver* solver){
 		this->solver = solver;
-		n_points = solver->getParticleNumber();
+		nActiveParticles = solver->getParticleNumber();
+//		nDeadParticles = solver->getDeadParticleNumber();
+		nTotalParticles = nActiveParticles;
 		ch = solver->getCollisionHandler().get();
 
 		//Init vertex array objects, buffers
@@ -36,9 +38,13 @@ using namespace sph;
 	Paintball::~Paintball(){}
 
 	void Paintball::updatePositions(){
-		n_points = solver->getParticleNumber();
-		pos.reserve(n_points);
-		pos = solver->getParticles();
+		nActiveParticles = solver->getParticleNumber();
+		activeParticles.reserve(nActiveParticles);
+		activeParticles = solver->getParticles();
+//		nDeadParticles = solver->getDeadParticleNumber();
+//		deadParticles.reserve(nDeadParticles);
+//		deadParticles = solver->getDeadParticles();
+//		nTotalParticles = nActiveParticles + nDeadParticles;
 
 		for(int i = 0; i < 10; i++)
 			solver->simulationStep(0.0001);
@@ -74,17 +80,17 @@ using namespace sph;
 		glm::mat4* matrices = (glm::mat4 *)glMapBuffer(GL_ARRAY_BUFFER,GL_WRITE_ONLY);
 		// Set model matrices for each instance
 
-		for (int n = 0;	n < n_points; n++){
-			const float a = pos[n][0];
-			const float b = pos[n][1];
-			const float c = pos[n][2];
+		for (int n = 0;	n < nActiveParticles; n++){
+			const float a = activeParticles[n][0];
+			const float b = activeParticles[n][1];
+			const float c = activeParticles[n][2];
 			matrices[n] = glm::translate(glm::mat4(1.0f), glm::vec3(a,b,c));
 		}
 
 		// Done. Unmap the buffer.
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 
-		objInfo[0].numElements = n_points;
+		objInfo[0].numElements = nTotalParticles;
 		glDrawElementsInstanced(GL_TRIANGLES, objInfo[0].numElements, GL_UNSIGNED_INT, NULL, objInfo[0].numInstances);
 
 		//Note: vaoId[1] is broken for some reason.
@@ -120,7 +126,7 @@ using namespace sph;
 
 		glBindVertexArray(vaoId[0]);
 		std::vector<glm::mat4> balTransforms;
-		balTransforms.assign(n_points, glm::mat4(1.0));
+		balTransforms.assign(nTotalParticles, glm::mat4(1.0));
 		uploadGeometricObject(bal, balTransforms.size(), balTransforms, 0);
 
 		objectInfo balinfo(bal->getNumElements(), balTransforms.size());

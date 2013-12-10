@@ -43,3 +43,5 @@ clean:
 
 run:
 	./$(EXE)
+	
+.PHONY: clean
