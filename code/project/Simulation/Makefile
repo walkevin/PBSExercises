@@ -24,9 +24,9 @@ SOURCES = $(EXAMPLE_SRC) $(FRAMEWORK_SRC) $(SOLVER_SRC) $(COLLISION_SRC)
 OBJECTS = $(EXAMPLE_OBJ) $(FRAMEWORK_OBJ) $(SOLVER_OBJ) $(COLLISION_OBJ)
 
 CXX        = g++-4.8
-LDFLAGS    = -pg -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu
+LDFLAGS    = -g -pg -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu
 INC        = -I/usr/include/eigen3
-CFLAGS     = -pg -c -std=c++11 -O3 -Wno-enum-compare
+CFLAGS     = -g -pg -c -std=c++11 -O3 -Wno-enum-compare
 DEFINES    = -DNDEBUG
 
 
@@ -39,7 +39,7 @@ $(EXE): $(OBJECTS)
 	$(CXX) $(CFLAGS) $(INC) -o $@ $< $(DEFINES)
 
 clean:
-	 rm -f $(FP)*.o $(FPS)*.o *.o $(EXE)
+	 rm -f $(FP)*.o $(FPS)*.o $(FPC)*.o *.o $(EXE)
 
 run:
 	./$(EXE)
