@@ -83,6 +83,14 @@ namespace sph
 			Deletes all the particles belonging to the given cell (if the particles fit into another cell, they're not deleted)
 			*/
 			void clear();
+
+			/*
+			Deletes the particle at the given index
+			
+			Arguments:
+			1. Index of the particle to be deleted
+			*/
+			void deleteParticle(int);
  
     private:
       std::vector<velocity> vel;
