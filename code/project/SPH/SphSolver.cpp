@@ -88,7 +88,9 @@ namespace sph
 			}
 		}
 		std::shared_ptr<SphWater> water = std::make_shared<SphWater>();
-  	this->insertParticles(positions, velocities, water, true);
+		std::shared_ptr<bond> trueBond = std::make_shared<bond>();
+		*trueBond = true;
+  	this->insertParticles(positions, velocities, water, trueBond);
 	}
 
 	void SphSolver::addObject(std::vector<CollisionHandlerNS::collision_t> vertices, int stride, std::vector<unsigned int> indices)
@@ -178,7 +180,7 @@ namespace sph
 		return trash.getStoredParticles();
 	}
 
-  void SphSolver::insertParticles(std::vector<position> pos, std::vector<velocity> vel, std::shared_ptr<SphLiquid> liq, bond bondIn)
+  void SphSolver::insertParticles(std::vector<position> pos, std::vector<velocity> vel, std::shared_ptr<SphLiquid> liq, std::shared_ptr<bond> bondIn)
   {
     for(int i = 0; i < pos.size(); i++)
     {

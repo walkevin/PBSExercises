@@ -92,7 +92,7 @@ namespace sph
     updatePositions(deltaT);
   }
 
-  void SphCell::addParticle(position posIn, velocity velIn, std::shared_ptr<SphLiquid> liqIn, bond bondIn)
+  void SphCell::addParticle(position posIn, velocity velIn, std::shared_ptr<SphLiquid> liqIn, std::shared_ptr<bond> bondIn)
   {
     pos.push_back(posIn);
     vel.push_back(velIn);
@@ -183,7 +183,7 @@ namespace sph
           position dirVec = pos[k] - posN;
 					if(dirVec == nullVec)
 						continue;
-					if(bonds[k])
+					if(*bonds[k])
 						continue;
           dirVec.normalize();
 					assert(!isnan(dirVec(0)));
@@ -221,7 +221,7 @@ namespace sph
 			{
 				pos[i] = std::get<1>(res);
 				vel[i] = std::get<2>(res);
-				bonds[i] = false;
+				*bonds[i] = false;
 			}
     }
   }

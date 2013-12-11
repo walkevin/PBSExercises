@@ -76,7 +76,7 @@ namespace sph
       2. Vector with the velocities of the particles
       3. Liquid of the Particles
       */
-      void insertParticles(std::vector<position>, std::vector<velocity>, std::shared_ptr<SphLiquid>, bond);
+      void insertParticles(std::vector<position>, std::vector<velocity>, std::shared_ptr<SphLiquid>, std::shared_ptr<bond>);
 
 			/*
 			Returns the number of currently dead Particles
