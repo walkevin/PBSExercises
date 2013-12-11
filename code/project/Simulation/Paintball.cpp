@@ -91,8 +91,8 @@ using namespace sph;
 		objInfo["Ball"].numInstances = nTotalParticles;
 		glDrawElementsInstanced(GL_TRIANGLES, objInfo["Ball"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Ball"].numInstances);
 
-		glBindVertexArray(objInfo["Pyramid"].vaoId);
-		glDrawElementsInstanced(GL_TRIANGLES, objInfo["Pyramid"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Pyramid"].numInstances);
+//		glBindVertexArray(objInfo["Pyramid"].vaoId);
+//		glDrawElementsInstanced(GL_TRIANGLES, objInfo["Pyramid"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Pyramid"].numInstances);
 
 		glBindVertexArray(objInfo["Cuboid"].vaoId);
 		glDrawElementsInstanced(GL_TRIANGLES, objInfo["Cuboid"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Cuboid"].numInstances);
@@ -126,33 +126,33 @@ using namespace sph;
 		uploadGeometricObject(bal, balTransforms.size(), balTransforms, objInfo["Ball"]);
 		//END: Create and preprocess Ball
 
-		//BEGIN: Create and preprocess pyramid
-		//Load pyramid
-		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
-
-		//Prepare multiple instances of ball
-		std::vector<glm::mat4> pyrTransforms;
-		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(2.0,0.0,0.0)));
-//		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.7,0.4,0.0)));
-		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1))
-
-		//Create objectInfo struct
-		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
-		objInfo["Pyramid"] = pyrinfo;
-
-		//Upload to GPU
-		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, objInfo["Pyramid"]);
-
-		//Perform transformation of vertices and register in Collision Handler
-		for(int i = 0; i < pyrTransforms.size(); i++){
-			using namespace Eigen;
-			std::vector<geometry_type> pyrData = pyr->getVertices();
-			Map<MatrixXf> rawVertices(pyrData.data(), 4, pyrData.size() / 4);//rawVertices operates on the same data as pyrData
-			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(pyrTransforms[i]));
-			rawVertices = transform * rawVertices;
-			solver->addObject(pyrData, 4, pyr->getIndices());
-		}
-		//END: Create and preprocess pyramid
+//		//BEGIN: Create and preprocess pyramid
+//		//Load pyramid
+//		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
+//
+//		//Prepare multiple instances of ball
+//		std::vector<glm::mat4> pyrTransforms;
+//		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.0,0.0,0.0)));
+////		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.7,0.4,0.0)));
+//		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1))
+//
+//		//Create objectInfo struct
+//		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
+//		objInfo["Pyramid"] = pyrinfo;
+//
+//		//Upload to GPU
+//		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, objInfo["Pyramid"]);
+//
+//		//Perform transformation of vertices and register in Collision Handler
+//		for(int i = 0; i < pyrTransforms.size(); i++){
+//			using namespace Eigen;
+//			std::vector<geometry_type> pyrData = pyr->getVertices();
+//			Map<MatrixXf> rawVertices(pyrData.data(), 4, pyrData.size() / 4);//rawVertices operates on the same data as pyrData
+//			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(pyrTransforms[i]));
+//			rawVertices = transform * rawVertices;
+//			solver->addObject(pyrData, 4, pyr->getIndices());
+//		}
+////		END: Create and preprocess pyramid
 
 		//BEGIN: Create and preprocess cuboid
 		//Load cuboid
@@ -160,7 +160,7 @@ using namespace sph;
 
 		//Prepare multiple instances of ball
 		std::vector<glm::mat4> cubTransforms;
-		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.6,0.2,-0.5)));
+		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.5,0.0,0.0)));
 
 		//Create objectInfo struct
 		objectInfo cubinfo(cub->getNumElements(), cubTransforms.size());
@@ -174,7 +174,7 @@ using namespace sph;
 			using namespace Eigen;
 			std::vector<geometry_type> cubData = cub->getVertices();
 			Map<MatrixXf> rawVertices(cubData.data(), 4, cubData.size() / 4);//rawVertices operates on the same data as cubData
-			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(pyrTransforms[i]));
+			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(cubTransforms[i]));
 			rawVertices = transform * rawVertices;
 			solver->addObject(cubData, 4, cub->getIndices());
 		}
