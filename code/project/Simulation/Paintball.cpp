@@ -22,8 +22,10 @@ using namespace sph;
 	Paintball::Paintball(SphSolver* solver){
 		this->solver = solver;
 		nActiveParticles = solver->getParticleNumber();
+		activeParticles = solver->getParticles();
 //		nDeadParticles = solver->getDeadParticleNumber();
-		nTotalParticles = nActiveParticles;
+		nDeadParticles = 0;
+		nTotalParticles = nActiveParticles + nDeadParticles;
 		ch = solver->getCollisionHandler().get();
 
 		//Init vertex array objects, buffers
@@ -41,14 +43,13 @@ using namespace sph;
 		nActiveParticles = solver->getParticleNumber();
 		activeParticles.reserve(nActiveParticles);
 		activeParticles = solver->getParticles();
-//		nDeadParticles = solver->getDeadParticleNumber();
+////		nDeadParticles = solver->getDeadParticleNumber();
 //		deadParticles.reserve(nDeadParticles);
 //		deadParticles = solver->getDeadParticles();
-//		nTotalParticles = nActiveParticles + nDeadParticles;
-
+//		nDeadParticles = deadParticles.size();
+////		nTotalParticles = nActiveParticles + nDeadParticles;
 		for(int i = 0; i < 10; i++)
 			solver->simulationStep(0.0001);
-		
    	//std::chrono::milliseconds dura( 1000 );
     //std::this_thread::sleep_for( dura );
 	}
@@ -86,11 +87,17 @@ using namespace sph;
 			const float c = activeParticles[n][2];
 			matrices[n] = glm::translate(glm::mat4(1.0f), glm::vec3(a,b,c));
 		}
-
+//		int i = nActiveParticles;
+//		for(int n = 0;	n < nDeadParticles; n++){
+//			const float a = deadParticles[n][0];
+//			const float b = deadParticles[n][1];
+//			const float c = deadParticles[n][2];
+//			matrices[i] = glm::translate(glm::mat4(1.0f), glm::vec3(a,b,c));
+//			i++;
+//		}
 		// Done. Unmap the buffer.
 		glUnmapBuffer(GL_ARRAY_BUFFER);
-
-		objInfo[0].numElements = nTotalParticles;
+		objInfo[0].numInstances = nTotalParticles;
 		glDrawElementsInstanced(GL_TRIANGLES, objInfo[0].numElements, GL_UNSIGNED_INT, NULL, objInfo[0].numInstances);
 
 		//Note: vaoId[1] is broken for some reason.
@@ -143,7 +150,7 @@ using namespace sph;
 		glBindVertexArray(vaoId[2]);
 		std::vector<glm::mat4> pyrTransforms;
 		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(2.0,0.0,0.0)));
-		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.0,0.0,0.0)));
+//		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.7,0.4,0.0)));
 		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1))
 		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, 1);
 		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
@@ -167,7 +174,7 @@ using namespace sph;
 
 		glBindVertexArray(vaoId[3]);
 		std::vector<glm::mat4> cubTransforms;
-		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0,0.0)));
+		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.3,0.0,-0.5)));
 		uploadGeometricObject(cub, cubTransforms.size(), cubTransforms, 2);
 		objectInfo cubinfo(cub->getNumElements(), cubTransforms.size());
 		objInfo.push_back(cubinfo);
