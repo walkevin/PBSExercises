@@ -95,9 +95,17 @@ namespace sph
 
 	void SphSolver::addObject(std::vector<CollisionHandlerNS::collision_t> vertices, int stride, std::vector<unsigned int> indices)
 	{
-		for(int i = 0; i < vertices.size(); i++)
+		int numVert = vertices.size()/3;
+		CollisionHandlerNS::collision_t temp;
+		for(int i = 0; i < numVert; i++)
 		{
-			vertices[i] = 0.5 * gridSize*cutoff * (vertices[i] + 1);
+			for(int j = 0; j < 3; j++)
+			{
+				vertices[i*3 + j] = 0.5 * gridSize*cutoff * (vertices[i*3 + j] + 1);
+			}
+			temp = vertices[i*3 + 1];
+			vertices[i*3 + 1] = vertices[i*3 + 2]*(-1);
+			vertices[i*3 + 2] = temp;
 		}
 		collisionHandler->addObject(vertices, stride, indices);
 	}
@@ -142,7 +150,7 @@ namespace sph
       {
 				position onePos = tempPos[j];
 				onePos = onePos*linTransFac;
-        temp << onePos(0), onePos(2), onePos(1), 2;
+        temp << onePos(0), onePos(2), onePos(1)*(-1), 2;
 				temp = temp - 1.;
         positions[index] = temp;
         index++;
