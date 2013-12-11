@@ -38,7 +38,7 @@ using namespace sph;
 //		deadParticles.reserve(nDeadParticles);
 //		deadParticles = solver->getDeadParticles();
 //		nDeadParticles = deadParticles.size();
-////		nTotalParticles = nActiveParticles + nDeadParticles;
+		nTotalParticles = nActiveParticles + nDeadParticles;
 		for(int i = 0; i < 10; i++)
 			solver->simulationStep(0.0001);
    	//std::chrono::milliseconds dura( 1000 );
@@ -95,7 +95,7 @@ using namespace sph;
 //		glDrawElementsInstanced(GL_TRIANGLES, objInfo["Pyramid"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Pyramid"].numInstances);
 
 		glBindVertexArray(objInfo["Cuboid"].vaoId);
-		glDrawElementsInstanced(GL_TRIANGLES, objInfo["Cuboid"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Cuboid"].numInstances);
+		//glDrawElementsInstanced(GL_TRIANGLES, objInfo["Cuboid"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Cuboid"].numInstances);
 
 		glutSwapBuffers();
 		glutPostRedisplay();
@@ -167,7 +167,7 @@ using namespace sph;
 		objInfo["Cuboid"] = cubinfo;
 
 		//Upload to GPU
-		uploadGeometricObject(cub, cubTransforms.size(), cubTransforms, objInfo["Cuboid"]);
+		//uploadGeometricObject(cub, cubTransforms.size(), cubTransforms, objInfo["Cuboid"]);
 
 		//Perform transformation of vertices and register in Collision Handler
 		for(int i = 0; i < cubTransforms.size(); i++){
@@ -176,7 +176,7 @@ using namespace sph;
 			Map<MatrixXf> rawVertices(cubData.data(), 4, cubData.size() / 4);//rawVertices operates on the same data as cubData
 			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(cubTransforms[i]));
 			rawVertices = transform * rawVertices;
-			solver->addObject(cubData, 4, cub->getIndices());
+			//solver->addObject(cubData, 4, cub->getIndices());
 		}
 
 		//ENd: Create and preprocess cuboid
