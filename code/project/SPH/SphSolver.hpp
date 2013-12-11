@@ -116,11 +116,6 @@ namespace sph
       const std::array<coordinate, 27>& getTransitions();
 
       /*
-      Returns the kernel
-      */
-      SmoothingKernel& getKernel() const;
-
-      /*
       Returns gravity
       */
       force getGravity() const;
@@ -140,12 +135,17 @@ namespace sph
 			*/
 			entityValue getLastTimestep() const;
 
+		private:
 			/*
 			Returns collision Handler
 			*/
 			std::shared_ptr<CollisionHandlerNS::CollisionHandler> getCollisionHandler();
 
-    private:
+			/*
+      Returns the kernel
+      */
+      SmoothingKernel& getKernel() const;
+
       std::array<coordinate, 27> neighbourTransitions;
       SphCell dummyCell;
 			SphCell trash;
@@ -159,6 +159,8 @@ namespace sph
 			std::shared_ptr<CollisionHandlerNS::CollisionHandler> collisionHandler;  
 
       void initNeighbourTransitions();
+
+			friend SphCell;
   };
 }
 

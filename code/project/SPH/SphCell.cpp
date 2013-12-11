@@ -215,19 +215,18 @@ namespace sph
 			}
 			position posOld = pos[i];
       pos[i] = pos[i] + vel[i] * deltaT;
-			std::tuple<bool, CollisionHandlerNS::position_t, CollisionHandlerNS::velocity_t> res;
-			res = handler->particleVsAllObjects(pos[i], posOld, vel[i]);
-			if(std::get<0>(res))
+			/*entityValue gridSize = solver.getGridSize();
+			for(int k = 0; k < 3; k++)
 			{
-				/*if(pos[i](k) < 0)
+				if(pos[i](k) < 0)
 				{
 					pos[i](k) = 0.000001;
 					double absVel = pos[i].norm();
 					vel[i](k) = 0;
 					vel[i].normalize();
 					vel[i] = 0.9*absVel*vel[i];
-					if(bonds[i])
-						bonds[i] = false;
+					if(*bonds[i])
+						*bonds[i] = false;
 				}
 				if(pos[i](k) > cellSize*gridSize)
 				{
@@ -236,9 +235,15 @@ namespace sph
 					vel[i](k) = 0;
 					vel[i].normalize();
 					vel[i] = 0.9*absVel*vel[i];
-					if(bonds[i])
-						bonds[i] = false;
-				}*/
+					if(*bonds[i])
+						*bonds[i] = false;
+				}
+			}*/
+			
+			std::tuple<bool, CollisionHandlerNS::position_t, CollisionHandlerNS::velocity_t> res;
+			res = handler->particleVsAllObjects(pos[i], posOld, vel[i]);
+			if(std::get<0>(res))
+			{
 				pos[i] = std::get<1>(res);
 				vel[i] = std::get<2>(res);
 				*bonds[i] = false;
@@ -251,7 +256,7 @@ namespace sph
     for(int i = 0; i < storedParticles; i++)
     {
       vel[i] = vel[i] + f[i] * liq[i]->getAttribute(Attribute::mass()) / density[i];
-			if(vel[i].norm() < 10)
+			if(vel[i].norm() < -1)
 			{
 				SphCell& trash_ref = solver.getTrashCell();
 				trash_ref.addParticle(pos[i], vel[i], liq[i], bonds[i]);

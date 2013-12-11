@@ -26,8 +26,8 @@ OBJECTS = $(EXAMPLE_OBJ) $(FRAMEWORK_OBJ) $(SOLVER_OBJ) $(COLLISION_OBJ)
 CXX        = g++-4.8
 LDFLAGS    = -g -pg -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu
 INC        = -I/usr/include/eigen3
-CFLAGS     = -g -pg -c -std=c++11 -O3 -Wno-enum-compare
-DEFINES    = -DNDEBUG
+CFLAGS     = -g -pg -c -std=c++11 -Og -Wno-enum-compare
+#DEFINES    = -DNDEBUG
 
 
 default: $(EXE)

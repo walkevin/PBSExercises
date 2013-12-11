@@ -26,7 +26,7 @@ using namespace sph;
 //		nDeadParticles = solver->getDeadParticleNumber();
 		nDeadParticles = 0;
 		nTotalParticles = nActiveParticles + nDeadParticles;
-		ch = solver->getCollisionHandler().get();
+//		ch = solver->getCollisionHandler().get();
 
 		//Init vertex array objects, buffers
 		nVao = 4;
@@ -163,7 +163,7 @@ using namespace sph;
 			Map<MatrixXf> rawVertices(pyrData.data(), 4, pyrData.size() / 4);//rawVertices operates on the same data as pyrData
 			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(pyrTransforms[i]));
 			rawVertices = transform * rawVertices;
-			ch->addObject(pyrData, 4, pyr->getIndices());
+			solver->addObject(pyrData, 4, pyr->getIndices());
 		}
 //		ENd: Upload pyramid
 //
@@ -185,7 +185,7 @@ using namespace sph;
 			Map<MatrixXf> rawVertices(cubData.data(), 4, cubData.size() / 4);//rawVertices operates on the same data as cubData
 			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(pyrTransforms[i]));
 			rawVertices = transform * rawVertices;
-			ch->addObject(cubData, 4, cub->getIndices());
+			solver->addObject(cubData, 4, cub->getIndices());
 		}
 
 		//ENd: Upload cuboid

@@ -50,7 +50,7 @@ private:
 
 	ShaderLoader sh;
 	RotatingView* rv;
-	CollisionHandlerNS::CollisionHandler* ch;
+//	CollisionHandlerNS::CollisionHandler* ch;
 
 	void createVBO();
 	void destroyVBO();
