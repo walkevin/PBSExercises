@@ -31,8 +31,12 @@ public:
 	void load();
 	void close();
 private:
-	std::vector<Eigen::Array<float, 4, 1> > pos;
-	unsigned int n_points;
+	std::vector<Eigen::Array<float, 4, 1> > activeParticles;
+	std::vector<Eigen::Array<float, 4, 1> > deadParticles;
+
+	unsigned int nActiveParticles;
+	unsigned int nDeadParticles;
+	unsigned int nTotalParticles;
 
 	sph::SphSolver* solver;
 

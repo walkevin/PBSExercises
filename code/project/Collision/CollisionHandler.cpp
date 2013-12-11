@@ -105,7 +105,7 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 			//			velocity_t velocityDir = (correctedPos - inters.second);
 //			std::cout << "velocityDir\n" << velocityDir << std::endl;
 //			velocity_t correctedVel = velocityDir.normalized() * particleVel.norm();
-		    std::cout << "correctedVel:\n" << correctedVel << std::endl;
+//		    std::cout << "correctedVel:\n" << correctedVel << std::endl;
 
 		    //Add some random perturbation
 			collision_t factor = 0.2 * particleVel.norm();

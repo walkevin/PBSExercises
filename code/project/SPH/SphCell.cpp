@@ -53,20 +53,9 @@ namespace sph
 	void SphCell::clear()
 	{
 		makeTransitions();
-		for(int i = storedParticles; i > 0; i--)
+		for(int i = storedParticles -1; i >= 0; i--)
 		{
-			pos.pop_back();
-			vel.pop_back();
-			liq.pop_back();
-			f.pop_back();
-			density.pop_back();
-			pressure.pop_back();
-			bonds.pop_back();
-			storedParticles--;
-			assert(storedParticles == pos.size());
-			assert(storedParticles == vel.size());
-			assert(storedParticles == liq.size());
-			assert(storedParticles == density.size());
+			deleteParticle(i);
 		}
 	}
 
@@ -103,7 +92,7 @@ namespace sph
     updatePositions(deltaT);
   }
 
-  void SphCell::addParticle(position posIn, velocity velIn, std::shared_ptr<SphLiquid> liqIn, bond bondIn)
+  void SphCell::addParticle(position posIn, velocity velIn, std::shared_ptr<SphLiquid> liqIn, std::shared_ptr<bond> bondIn)
   {
     pos.push_back(posIn);
     vel.push_back(velIn);
@@ -119,6 +108,32 @@ namespace sph
 		assert(storedParticles == density.size());
   }
 
+	void SphCell::deleteParticle(int index)
+	{
+		assert(index >= 0 && index < storedParticles);
+		int last = storedParticles -1;
+		if(index != last)
+		{
+			pos[index] = pos[last];
+			vel[index] = vel[last];
+			liq[index] = liq[last];
+			density[index] = density[last];
+			bonds[index] = bonds[last];
+		}
+		pos.pop_back();
+		vel.pop_back();
+		liq.pop_back();
+		density.pop_back();        
+		f.pop_back();
+		pressure.pop_back();
+		bonds.pop_back();
+		storedParticles--;
+		assert(storedParticles == pos.size());
+		assert(storedParticles == vel.size());
+		assert(storedParticles == liq.size());
+		assert(storedParticles == density.size());
+	}
+
   void SphCell::makeTransitions() 
   {
     for(int i = storedParticles-1; i >= 0; i--)
@@ -132,27 +147,7 @@ namespace sph
       {
         SphCell& neighbour = solver.getNeighbour(coord, transition);
         neighbour.addParticle(pos[i], vel[i], liq[i], bonds[i]);
-        int last = pos.size() - 1;
-        if(last != i)
-        {
-          pos[i] = pos[last];
-          vel[i] = vel[last];
-          liq[i] = liq[last];
-          density[i] = density[last];
-					bonds[i] = bonds[last];
-        }
-        pos.pop_back();
-        vel.pop_back();
-        liq.pop_back();
-        density.pop_back();        
-        f.pop_back();
-        pressure.pop_back();
-				bonds.pop_back();
-        storedParticles--;
-				assert(storedParticles == pos.size());
-				assert(storedParticles == vel.size());
-				assert(storedParticles == liq.size());
-				assert(storedParticles == density.size());
+        deleteParticle(i);
       }  
     }
   }
@@ -188,7 +183,7 @@ namespace sph
           position dirVec = pos[k] - posN;
 					if(dirVec == nullVec)
 						continue;
-					if(bonds[k])
+					if(*bonds[k])
 						continue;
           dirVec.normalize();
 					assert(!isnan(dirVec(0)));
@@ -246,7 +241,7 @@ namespace sph
 				}*/
 				pos[i] = std::get<1>(res);
 				vel[i] = std::get<2>(res);
-				bonds[i] = true;
+				*bonds[i] = false;
 			}
     }
   }
@@ -256,6 +251,12 @@ namespace sph
     for(int i = 0; i < storedParticles; i++)
     {
       vel[i] = vel[i] + f[i] * liq[i]->getAttribute(Attribute::mass()) / density[i];
+			if(vel[i].norm() < 10)
+			{
+				SphCell& trash_ref = solver.getTrashCell();
+				trash_ref.addParticle(pos[i], vel[i], liq[i], bonds[i]);
+				deleteParticle(i);
+			}				
     }
   }
 

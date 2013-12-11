@@ -109,6 +109,15 @@ std::vector<unsigned int> Ball::getIndices(){
 	return indices;
 }
 
+std::vector<geometry_type> Ball::getColors(){
+	std::vector<geometry_type> colors;
+	for(int i = 0; i < N * M + 2; i++){
+		colors.push_back(0.4); colors.push_back(0.5); colors.push_back(0.0); colors.push_back(1.0);
+	}
+	return colors;
+}
+
+
 unsigned int Ball::getNumElements(){
 	return numElements;
 }

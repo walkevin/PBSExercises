@@ -76,7 +76,7 @@ namespace sph
       2. Vector with the velocities of the particles
       3. Liquid of the Particles
       */
-      void insertParticles(std::vector<position>, std::vector<velocity>, std::shared_ptr<SphLiquid>, bond);
+      void insertParticles(std::vector<position>, std::vector<velocity>, std::shared_ptr<SphLiquid>, std::shared_ptr<bond>);
 
 			/*
 			Returns the number of currently dead Particles
@@ -87,6 +87,11 @@ namespace sph
 			A function to read out dead particles (no motion and on a surface)
 			*/
 			std::vector<homogeneousPosition> getDeadParticles();
+
+			/*
+			A function that returns a reference to the trash cell
+			*/
+			SphCell& getTrashCell();
 
       /* 
       Returns a displacement based on a current position

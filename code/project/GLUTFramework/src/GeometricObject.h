@@ -21,8 +21,7 @@ public:
 	virtual std::vector<geometry_type> getVertices() = 0;
 	virtual std::vector<geometry_type> getNormals() = 0;
 	virtual std::vector<unsigned int> getIndices() = 0;
-	//TODO:
-	//virtual std::vector<geometry_type> getColors() = 0;
+	virtual std::vector<geometry_type> getColors() = 0;
 
 
 	virtual unsigned int getNumElements() = 0;
