@@ -73,13 +73,13 @@ std::vector<unsigned int> Pyramid::getIndices(){
 	std::vector<unsigned int> indices;
 
 	//Base
-	indices.push_back(0); indices.push_back(1); indices.push_back(2);
-	indices.push_back(0); indices.push_back(2); indices.push_back(3);
+	indices.push_back(0); indices.push_back(2); indices.push_back(1);
+	indices.push_back(0); indices.push_back(3); indices.push_back(2);
 	//Side areas
-	indices.push_back(0); indices.push_back(1); indices.push_back(4);
-	indices.push_back(1); indices.push_back(2); indices.push_back(4);
+	indices.push_back(0); indices.push_back(4); indices.push_back(1);
+	indices.push_back(1); indices.push_back(4); indices.push_back(2);
 	indices.push_back(2); indices.push_back(3); indices.push_back(4);
-	indices.push_back(3); indices.push_back(0); indices.push_back(4);
+	indices.push_back(0); indices.push_back(3); indices.push_back(4);
 
 	numElements = indices.size();
 

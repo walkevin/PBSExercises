@@ -79,7 +79,7 @@ std::vector<geometry_type> Ball::getNormals(){
 
 
 std::vector<unsigned int> Ball::getIndices(){
-	//Specify indices
+	//Specify indices. For each triangle, indices are in counter clockwise fashion (i.e. indicated vertices form the triangle in CCW)
 	std::vector<unsigned int> indices;
 	//Specify triangles connecting with North-pole
 	for(unsigned int m = 1; m < M; m++){//start at m=1 since North-pole is vertex 0.
@@ -90,19 +90,19 @@ std::vector<unsigned int> Ball::getIndices(){
 	//Specify all "normal" triangles. Per lat-lon "rectangle" there are two triangles
 	for(unsigned int n = 0; n < N-1; n++){
 		for(unsigned int m = 1; m < M; m++){
-			indices.push_back(n*M + m); indices.push_back(n*M + m+1); indices.push_back((n+1)*M + m);
+			indices.push_back(n*M + m);   indices.push_back((n+1)*M + m); indices.push_back(n*M + m+1);
 			indices.push_back(n*M + m+1); indices.push_back((n+1)*M + m); indices.push_back((n+1)*M + m+1);
 		}
 		//Again handle last "rectangle" separately
-		indices.push_back(n*M + M); indices.push_back(n*M + 1); indices.push_back((n+1)*M + M);
+		indices.push_back(n*M + M); indices.push_back((n+1)*M + M); indices.push_back(n*M + 1);
 		indices.push_back(n*M + 1); indices.push_back((n+1)*M + M); indices.push_back((n+1)*M + 1);
 	}
 
 	//Specify triangles connecting with South-pole
-	for(unsigned int m = (N-1)*M+1; m < N*M; m++){//start at m=1 since North-pole is vertex 0.
-		indices.push_back(N*M+1); indices.push_back(m);	indices.push_back(m+1);
+	for(unsigned int m = (N-1)*M+1; m < N*M; m++){
+		indices.push_back(N*M+1); indices.push_back(m+1); indices.push_back(m);
 	}
-	indices.push_back(N*M+1); indices.push_back(N*M);	indices.push_back((N-1)*M+1);//Handle last triangle specially
+	indices.push_back(N*M+1); indices.push_back((N-1)*M+1); indices.push_back(N*M);//Handle last triangle specially
 
 	numElements = indices.size();
 

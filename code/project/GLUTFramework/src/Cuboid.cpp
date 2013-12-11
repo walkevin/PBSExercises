@@ -91,12 +91,12 @@ std::vector<unsigned int> Cuboid::getIndices(){
 	std::vector<unsigned int> indices;
 
 	//Bottom plane (y = -0.5 * c)
-	indices.push_back(0); indices.push_back(1); indices.push_back(2);
-	indices.push_back(0); indices.push_back(2); indices.push_back(3);
+	indices.push_back(0); indices.push_back(2); indices.push_back(1);
+	indices.push_back(0); indices.push_back(3); indices.push_back(2);
 
 	//Top plane (y = 0.5 * c)
-	indices.push_back(4); indices.push_back(5); indices.push_back(6);
-	indices.push_back(4); indices.push_back(6); indices.push_back(7);
+	indices.push_back(4); indices.push_back(6); indices.push_back(5);
+	indices.push_back(4); indices.push_back(7); indices.push_back(6);
 
 	//Right plane (x = 0.5 * a)
 	indices.push_back(3); indices.push_back(6); indices.push_back(7);
@@ -104,15 +104,15 @@ std::vector<unsigned int> Cuboid::getIndices(){
 
 	//Left plane (x = -0.5 * a)
 	indices.push_back(0); indices.push_back(1); indices.push_back(5);
-	indices.push_back(0); indices.push_back(4); indices.push_back(5);
+	indices.push_back(0); indices.push_back(5); indices.push_back(4);
 
 	//Front plane (z = 0.5 * b)
 	indices.push_back(0); indices.push_back(3); indices.push_back(7);
-	indices.push_back(0); indices.push_back(4); indices.push_back(7);
+	indices.push_back(0); indices.push_back(7); indices.push_back(4);
 
 	//Back plane (z = -0.5 * b)
 	indices.push_back(1); indices.push_back(2); indices.push_back(6);
-	indices.push_back(1); indices.push_back(5); indices.push_back(6);
+	indices.push_back(1); indices.push_back(6); indices.push_back(5);
 
 	numElements = indices.size();
 

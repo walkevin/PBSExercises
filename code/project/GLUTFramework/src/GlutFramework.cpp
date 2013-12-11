@@ -101,18 +101,18 @@ namespace glutFramework {
 	}
 	
 	void GlutFramework::mouseButtonPress(int button, int state, int x, int y) {
-		std::cout << "MouseButtonPress: x: " << x << "y: " << y << std::endl;
+//		std::cout << "MouseButtonPress: x: " << x << "y: " << y << std::endl;
 		
 	}
 	
 	void GlutFramework::mouseMove(int x, int y) {
-		std::cout << "MouseMove: x: " << x << "y: " << y << std::endl;
+//		std::cout << "MouseMove: x: " << x << "y: " << y << std::endl;
 	}
 	
 	void GlutFramework::keyboardDown( unsigned char key, int x, int y ) 
 	{
 		// Subclass and override this method
-		std::cout << "KeyboardDown: " << key << " = " << (int)key << std::endl;
+//		std::cout << "KeyboardDown: " << key << " = " << (int)key << std::endl;
 		if (key==27) { //27 =- ESC key
 			glutLeaveMainLoop();
 //			exit (0);
@@ -122,19 +122,19 @@ namespace glutFramework {
 	void GlutFramework::keyboardUp( unsigned char key, int x, int y ) 
 	{
 		// Subclass and override this method
-		std::cout << "KeyboardUp" << key << std::endl;
+//		std::cout << "KeyboardUp" << key << std::endl;
 	}
 	
 	void GlutFramework::specialKeyboardDown( int key, int x, int y ) 
 	{
 		// Subclass and override this method
-		std::cout << "SpecialKeyboardDown: " << key << std::endl;
+//		std::cout << "SpecialKeyboardDown: " << key << std::endl;
 	}
 	
 	void GlutFramework::specialKeyboardUp( int key, int x, int y ) 
 	{
 		// Subclass and override this method	
-		std::cout << "SpecialKeyboardUp: " << key << std::endl;
+//		std::cout << "SpecialKeyboardUp: " << key << std::endl;
 	}
 
 	void GlutFramework::close()
