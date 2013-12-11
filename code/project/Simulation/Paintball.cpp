@@ -26,16 +26,7 @@ using namespace sph;
 //		nDeadParticles = solver->getDeadParticleNumber();
 		nDeadParticles = 0;
 		nTotalParticles = nActiveParticles + nDeadParticles;
-//		ch = solver->getCollisionHandler().get();
 
-		//Init vertex array objects, buffers
-		nVao = 4;
-		nBuffer = 3 * nVao;
-		nIndexBuffer = nVao;
-
-		vaoId = new GLuint[nVao];
-		bufferId = new GLuint[nBuffer];
-		indexBufferId = new GLuint[nIndexBuffer];
 	}
 	Paintball::~Paintball(){}
 
@@ -74,9 +65,9 @@ using namespace sph;
 		glUseProgram(sh.getProgramId());
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-		glBindVertexArray(vaoId[0]);
+		glBindVertexArray(objInfo["Ball"].vaoId);
 
-		glBindBuffer(GL_ARRAY_BUFFER, bufferId[3]);
+		glBindBuffer(GL_ARRAY_BUFFER, objInfo["Ball"].bufferId[3]);
 		// Map the buffer
 		glm::mat4* matrices = (glm::mat4 *)glMapBuffer(GL_ARRAY_BUFFER,GL_WRITE_ONLY);
 		// Set model matrices for each instance
@@ -97,17 +88,15 @@ using namespace sph;
 //		}
 		// Done. Unmap the buffer.
 		glUnmapBuffer(GL_ARRAY_BUFFER);
-		objInfo[0].numInstances = nTotalParticles;
-		glDrawElementsInstanced(GL_TRIANGLES, objInfo[0].numElements, GL_UNSIGNED_INT, NULL, objInfo[0].numInstances);
+		objInfo["Ball"].numInstances = nTotalParticles;
+		glDrawElementsInstanced(GL_TRIANGLES, objInfo["Ball"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Ball"].numInstances);
 
-		//Note: vaoId[1] is broken for some reason.
-		glBindVertexArray(vaoId[2]);
-		glDrawElementsInstanced(GL_TRIANGLES, objInfo[1].numElements, GL_UNSIGNED_INT, NULL, objInfo[1].numInstances);
+		glBindVertexArray(objInfo["Pyramid"].vaoId);
+		glDrawElementsInstanced(GL_TRIANGLES, objInfo["Pyramid"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Pyramid"].numInstances);
 
-		glBindVertexArray(vaoId[3]);
-		glDrawElementsInstanced(GL_TRIANGLES, objInfo[2].numElements, GL_UNSIGNED_INT, NULL, objInfo[2].numInstances);
+		glBindVertexArray(objInfo["Cuboid"].vaoId);
+		glDrawElementsInstanced(GL_TRIANGLES, objInfo["Cuboid"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Cuboid"].numInstances);
 
-//		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, NULL);
 		glutSwapBuffers();
 		glutPostRedisplay();
 	}
@@ -118,45 +107,43 @@ using namespace sph;
 		destroyVBO();
 	}
 	void Paintball::createVBO(){
-		//One vertex array object for the ball
-		glGenVertexArrays(nVao, vaoId);
-		glGenBuffers(nBuffer, bufferId);
-		glGenBuffers(nIndexBuffer, indexBufferId);
-
-		//BEGIN: Upload Ball
+		//BEGIN: Create and preprocess Ball
 		//Load ball
 		const GLuint N = 5; //#vertices on longitude (without poles)
 		const GLuint M = 5; //#vertices on latitude
 		const float R = 0.05f; //Radius
-
 		GeometricObject* bal = new Ball(N, M, R);
 
-		glBindVertexArray(vaoId[0]);
+		//Prepare multiple instances of ball
 		std::vector<glm::mat4> balTransforms;
 		balTransforms.assign(nTotalParticles, glm::mat4(1.0));
-		uploadGeometricObject(bal, balTransforms.size(), balTransforms, 0);
 
+		//Create objectInfo struct
 		objectInfo balinfo(bal->getNumElements(), balTransforms.size());
-		objInfo.push_back(balinfo);
+		objInfo["Ball"] = balinfo;
 
-		//ENd: Upload ball
+		//Upload to GPU
+		uploadGeometricObject(bal, balTransforms.size(), balTransforms, objInfo["Ball"]);
+		//END: Create and preprocess Ball
 
-		//Note: Vertex Array Object 1 is broken for some reason
-
-		//BEGIN: Upload Pyramid
+		//BEGIN: Create and preprocess pyramid
 		//Load pyramid
 		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
 
-		glBindVertexArray(vaoId[2]);
+		//Prepare multiple instances of ball
 		std::vector<glm::mat4> pyrTransforms;
 		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(2.0,0.0,0.0)));
 //		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.7,0.4,0.0)));
 		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1))
-		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, 1);
-		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
-		objInfo.push_back(pyrinfo);
 
-		//Perform transformation of vertices for Collision Handler
+		//Create objectInfo struct
+		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
+		objInfo["Pyramid"] = pyrinfo;
+
+		//Upload to GPU
+		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, objInfo["Pyramid"]);
+
+		//Perform transformation of vertices and register in Collision Handler
 		for(int i = 0; i < pyrTransforms.size(); i++){
 			using namespace Eigen;
 			std::vector<geometry_type> pyrData = pyr->getVertices();
@@ -165,20 +152,24 @@ using namespace sph;
 			rawVertices = transform * rawVertices;
 			solver->addObject(pyrData, 4, pyr->getIndices());
 		}
-//		ENd: Upload pyramid
-//
-//
-		//BEGIN: Upload cuboid
+		//END: Create and preprocess pyramid
+
+		//BEGIN: Create and preprocess cuboid
 		//Load cuboid
 		GeometricObject* cub = new Cuboid(1.0, 1.0, 1.3);
 
-		glBindVertexArray(vaoId[3]);
+		//Prepare multiple instances of ball
 		std::vector<glm::mat4> cubTransforms;
-		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.3,0.0,-0.5)));
-		uploadGeometricObject(cub, cubTransforms.size(), cubTransforms, 2);
+		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.6,0.2,-0.5)));
+
+		//Create objectInfo struct
 		objectInfo cubinfo(cub->getNumElements(), cubTransforms.size());
-		objInfo.push_back(cubinfo);
-		//Perform transformation of vertices for Collision Handler
+		objInfo["Cuboid"] = cubinfo;
+
+		//Upload to GPU
+		uploadGeometricObject(cub, cubTransforms.size(), cubTransforms, objInfo["Cuboid"]);
+
+		//Perform transformation of vertices and register in Collision Handler
 		for(int i = 0; i < cubTransforms.size(); i++){
 			using namespace Eigen;
 			std::vector<geometry_type> cubData = cub->getVertices();
@@ -188,7 +179,7 @@ using namespace sph;
 			solver->addObject(cubData, 4, cub->getIndices());
 		}
 
-		//ENd: Upload cuboid
+		//ENd: Create and preprocess cuboid
 	}
 	void Paintball::destroyVBO(){
 		GLenum ErrorCheckValue = glGetError();
@@ -196,29 +187,30 @@ using namespace sph;
 		for(std::map<std::string, GLint>::iterator it = locs.begin(); it != locs.end(); ++it){
 			glDisableVertexAttribArray((*it).second);
 		}
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glDeleteBuffers(nBuffer, bufferId);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		glDeleteBuffers(nIndexBuffer, indexBufferId);
+		for(std::map<std::string, objectInfo>::iterator it = objInfo.begin(); it != objInfo.end(); ++it){
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glDeleteBuffers(4, (*it).second.bufferId);
 
-		glBindVertexArray(0);
-		glDeleteVertexArrays(nVao, vaoId);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			glDeleteBuffers(1, &((*it).second.indexBufferId));
 
+			glBindVertexArray(0);
+			glDeleteVertexArrays(1, &((*it).second.vaoId));
+		}
 		ErrorCheckValue = glGetError();
 		if (ErrorCheckValue != GL_NO_ERROR){
 			std::cerr << "ERROR: Could not destroy the VBO: " << gluErrorString(ErrorCheckValue) << "\n";
 			exit(-1);
 		}
+
 	}
 
 	void Paintball::specialKeyboardDown(int key, int x, int y ){
 		rv->keyboardEvent(key);
 	}
 
-	void Paintball::uploadGeometricObject(GeometricObject* obj, int numObj, std::vector<glm::mat4> objTransforms, int bufferStride){
-		const int nBuffers = 4;
-
+	void Paintball::uploadGeometricObject(GeometricObject* obj, int numObj, std::vector<glm::mat4> objTransforms, objectInfo objInfo){
 		std::vector<float> vertices = obj->getVertices();
 		std::vector<float> normals = obj->getNormals();
 		std::vector<GLuint> indices = obj->getIndices();
@@ -232,8 +224,11 @@ using namespace sph;
 		const size_t normalSize = 3 * sizeof(normals[0]);
 		const size_t bufferSizeNormals = normals.size() * normalSize / 3;
 
+		//Bind VertexArrayObject
+		glBindVertexArray(objInfo.vaoId);
+
 		//Upload vertices
-		glBindBuffer(GL_ARRAY_BUFFER, bufferId[bufferStride*nBuffers + 0]);
+		glBindBuffer(GL_ARRAY_BUFFER, objInfo.bufferId[0]);
 		glBufferData(GL_ARRAY_BUFFER, bufferSizeColors, colors.data(), GL_STATIC_DRAW);
 		locs["color_body"] = glGetAttribLocation(sh.getProgramId(),"color_body");
 		if(locs["color_body"] == -1){
@@ -244,7 +239,7 @@ using namespace sph;
 		glEnableVertexAttribArray(locs["color_body"]);
 
 		//Upload vertices
-		glBindBuffer(GL_ARRAY_BUFFER, bufferId[bufferStride*nBuffers + 1]);
+		glBindBuffer(GL_ARRAY_BUFFER, objInfo.bufferId[1]);
 		glBufferData(GL_ARRAY_BUFFER, bufferSizeVertices, vertices.data(), GL_STATIC_DRAW);
 		locs["position"] = glGetAttribLocation(sh.getProgramId(),"position");
 		if(locs["position"] == -1){
@@ -255,7 +250,7 @@ using namespace sph;
 		glEnableVertexAttribArray(locs["position"]);
 
 		//Upload normals
-		glBindBuffer(GL_ARRAY_BUFFER, bufferId[bufferStride*nBuffers + 2]);
+		glBindBuffer(GL_ARRAY_BUFFER, objInfo.bufferId[2]);
 		glBufferData(GL_ARRAY_BUFFER, bufferSizeNormals, normals.data(), GL_STATIC_DRAW);
 		locs["normal"] = glGetAttribLocation(sh.getProgramId(),"normal");
 		if(locs["normal"] == -1){
@@ -266,12 +261,12 @@ using namespace sph;
 		glEnableVertexAttribArray(locs["normal"]);
 
 		//Upload indices of ball
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId[bufferStride * 1+ 0]);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, objInfo.indexBufferId);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), indices.data(), GL_STATIC_DRAW);
 
 		//Prepare model matrix
 		//Model matrix contains information of position of particles.
-		glBindBuffer(GL_ARRAY_BUFFER, bufferId[bufferStride*nBuffers + 3]);
+		glBindBuffer(GL_ARRAY_BUFFER, objInfo.bufferId[3]);
 		glBufferData(GL_ARRAY_BUFFER, numObj * sizeof(objTransforms[0]), objTransforms.data(), GL_DYNAMIC_DRAW);
 		locs["modelMat"] = glGetAttribLocation(sh.getProgramId(),"modelMat");
 		// Loop over each column of the matrix...
