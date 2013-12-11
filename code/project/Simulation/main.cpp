@@ -32,7 +32,9 @@ int main(int argc, char *argv[])
   }
 
   std::shared_ptr<SphWater> water = std::make_shared<SphWater>();
-  simulation.insertParticles(pos, vel, water, false);
+	std::shared_ptr<bond> bondTemp = std::make_shared<bond>();
+	*bondTemp = false;
+  simulation.insertParticles(pos, vel, water, bondTemp);
 
 //	position center;
 //	center << 0.4, 0.4, 1;
