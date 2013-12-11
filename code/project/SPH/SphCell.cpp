@@ -53,7 +53,7 @@ namespace sph
 	void SphCell::clear()
 	{
 		makeTransitions();
-		for(int i = storedParticles; i > 0; i--)
+		for(int i = storedParticles -1; i >= 0; i--)
 		{
 			deleteParticle(i);
 		}
@@ -231,10 +231,11 @@ namespace sph
     for(int i = 0; i < storedParticles; i++)
     {
       vel[i] = vel[i] + f[i] * liq[i]->getAttribute(Attribute::mass()) / density[i];
-			if(vel[i].norm() < 2)
+			if(vel[i].norm() < 10)
 			{
 				SphCell& trash_ref = solver.getTrashCell();
 				trash_ref.addParticle(pos[i], vel[i], liq[i], bonds[i]);
+				deleteParticle(i);
 			}				
     }
   }
