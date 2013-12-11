@@ -165,6 +165,7 @@ namespace sph
       positions[i] = temp;
     }
 		trash.clear();
+		return positions;
 	}
 
 	SphCell& SphSolver::getTrashCell()
