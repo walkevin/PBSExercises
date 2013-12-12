@@ -60,52 +60,44 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 		//Check intersection
 		bool intersects = false;
 		std::pair<bool, position_t> inters = intersectPlane(line_t(oldParticlePos, newParticlePos), triangleNormal, v1);
-//		std::cout << "intersectsPlane?: " << inters.first << std::endl;
-//		std::cout << "intersection At: " << inters.second << std::endl;
 		if(inters.first == true){
 			intersects = pointInsideTriangle(inters.second, triangle_t(v1, v2, v3));//Watch out!
-//			std::cout << "CollisionHandler::particleVsOneObject: Check if point is inside triangle" << std::endl;
 		}
 
 		//If intersection point is inside line segment and triangle, compute projection point
 		//Particle position is inside object
 		if(intersects == true){
-//			std::cout << "CollisionHandler::particleVsOneObject: Point is inside triangle" << std::endl;
 
 			Eigen::Hyperplane<collision_t, 3> trianglePlane(triangleNormal, v1);// = Eigen::Hyperplane<collision_t, 3>::Through(v1, v2, v3);
 
 			//Correct position
 			position_t correctedPos = trianglePlane.projection(newParticlePos);
-//			std::cout << "correctedPos: " << correctedPos << std::endl;
 
 
 			//Check whether the projected point is still in the triangle. If not, clamp it to the triangle's boundary
 			if(!pointInsideTriangle(correctedPos, triangle_t(v1,v2,v3))){
 				std::pair<bool, position_t> tmp = intersectLines(line_t(correctedPos, inters.second), line_t(v2, v1));
 				if(tmp.first){
-//					std::cout << "CollisionHandler::particleVsOneObject: Projected Point is outside triangle. Clamping to line(v2,v1)" << std::endl;
 					correctedPos = tmp.second;
 				}
 				else{
 					tmp = intersectLines(line_t(correctedPos, inters.second), line_t(v3, v1));
 					if(tmp.first){
-//						std::cout << "CollisionHandler::particleVsOneObject: Projected Point is outside triangle. Clamping to line(v3,v1)" << std::endl;
 						correctedPos = tmp.second;
 					}
 					else{
-//						std::cout << "CollisionHandler::particleVsOneObject: Projected Point is outside triangle. Clamping to line(v3,v2)" << std::endl;
 						tmp = intersectLines(line_t(correctedPos, inters.second), line_t(v3, v2));
 						correctedPos = tmp.second;
 					}
 				}
 			}
 
+			//Add some perturbation in triangle normal direction (avoid being pushed through afterwards by other particles)
+			correctedPos += 5 * (inters.second - newParticlePos);
+
+
 			//Correct velocity
 			velocity_t correctedVel = 0.7 * (trianglePlane.projection(v1 + particleVel) - v1);//v1: particleVel is only a direction vector
-			//			velocity_t velocityDir = (correctedPos - inters.second);
-//			std::cout << "velocityDir\n" << velocityDir << std::endl;
-//			velocity_t correctedVel = velocityDir.normalized() * particleVel.norm();
-//		    std::cout << "correctedVel:\n" << correctedVel << std::endl;
 
 		    //Add some random perturbation
 			collision_t factor = 0.2 * particleVel.norm();
@@ -114,6 +106,8 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 		    collision_t rand1 = uniformDist(randEng);
 
 		    correctedVel += rand0 * (v2-v1) + rand1 * (v2-v3);
+
+
 			return std::make_tuple(true, correctedPos, correctedVel);
 		}
 	}
