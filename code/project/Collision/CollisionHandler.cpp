@@ -52,6 +52,22 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 		position_t v2(object.vertices[object.vertexStride * vInd2], object.vertices[object.vertexStride * vInd2 + 1], object.vertices[object.vertexStride * vInd2 + 2]);
 		position_t v3(object.vertices[object.vertexStride * vInd3], object.vertices[object.vertexStride * vInd3 + 1], object.vertices[object.vertexStride * vInd3 + 2]);
 
+//		float R = (v1 - position_t(1.0, 0.5, 1.0)).dot(v1 - position_t(1.0, 0.5, 1.0));
+//			if(!(R > 0.25 - 0.01 || R < 0.25 + 0.01)){
+//				std::cout << "Erroneus vertex: " << v1 << std::endl;
+//				std::cout << "Corresponding R: " << R << std::endl;
+//			}
+//			R = (v2 - position_t(1.0, 0.5, 1.0)).dot(v2 - position_t(1.0, 0.5, 1.0));
+//			if(!(R > 0.25 - 0.01 || R < 0.25 + 0.01)){
+//				std::cout << "Erroneus vertex: " << v2 << std::endl;
+//				std::cout << "Corresponding R: " << R << std::endl;
+//			}
+//			R = (v3 - position_t(1.0, 0.5, 1.0)).dot(v3 - position_t(1.0, 0.5, 1.0));
+//			if(!(R > 0.25 - 0.01 || R < 0.25 + 0.01)){
+//				std::cout << "Erroneus vertex: " << v3 << std::endl;
+//				std::cout << "Corresponding R: " << R << std::endl;
+//			}
+
 		//Compute (not normalized) triangle normal by vector product
 		vec3 triangleNormal = ((v2-v1).cross(v3-v1)).normalized(); //note: normal always points away from the plane
 
@@ -71,7 +87,7 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 			//Correct position
 			position_t correctedPos = trianglePlane.projection(newParticlePos);
 
-			//Check whether the projected point is still in the triangle. If not, clamp it to the triangle's boundary
+//			//Check whether the projected point is still in the triangle. If not, clamp it to the triangle's boundary
 			if(!pointInsideTriangle(correctedPos, triangle_t(v1,v2,v3))){
 				std::pair<bool, position_t> tmp = intersectLines(line_t(correctedPos, inters.second), line_t(v2, v1));
 				if(tmp.first){
@@ -90,8 +106,7 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 			}
 
 			//Add some perturbation in triangle normal outwards direction (avoid being pushed through afterwards by other particles)
-			correctedPos += 5 * (inters.second - newParticlePos);
-
+			correctedPos += 4 * (inters.second - newParticlePos);
 
 			//Correct velocity
 			velocity_t correctedVel = 0.7 * (trianglePlane.projection(v1 + particleVel) - v1);//v1: particleVel is only a direction vector
@@ -110,7 +125,7 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 		    correctedVel += rand0 * (v2-v1) + rand1 * (v2-v3);
 
 //		    std::cout << "Reporting collision at: " << inters.second << std::endl;
-//		    std::cout << "AABB" << object.AABB << std::endl;
+//		    std::cout << "New Position: " << newParticlePos << std::endl;
 
 		    return std::make_tuple(true, correctedPos, correctedVel);
 		}
@@ -174,52 +189,53 @@ std::pair<bool, position_t> CollisionHandler::intersectLines(line_t lineSeg1, li
 }
 
 bool CollisionHandler::pointInsideTriangle(position_t x, triangle_t tri){
-	//only two dimensions will be considered.
-	vec3 ba = tri[1] - tri[0];
-	vec3 ca = tri[2] - tri[0];
-	vec3 rhs = x - tri[0];
-
-	int ind0 = 0, ind1 = 1;
-	if(ba[0] == 0. && ca[0] == 0.){
-		ind0 = 1; ind1 = 2;
-	}
-	else if(ba[1] == 0. && ca[1] == 0.){
-		ind0 = 0; ind1 = 2;
-	}
-
-	collision_t s = ca[ind1] * rhs[ind0] - ca[ind0] * rhs[ind1];
-	collision_t t = -ba[ind1] * rhs[ind0] + ba[ind0] * rhs[ind1];
-
-	collision_t adbc = (ba[ind0] * ca[ind1] - ba[ind1] * ca[ind0]);
-
-	if(adbc < 0){
-		return (s <= 0. && t < 0. && s+t > adbc );
-	}
-	else{
-		return (s > 0. && t >= 0. && s+t <= 1. );
-	}
-//	Alternative for general 3D problem
-//	//Copied from: http://www.blackpawn.com/texts/pointinpoly/
+//	//only two dimensions will be considered => Optimized version if x is guaranteed to be on the same plane as tri (buggy)
+//	vec3 ba = tri[1] - tri[0];
+//	vec3 ca = tri[2] - tri[0];
+//	vec3 rhs = x - tri[0];
 //
-//	// Compute vectors
-//	position_t v0 = tri(2) - tri(0);
-//	position_t v1 = tri(1) - tri(0);
-//	position_t v2 = x - tri(0);
+//	int ind0 = 0, ind1 = 1;
+//	if(ba[0] == 0. && ca[0] == 0.){
+//		ind0 = 1; ind1 = 2;
+//	}
+//	else if(ba[1] == 0. && ca[1] == 0.){
+//		ind0 = 0; ind1 = 2;
+//	}
 //
-//	// Compute dot products
-//	collision_t dot00 = v0.dot(v0);
-//	collision_t dot01 = v0.dot(v1);
-//	collision_t dot02 = v0.dot(v2);
-//	collision_t dot11 = v1.dot(v1);
-//	collision_t dot12 = v1.dot(v2);
+//	collision_t s = ca[ind1] * rhs[ind0] - ca[ind0] * rhs[ind1];
+//	collision_t t = -ba[ind1] * rhs[ind0] + ba[ind0] * rhs[ind1];
 //
-//	// Compute barycentric coordinates
-//	collision_t invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
-//	collision_t u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-//	collision_t v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+//	collision_t adbc = (ba[ind0] * ca[ind1] - ba[ind1] * ca[ind0]);
 //
-//	// Check if point is in triangle
-//	return (u >= 0) && (v >= 0) && (u + v <= 1);
+//	if(adbc < 0){
+//		return (s <= 0. && t < 0. && s+t > adbc );
+//	}
+//	else{
+//		return (s > 0. && t >= 0. && s+t <= 1. );
+//	}
+
+	//Alternative for general 3D problem
+	//Copied from: http://www.blackpawn.com/texts/pointinpoly/
+
+	// Compute vectors
+	position_t v0 = tri(2) - tri(0);
+	position_t v1 = tri(1) - tri(0);
+	position_t v2 = x - tri(0);
+
+	// Compute dot products
+	collision_t dot00 = v0.dot(v0);
+	collision_t dot01 = v0.dot(v1);
+	collision_t dot02 = v0.dot(v2);
+	collision_t dot11 = v1.dot(v1);
+	collision_t dot12 = v1.dot(v2);
+
+	// Compute barycentric coordinates
+	collision_t invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+	collision_t u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+	collision_t v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+	// Check if point is in triangle
+	return (u >= 0) && (v >= 0) && (u + v <= 1);
 }
 
 bool CollisionHandler::pointInsideCube(position_t x, cube_t c){

@@ -13,6 +13,7 @@
 #include <utility>
 #include <Eigen/Core>
 #include <tuple>
+#include <random>
 
 namespace CollisionHandlerNS{
 
@@ -113,8 +114,6 @@ public:
 	 * bool: true if the point is inside the cube, false otherwise
 	 */
 	bool pointInsideCube(position_t x, cube_t c);
-
-
 
 	std::vector<object_t> objects;
 };

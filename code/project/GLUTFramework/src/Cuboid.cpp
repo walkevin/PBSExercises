@@ -45,16 +45,16 @@ std::vector<geometry_type> Cuboid::getVertices(){
 	std::vector<geometry_type> vertices;
 
 	//Bottom
-	vertices.push_back(-0.5 * a); vertices.push_back(-0.5 * c); vertices.push_back(-0.5 * b); vertices.push_back(1.0f);
-	vertices.push_back( 0.5 * a); vertices.push_back(-0.5 * c); vertices.push_back(-0.5 * b); vertices.push_back(1.0f);
-	vertices.push_back( 0.5 * a); vertices.push_back(-0.5 * c); vertices.push_back( 0.5 * b); vertices.push_back(1.0f);
-	vertices.push_back(-0.5 * a); vertices.push_back(-0.5 * c); vertices.push_back( 0.5 * b); vertices.push_back(1.0f);
+	vertices.push_back(-0.5 * a); vertices.push_back(-0.5 * b); vertices.push_back(-0.5 * c); vertices.push_back(1.0f);
+	vertices.push_back( 0.5 * a); vertices.push_back(-0.5 * b); vertices.push_back(-0.5 * c); vertices.push_back(1.0f);
+	vertices.push_back( 0.5 * a); vertices.push_back(-0.5 * b); vertices.push_back( 0.5 * c); vertices.push_back(1.0f);
+	vertices.push_back(-0.5 * a); vertices.push_back(-0.5 * b); vertices.push_back( 0.5 * c); vertices.push_back(1.0f);
 
 	//Top
-	vertices.push_back(-0.5 * a); vertices.push_back( 0.5 * c); vertices.push_back(-0.5 * b); vertices.push_back(1.0f);
-	vertices.push_back( 0.5 * a); vertices.push_back( 0.5 * c); vertices.push_back(-0.5 * b); vertices.push_back(1.0f);
-	vertices.push_back( 0.5 * a); vertices.push_back( 0.5 * c); vertices.push_back( 0.5 * b); vertices.push_back(1.0f);
-	vertices.push_back(-0.5 * a); vertices.push_back( 0.5 * c); vertices.push_back( 0.5 * b); vertices.push_back(1.0f);
+	vertices.push_back(-0.5 * a); vertices.push_back( 0.5 * b); vertices.push_back(-0.5 * c); vertices.push_back(1.0f);
+	vertices.push_back( 0.5 * a); vertices.push_back( 0.5 * b); vertices.push_back(-0.5 * c); vertices.push_back(1.0f);
+	vertices.push_back( 0.5 * a); vertices.push_back( 0.5 * b); vertices.push_back( 0.5 * c); vertices.push_back(1.0f);
+	vertices.push_back(-0.5 * a); vertices.push_back( 0.5 * b); vertices.push_back( 0.5 * c); vertices.push_back(1.0f);
 
 	return vertices;
 }
@@ -64,24 +64,24 @@ std::vector<geometry_type> Cuboid::getNormals(){
 	geometry_type tmpdist;
 
 	//Bottom
-	tmpdist =distance(-0.5 * a, -0.5 * c, -0.5 * b);
-	normals.push_back(-0.5 * a / tmpdist); normals.push_back(-0.5 * c / tmpdist); normals.push_back(-0.5 * b / tmpdist);
-	tmpdist =distance( 0.5 * a, -0.5 * c, -0.5 * b);
-	normals.push_back( 0.5 * a / tmpdist); normals.push_back(-0.5 * c / tmpdist); normals.push_back(-0.5 * b / tmpdist);
-	tmpdist =distance( 0.5 * a, -0.5 * c,  0.5 * b);
-	normals.push_back( 0.5 * a / tmpdist); normals.push_back(-0.5 * c / tmpdist); normals.push_back( 0.5 * b / tmpdist);
-	tmpdist =distance(-0.5 * a, -0.5 * c,  0.5 * b);
-	normals.push_back(-0.5 * a / tmpdist); normals.push_back(-0.5 * c / tmpdist); normals.push_back( 0.5 * b / tmpdist);
+	tmpdist =distance(-0.5 * a, -0.5 * b, -0.5 * c);
+	normals.push_back(-0.5 * a / tmpdist); normals.push_back(-0.5 * b / tmpdist); normals.push_back(-0.5 * c / tmpdist);
+	tmpdist =distance( 0.5 * a, -0.5 * b, -0.5 * c);
+	normals.push_back( 0.5 * a / tmpdist); normals.push_back(-0.5 * b / tmpdist); normals.push_back(-0.5 * c / tmpdist);
+	tmpdist =distance( 0.5 * a, -0.5 * b,  0.5 * c);
+	normals.push_back( 0.5 * a / tmpdist); normals.push_back(-0.5 * b / tmpdist); normals.push_back( 0.5 * c / tmpdist);
+	tmpdist =distance(-0.5 * a, -0.5 * b,  0.5 * c);
+	normals.push_back(-0.5 * a / tmpdist); normals.push_back(-0.5 * b / tmpdist); normals.push_back( 0.5 * c / tmpdist);
 
 	//Bottom
-	tmpdist =distance(-0.5 * a,  0.5 * c, -0.5 * b);
-	normals.push_back(-0.5 * a / tmpdist); normals.push_back( 0.5 * c / tmpdist); normals.push_back(-0.5 * b / tmpdist);
-	tmpdist =distance( 0.5 * a,  0.5 * c, -0.5 * b);
-	normals.push_back( 0.5 * a / tmpdist); normals.push_back( 0.5 * c / tmpdist); normals.push_back(-0.5 * b / tmpdist);
-	tmpdist =distance( 0.5 * a,  0.5 * c,  0.5 * b);
-	normals.push_back( 0.5 * a / tmpdist); normals.push_back( 0.5 * c / tmpdist); normals.push_back( 0.5 * b / tmpdist);
-	tmpdist =distance(-0.5 * a,  0.5 * c,  0.5 * b);
-	normals.push_back(-0.5 * a / tmpdist); normals.push_back( 0.5 * c / tmpdist); normals.push_back( 0.5 * b / tmpdist);
+	tmpdist =distance(-0.5 * a,  0.5 * b, -0.5 * c);
+	normals.push_back(-0.5 * a / tmpdist); normals.push_back( 0.5 * b / tmpdist); normals.push_back(-0.5 * c / tmpdist);
+	tmpdist =distance( 0.5 * a,  0.5 * b, -0.5 * c);
+	normals.push_back( 0.5 * a / tmpdist); normals.push_back( 0.5 * b / tmpdist); normals.push_back(-0.5 * c / tmpdist);
+	tmpdist =distance( 0.5 * a,  0.5 * b,  0.5 * c);
+	normals.push_back( 0.5 * a / tmpdist); normals.push_back( 0.5 * b / tmpdist); normals.push_back( 0.5 * c / tmpdist);
+	tmpdist =distance(-0.5 * a,  0.5 * b,  0.5 * c);
+	normals.push_back(-0.5 * a / tmpdist); normals.push_back( 0.5 * b / tmpdist); normals.push_back( 0.5 * c / tmpdist);
 	return normals;
 }
 
