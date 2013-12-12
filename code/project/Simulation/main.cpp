@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
       for(int k = 0; k < 2; k++)
       {
         position tempPos;
-        tempPos << 1.5 + i*0.05, 1 + j*0.05, 1 + k*0.05;
+        tempPos << 0.3 + i*0.05, 1 + j*0.05, 1 + k*0.05;
         pos.push_back(tempPos);
         velocity tempVel;
         tempVel << 100, 0, 0;
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
   std::shared_ptr<SphWater> water = std::make_shared<SphWater>();
 	std::shared_ptr<bond> bondTemp = std::make_shared<bond>();
-	*bondTemp = false;
+	*bondTemp = true;
   simulation.insertParticles(pos, vel, water, bondTemp);
 
 //	position center;

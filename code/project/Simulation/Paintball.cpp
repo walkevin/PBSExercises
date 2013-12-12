@@ -34,15 +34,15 @@ using namespace sph;
 		nActiveParticles = solver->getParticleNumber();
 		activeParticles.reserve(nActiveParticles);
 		activeParticles = solver->getParticles();
-////		nDeadParticles = solver->getDeadParticleNumber();
+//		nDeadParticles = solver->getDeadParticleNumber();
 //		deadParticles.reserve(nDeadParticles);
 //		deadParticles = solver->getDeadParticles();
 //		nDeadParticles = deadParticles.size();
 		nTotalParticles = nActiveParticles + nDeadParticles;
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 5; i++)
 			solver->simulationStep(0.0001);
-   	//std::chrono::milliseconds dura( 1000 );
-    //std::this_thread::sleep_for( dura );
+   	std::chrono::milliseconds dura( 500 );
+    std::this_thread::sleep_for( dura );
 	}
 
 
@@ -95,7 +95,7 @@ using namespace sph;
 //		glDrawElementsInstanced(GL_TRIANGLES, objInfo["Pyramid"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Pyramid"].numInstances);
 
 		glBindVertexArray(objInfo["Cuboid"].vaoId);
-		//glDrawElementsInstanced(GL_TRIANGLES, objInfo["Cuboid"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Cuboid"].numInstances);
+		glDrawElementsInstanced(GL_TRIANGLES, objInfo["Cuboid"].numElements, GL_UNSIGNED_INT, NULL, objInfo["Cuboid"].numInstances);
 
 		glutSwapBuffers();
 		glutPostRedisplay();
@@ -156,18 +156,18 @@ using namespace sph;
 
 		//BEGIN: Create and preprocess cuboid
 		//Load cuboid
-		GeometricObject* cub = new Cuboid(1.0, 1.0, 1.3);
+		GeometricObject* cub = new Cuboid(0.2, 1.0, 1.0);
 
 		//Prepare multiple instances of ball
 		std::vector<glm::mat4> cubTransforms;
-		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.5,0.0,0.0)));
+		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0,0.0)));
 
 		//Create objectInfo struct
 		objectInfo cubinfo(cub->getNumElements(), cubTransforms.size());
 		objInfo["Cuboid"] = cubinfo;
 
 		//Upload to GPU
-		//uploadGeometricObject(cub, cubTransforms.size(), cubTransforms, objInfo["Cuboid"]);
+		uploadGeometricObject(cub, cubTransforms.size(), cubTransforms, objInfo["Cuboid"]);
 
 		//Perform transformation of vertices and register in Collision Handler
 		for(int i = 0; i < cubTransforms.size(); i++){
@@ -176,7 +176,7 @@ using namespace sph;
 			Map<MatrixXf> rawVertices(cubData.data(), 4, cubData.size() / 4);//rawVertices operates on the same data as cubData
 			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(cubTransforms[i]));
 			rawVertices = transform * rawVertices;
-			//solver->addObject(cubData, 4, cub->getIndices());
+			solver->addObject(cubData, 4, cub->getIndices());
 		}
 
 		//ENd: Create and preprocess cuboid
