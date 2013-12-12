@@ -14,7 +14,7 @@
 
 namespace CollisionHandlerNS {
 
-CollisionHandler::CollisionHandler() {
+CollisionHandler::CollisionHandler(){
 }
 
 CollisionHandler::~CollisionHandler() {
@@ -40,12 +40,10 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsAllObjects(
 std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(position_t newParticlePos, position_t oldParticlePos, velocity_t particleVel, object_t object){
 
 	//If particle is not inside AABB box: return
-//	if(!( pointInsideCube(newParticlePos, object.AABB) || pointInsideCube(oldParticlePos, object.AABB) )){
-//		std::cout << "CollisionHandler::particleVsOneObject: Early return: newParticlePos outside AABB box" << std::endl;
-//		return std::make_tuple(false, newParticlePos, particleVel);
-//	}
-	//Init RNG
-	std::mt19937 randEng(42);
+	if(!( pointInsideCube(newParticlePos, object.AABB) || pointInsideCube(oldParticlePos, object.AABB) )){
+		return std::make_tuple(false, newParticlePos, particleVel);
+	}
+
 	//For each triangle, check intersection and correct if necessary
 	for(std::vector<unsigned int>::iterator it = object.indices.begin(); it != object.indices.end(); it+=3){
 		//Triangle is specified by *it, *(it+1), *(it+2)
@@ -73,7 +71,6 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 			//Correct position
 			position_t correctedPos = trianglePlane.projection(newParticlePos);
 
-
 			//Check whether the projected point is still in the triangle. If not, clamp it to the triangle's boundary
 			if(!pointInsideTriangle(correctedPos, triangle_t(v1,v2,v3))){
 				std::pair<bool, position_t> tmp = intersectLines(line_t(correctedPos, inters.second), line_t(v2, v1));
@@ -92,14 +89,19 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 				}
 			}
 
-			//Add some perturbation in triangle normal direction (avoid being pushed through afterwards by other particles)
+			//Add some perturbation in triangle normal outwards direction (avoid being pushed through afterwards by other particles)
 			correctedPos += 5 * (inters.second - newParticlePos);
 
 
 			//Correct velocity
 			velocity_t correctedVel = 0.7 * (trianglePlane.projection(v1 + particleVel) - v1);//v1: particleVel is only a direction vector
 
+//		    //Add some perturbation in triangle normal inwards direction (so as to stick with the surface and not free float in space)
+//			correctedVel += 0.5 * (particleVel - correctedVel);
+
 		    //Add some random perturbation
+			//Init RNG
+			std::mt19937 randEng(42);
 			collision_t factor = 0.2 * particleVel.norm();
 		    std::uniform_real_distribution<collision_t> uniformDist(-factor, factor);
 		    collision_t rand0 = uniformDist(randEng);
@@ -107,8 +109,10 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 
 		    correctedVel += rand0 * (v2-v1) + rand1 * (v2-v3);
 
+//		    std::cout << "Reporting collision at: " << inters.second << std::endl;
+//		    std::cout << "AABB" << object.AABB << std::endl;
 
-			return std::make_tuple(true, correctedPos, correctedVel);
+		    return std::make_tuple(true, correctedPos, correctedVel);
 		}
 	}
 
@@ -176,10 +180,12 @@ bool CollisionHandler::pointInsideTriangle(position_t x, triangle_t tri){
 	vec3 rhs = x - tri[0];
 
 	int ind0 = 0, ind1 = 1;
-	if(ba[0] == 0. && ca[0] == 0.)
-		ind0 = 2;
-	else if(ba[1] == 0. && ca[1] == 0.)
-		ind1 = 2;
+	if(ba[0] == 0. && ca[0] == 0.){
+		ind0 = 1; ind1 = 2;
+	}
+	else if(ba[1] == 0. && ca[1] == 0.){
+		ind0 = 0; ind1 = 2;
+	}
 
 	collision_t s = ca[ind1] * rhs[ind0] - ca[ind0] * rhs[ind1];
 	collision_t t = -ba[ind1] * rhs[ind0] + ba[ind0] * rhs[ind1];
@@ -196,9 +202,9 @@ bool CollisionHandler::pointInsideTriangle(position_t x, triangle_t tri){
 //	//Copied from: http://www.blackpawn.com/texts/pointinpoly/
 //
 //	// Compute vectors
-//	position_t v0 = t(2) - t(0);
-//	position_t v1 = t(1) - t(0);
-//	position_t v2 = x - t(0);
+//	position_t v0 = tri(2) - tri(0);
+//	position_t v1 = tri(1) - tri(0);
+//	position_t v2 = x - tri(0);
 //
 //	// Compute dot products
 //	collision_t dot00 = v0.dot(v0);
@@ -247,6 +253,7 @@ void CollisionHandler::addObject(std::vector<collision_t> vertices, int vertexSt
 	AABB << minima[0], maxima[0], minima[1], maxima[1], minima[2], maxima[2];
 	obj.AABB = AABB;
 
+	std::cout << "object AABB" << AABB << std::endl;
 	objects.push_back(obj);
 }
 
