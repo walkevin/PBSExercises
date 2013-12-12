@@ -16,7 +16,7 @@ namespace sph
 	, stiffness(1000)
 	, collisionHandler(handler)
   {
-    gravity << 0, 0, -9.81;
+    gravity << 0, -9.81, 0;
     initNeighbourTransitions();
     for(int k = 0; k < size; k++)
     {
@@ -95,17 +95,16 @@ namespace sph
 
 	void SphSolver::addObject(std::vector<CollisionHandlerNS::collision_t> vertices, int stride, std::vector<unsigned int> indices)
 	{
-		int numVert = vertices.size()/3;
+		double linTrans = 0.5 * gridSize * cutoff;
 		CollisionHandlerNS::collision_t temp;
-		for(int i = 0; i < numVert; i++)
+		for(int i = 0; i < vertices.size(); i+=4)
 		{
-			for(int j = 0; j < 3; j++)
+			for(int j = 0; j < 4; j++)
 			{
-				vertices[i*3 + j] = 0.5 * gridSize*cutoff * (vertices[i*3 + j] + 1);
+				if(j == 3)
+					continue;
+				vertices[i + j] = linTrans * (vertices[i + j] + 1);
 			}
-			temp = vertices[i*3 + 1];
-			vertices[i*3 + 1] = vertices[i*3 + 2]*(-1);
-			vertices[i*3 + 2] = temp;
 		}
 		collisionHandler->addObject(vertices, stride, indices);
 	}
@@ -150,7 +149,7 @@ namespace sph
       {
 				position onePos = tempPos[j];
 				onePos = onePos*linTransFac;
-        temp << onePos(0), onePos(2), onePos(1)*(-1), 2;
+        temp << onePos(0), onePos(1), onePos(2), 2;
 				temp = temp - 1.;
         positions[index] = temp;
         index++;
@@ -170,7 +169,7 @@ namespace sph
 		{
 			position onePos = tempPos[i];
 			onePos = onePos*linTransFac;
-      temp << onePos(0), onePos(2), onePos(1), 2;
+      temp << onePos(0), onePos(1), onePos(2), 2;
 			temp = temp - 1.;
       positions[i] = temp;
     }
