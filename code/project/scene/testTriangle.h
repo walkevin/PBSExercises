@@ -13,6 +13,10 @@
 #include "../GLUTFramework/src/RotatingView.h"
 #include <string>
 #include <map>
+#include <vector>
+#include <fstream>
+#include <sstream>
+
 
 //typedef struct
 //{
@@ -30,7 +34,9 @@ public:
 	void load();
 	void close();
 	void drawCar();
-	void loadObj(char *fname);
+	void sf_loadObj(char *fname);
+	void wiki_load_obj(const char* filename, std::vector<glm::vec4> &vertices, std::vector<glm::vec3> &normals, std::vector<GLushort> &elements);
+	void *mesh; 
 private:
 	static const int nVao = 2;
 	static const int nBuffer = 4;
