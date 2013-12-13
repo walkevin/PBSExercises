@@ -61,6 +61,8 @@ namespace sph
 
   void SphCell::updateDensity()
   {
+		if(storedParticles == 0)
+			return;
     if(density.size() != storedParticles)
       density.reserve(storedParticles);
 
@@ -69,19 +71,22 @@ namespace sph
       density[i] = 0;
     }
 
+		attributeValue massP = liq[0]->getAttribute(Attribute::mass());
+
     std::array<coordinate, 27> transitions = solver.getTransitions();
     for(int i = 0; i < transitions.size(); i++)
     {
       SmoothingKernel &kernel = solver.getKernel();
       SphCell& neighbour = solver.getNeighbour(coord, transitions[i]);
-      for(int j = 0; j < neighbour.storedParticles; j++)
+      for(int j = 0; j < storedParticles; j++)
       {
-        attributeValue massN = neighbour.liq[j]->getAttribute(Attribute::mass());
-        position posN = neighbour.pos[j];
-        for(int k = 0; k < storedParticles; k++)
-        {
-          density[k] += massN * kernel(posN, pos[k]);
+        position posP = pos[j];
+				attributeValue densityTemp = 0;
+        for(int k = 0; k < neighbour.storedParticles; k++)
+        {					
+          densityTemp += massP * kernel(posP, neighbour.pos[k]);
         }
+				density[j] += densityTemp;
       }
     }
   }
@@ -136,12 +141,13 @@ namespace sph
 
   void SphCell::makeTransitions() 
   {
+		entityValue cellSizeInv = 1/cellSize;
     for(int i = storedParticles-1; i >= 0; i--)
     {
       coordinate transition;
       for(int j = 0; j < 3; j++)
       {
-        transition(j,0) = std::floor(pos[i](j,0)/cellSize) - coord(j,0);
+        transition(j,0) = std::floor(pos[i](j,0)*cellSizeInv) - coord(j,0);
       }
       if(transition(0,0) != 0 || transition(1,0) != 0 || transition(2,0) != 0)
       {
@@ -156,7 +162,11 @@ namespace sph
   {
     //update pressure values and set the force to zero
     updatePressure();
-    for(int i = 0; i < f.size(); i++)
+		
+		if(storedParticles == 0)
+			return;
+
+    for(int i = 0; i < storedParticles; i++)
     {
       if(f.size() != storedParticles)
         f.reserve(storedParticles);
@@ -268,10 +278,5 @@ namespace sph
   const std::vector<position>& SphCell::getPositions() const
   {
     return pos;
-  }
-
-  discreteValue SphCell::getStoredParticles() const
-  {
-    return storedParticles;
   }
 }

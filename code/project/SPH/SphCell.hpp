@@ -62,7 +62,7 @@ namespace sph
       /*
       Returns the number of stored particles
       */
-      discreteValue getStoredParticles() const;
+      inline discreteValue getStoredParticles() const {return storedParticles;};
 
       /*
       Adds a particle to the cell
