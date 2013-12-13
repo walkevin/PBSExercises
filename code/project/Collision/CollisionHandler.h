@@ -53,6 +53,15 @@ public:
 	 *
 	 */
 	void addObject(std::vector<collision_t> vertices, int vertexStride, std::vector<unsigned int> indices);
+
+	/*
+	 * clearObjects
+	 *
+	 * removes all Objects
+	 *
+	 */
+	void clearObjects();
+
 //private:
 	std::tuple<bool, position_t, velocity_t> particleVsOneObject(position_t newParticlePos, position_t oldParticlePos, velocity_t particleVel, object_t object);
 

@@ -11,6 +11,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include "../GLUTFramework/src/RotatingView.h"
 #include "../GLUTFramework/src/Ball.h"
@@ -19,14 +21,15 @@
 
 using namespace sph;
 
-	Paintball::Paintball(SphSolver* solver){
+	Paintball::Paintball(SphSolver* solver)
+	{
 		this->solver = solver;
 		nActiveParticles = solver->getParticleNumber();
 		activeParticles = solver->getParticles();
 		nDeadParticles = solver->getDeadParticleNumber();
 //		nDeadParticles = 0;
 		nTotalParticles = nActiveParticles + nDeadParticles;
-
+		angle = 0;
 	}
 	Paintball::~Paintball(){}
 
@@ -42,8 +45,8 @@ using namespace sph;
 		for(int i = 0; i < 5; i++)
 //		std::cout << "Update positions" << std::endl;
 			solver->simulationStep(0.0001);
-//   	std::chrono::milliseconds dura( 200 );
-//    std::this_thread::sleep_for( dura );
+   	std::chrono::milliseconds dura( 200 );
+    std::this_thread::sleep_for( dura );
 	}
 
 
@@ -62,6 +65,7 @@ using namespace sph;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		updatePositions();
+		rotateObjects();
 
 		glUseProgram(sh.getProgramId());
 //		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -124,7 +128,7 @@ using namespace sph;
 		//END: Create and preprocess Ball
 
 
-		//BEGIN: Create and preprocess collisionBall
+		/*//BEGIN: Create and preprocess collisionBall
 		//Load collisionBall
 		GeometricObject* colball = new Ball(15, 15, 0.5);
 
@@ -148,37 +152,40 @@ using namespace sph;
 			rawVertices = transform * rawVertices;
 			solver->addObject(colballData, 4, colball->getIndices());
 		}
-		//END Create and preprocess CollisionBall
+		//END Create and preprocess CollisionBall*/
 
 
 
-//		//BEGIN: Create and preprocess pyramid
-//		//Load pyramid
-//		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
-//
-//		//Prepare multiple instances of ball
-//		std::vector<glm::mat4> pyrTransforms;
-//		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.5,-0.9,0.0)));
-////		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.7,0.4,0.0)));
-//		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1))
-//
-//		//Create objectInfo struct
-//		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
-//		objInfo["Pyramid"] = pyrinfo;
-//
-//		//Upload to GPU
-//		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, objInfo["Pyramid"]);
-//
-//		//Perform transformation of vertices and register in Collision Handler
-//		for(int i = 0; i < pyrTransforms.size(); i++){
-//			using namespace Eigen;
-//			std::vector<geometry_type> pyrData = pyr->getVertices();
-//			Map<MatrixXf> rawVertices(pyrData.data(), 4, pyrData.size() / 4);//rawVertices operates on the same data as pyrData
-//			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(pyrTransforms[i]));
-//			rawVertices = transform * rawVertices;
-//			solver->addObject(pyrData, 4, pyr->getIndices());
-//		}
-//		//END: Create and preprocess pyramid
+		//BEGIN: Create and preprocess pyramid
+		//Load pyramid
+		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
+		objects.push_back(pyr);
+
+		//Prepare multiple instances of ball
+		std::vector<glm::mat4> pyrTransforms;
+		glm::vec3 euler(0, 120, 0);
+		glm::quat myQuat(euler);
+		pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(0.5,-0.5,0.0)));
+		//pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(0.5,0.4,0.0)));
+		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1))
+
+		//Create objectInfo struct
+		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
+		objInfo["Pyramid"] = pyrinfo;
+
+		//Upload to GPU
+		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, objInfo["Pyramid"]);
+
+		//Perform transformation of vertices and register in Collision Handler
+		for(int i = 0; i < pyrTransforms.size(); i++){
+			using namespace Eigen;
+			std::vector<geometry_type> pyrData = pyr->getVertices();
+			Map<MatrixXf> rawVertices(pyrData.data(), 4, pyrData.size() / 4);//rawVertices operates on the same data as pyrData
+			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(pyrTransforms[i]));
+			rawVertices = transform * rawVertices;
+			solver->addObject(pyrData, 4, pyr->getIndices());
+		}
+		//END: Create and preprocess pyramid
 
 //		//BEGIN: Create and preprocess cuboid
 //		//Load cuboid
@@ -305,3 +312,21 @@ using namespace sph;
 			glVertexAttribDivisor(locs["modelMat"] + i, 1);
 		}
 	}
+
+	void Paintball::rotateObjects()
+	{
+		std::vector<glm::mat4> pyrTransforms;
+		glm::vec3 euler(0, angle, 0);
+		glm::quat myQuat(euler);
+		pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(0.5,-0.5,0.0)));
+		
+		objectInfo pyrinfo(objects[0]->getNumElements(), pyrTransforms.size());
+		objInfo["Pyramid"] = pyrinfo;
+
+		uploadGeometricObject(objects[0], pyrTransforms.size(), pyrTransforms, objInfo["Pyramid"]);
+
+		angle += 0.1;
+		std::cout << angle << std::endl;
+		
+	}
+

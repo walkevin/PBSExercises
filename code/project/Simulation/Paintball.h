@@ -53,12 +53,16 @@ private:
 	ShaderLoader sh;
 	RotatingView* rv;
 
+	std::vector<GeometricObject*> objects;
+	double angle;
+
 	void createVBO();
 	void destroyVBO();
 	void updatePositions();
 	void specialKeyboardDown(int key, int x, int y );
 
 	void uploadGeometricObject(GeometricObject* obj, int numObj, std::vector<glm::mat4> objTransforms, objectInfo objInfo);
+	void rotateObjects();
 
 };
 

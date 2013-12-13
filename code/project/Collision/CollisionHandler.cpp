@@ -273,4 +273,10 @@ void CollisionHandler::addObject(std::vector<collision_t> vertices, int vertexSt
 	objects.push_back(obj);
 }
 
+void CollisionHandler::clearObjects()
+{
+	while(!objects.empty())
+		objects.pop_back();
+}
+
 } /* namespace CollisionHandler */
