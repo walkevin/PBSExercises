@@ -279,9 +279,4 @@ namespace sph
   {
     return pos;
   }
-
-  discreteValue SphCell::getStoredParticles() const
-  {
-    return storedParticles;
-  }
 }
