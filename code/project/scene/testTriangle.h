@@ -34,12 +34,13 @@ public:
 	void load();
 	void close();
 	void drawCar();
+	void objToVBO();
+	void drawVBOobj(); 
 	void sf_loadObj(char *fname);
-	void wiki_load_obj(const char* filename, std::vector<glm::vec4> &vertices, std::vector<glm::vec3> &normals, std::vector<GLushort> &elements);
-	void *mesh; 
+	void wiki_load_obj(const char* filename, std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<GLushort> &elements);
 private:
 	static const int nVao = 2;
-	static const int nBuffer = 4;
+	static const int nBuffer = 7;
 	static const int nIndexBuffer = 1;
     GLuint
      VaoId[nVao],

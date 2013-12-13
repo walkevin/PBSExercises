@@ -53,7 +53,7 @@ void LustigiSzene::sf_loadObj(char *fname) {
 			}
 			read2=fscanf(fp,"%c %f %[/] %f %f %[/] %f %f %[/] %f",&cha,&xx,&chb,&xy,&yx,&chc,&yy,&zx,&chd,&zy);
 //			if(read2==10&&ch=='f')
-			std::cout << cha;
+//			std::cout << cha;
 			if(read2==10&&cha=='f')
 			{
 				objFaces.push_back(xx);
@@ -76,8 +76,7 @@ void LustigiSzene::sf_loadObj(char *fname) {
 	glEndList();
 	fclose(fp);
 }
-void LustigiSzene::wiki_load_obj(const char* filename, std::vector<glm::vec4> &vertices, std::vector<glm::vec3> &normals, std::vector<GLushort> &elements) {
-	glm::vec4 * mesh; 
+void LustigiSzene::wiki_load_obj(const char* filename, std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<GLushort> &elements) {
   ifstream in(filename, ios::in);
   if (!in) { cerr << "Cannot open " << filename << endl; exit(1); }
  
@@ -85,7 +84,7 @@ void LustigiSzene::wiki_load_obj(const char* filename, std::vector<glm::vec4> &v
   while (getline(in, line)) {
     if (line.substr(0,2) == "v ") {
       istringstream s(line.substr(2));
-      glm::vec4 v; s >> v.x; s >> v.y; s >> v.z; v.w = 1.0f;
+      glm::vec3 v; s >> v.x; s >> v.y; s >> v.z;
       vertices.push_back(v);
     }  else if (line.substr(0,2) == "f ") {
       istringstream s(line.substr(2));
@@ -98,7 +97,7 @@ void LustigiSzene::wiki_load_obj(const char* filename, std::vector<glm::vec4> &v
     else { /* ignoring this line */ }
   }
  
-  normals.resize(mesh->vertices.size(), glm::vec3(0.0, 0.0, 0.0));
+  normals.resize(vertices.size(), glm::vec3(0.0, 0.0, 0.0));
   for (int i = 0; i < elements.size(); i+=3) {
     GLushort ia = elements[i];
     GLushort ib = elements[i+1];
@@ -122,6 +121,52 @@ void LustigiSzene::drawCar() {
  if(carrot>360)carrot=carrot-360;
 }
 
+
+// wikibooks
+void LustigiSzene::objToVBO() {
+// begin edited
+//	glBindBuffer(GL_ARRAY_BUFFER, BufferId[0]);
+//	glBufferData(GL_ARRAY_BUFFER, 9*sizeof(float), fTriangle, GL_STATIC_DRAW);
+//	locs["inPosition"] = glGetAttribLocation(sh.getProgramId(),"inPosition");
+//	glVertexAttribPointer(locs["inPosition"], 3, GL_FLOAT, GL_FALSE, 0, 0);
+//	glEnableVertexAttribArray(locs["inPosition"]);
+
+	glBindBuffer(GL_ARRAY_BUFFER, BufferId[4]);
+	locs["inPosition"] = glGetAttribLocation(sh.getProgramId(),"inPosition");
+	glEnableVertexAttribArray(locs["inPosition"]);
+// end edited
+
+
+//  glEnableVertexAttribArray(attribute_v_coord);
+  // Describe our vertices array to OpenGL (it can't guess its format automatically)
+//  glBindBuffer(GL_ARRAY_BUFFER, vbo_mesh_vertices);
+  glVertexAttribPointer(
+    locs["inPosition"],  // attribute
+    3,                  // number of elements per vertex, here (x,y,z,w)
+    GL_FLOAT,           // the type of each element
+    GL_FALSE,           // take our values as-is
+    0,                  // no extra data between each position
+    0                   // offset of first element
+  );
+ 
+	glBindBuffer(GL_ARRAY_BUFFER, BufferId[5]);
+	locs["inColor"] = glGetAttribLocation(sh.getProgramId(),"inColor");
+	glEnableVertexAttribArray(locs["inColor"]);
+  glVertexAttribPointer(
+    locs["inColor"], // attribute
+    3,                  // number of elements per vertex, here (x,y,z)
+    GL_FLOAT,           // the type of each element
+    GL_FALSE,           // take our values as-is
+    0,                  // no extra data between each position
+    0                   // offset of first element
+  );
+}
+void LustigiSzene::drawVBOobj() {
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, BufferId[6]);
+  int size;  glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);  
+  glDrawElements(GL_TRIANGLES, size/sizeof(GLushort), GL_UNSIGNED_SHORT, 0);
+}
+
 void LustigiSzene::load(){
 	sh.load("shaders/lustigiSzene.vert","shaders/lustigiSzene.frag");
 	sh.use();
@@ -134,39 +179,44 @@ void LustigiSzene::load(){
 	createVBO();
 }
 void LustigiSzene::display(float dTime){
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_BYTE, NULL);
+//////////////////////////////////////   
+//	wikibooks opengl-obj-reader
+//////////////////////////////////////   
+	vector<glm::vec3> suzanne_vertices;
+	vector<glm::vec3> suzanne_normals;
+	vector<GLushort> suzanne_elements;
+//////////////////////////////////////   
+
+
+	glClearColor (0.6,0.4,0.0,1.0);
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+//	sf_loadObj("data/woman.obj");//replace porsche.obj with radar.obj or any other .obj to display it
+//	sf_loadObj("data/target2.obj");//replace porsche.obj with radar.obj or any other .obj to display it
+	wiki_load_obj("data/target2.obj", suzanne_vertices, suzanne_normals, suzanne_elements);
+//	drawCar();
+	objToVBO();
+
 //////////////////////////////////////
-// Draw Triangle and Quad 
+//	Draw Triangle and Quad 
 //////////////////////////////////////   
-		glBindVertexArray(VaoId[0]);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-//		glBindVertexArray(VaoId[1]);
-//		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_BYTE, NULL);
+	glBindVertexArray(VaoId[0]);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+//	glBindVertexArray(VaoId[1]);
+//	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 //////////////////////////////////////   
-//		glutSolidTeapot(1);
+//	glutSolidTeapot(1);
 //////////////////////////////////////   
 //
-//////////////////////////////////////   
-// wikibooks opengl-obj-reader
-//////////////////////////////////////   
-vector<glm::vec4> suzanne_vertices;
-vector<glm::vec3> suzanne_normals;
-vector<GLushort> suzanne_elements;
-//////////////////////////////////////   
+	drawVBOobj();
 
 
-
-		glClearColor (0.0,1.0,0.0,1.0);
-		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glLoadIdentity();
-		sf_loadObj("data/woman.obj");//replace porsche.obj with radar.obj or any other .obj to display it
-		drawCar();
-
-		glutSwapBuffers();
-		glutPostRedisplay();
-	}
+	glutSwapBuffers();
+	glutPostRedisplay();
+}
 
 	void LustigiSzene::close(){
 		std::cout << "LustigiSzene::close" << std::endl;
@@ -245,6 +295,7 @@ vector<GLushort> suzanne_elements;
 				std::cerr << "ERROR: Could not create a VBO: " << gluErrorString(ErrorCheckValue) << "\n";
 				exit(-1);
 			}
+
 
 	}
 	void LustigiSzene::destroyVBO(){
