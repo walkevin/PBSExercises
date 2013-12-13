@@ -3,7 +3,6 @@
 
 #include "testTriangle.h"
 #include <iostream>
-#include <vector>
 
 //OpenGL Math
 #include <glm/glm.hpp>
@@ -13,6 +12,8 @@
 #include "../GLUTFramework/src/RotatingView.h"
 #include "../GLUTFramework/src/Ball.h"
 
+using namespace std;
+
 GLuint car;
 float carrot;
 std::vector<float> objVertices;
@@ -21,7 +22,7 @@ std::vector<float> objFaces;
 	LustigiSzene::LustigiSzene(){}
 	LustigiSzene::~LustigiSzene(){}
 
-void LustigiSzene::loadObj(char *fname) {
+void LustigiSzene::sf_loadObj(char *fname) {
 	FILE *fp;
 	int read;
 	int read2;
@@ -75,6 +76,39 @@ void LustigiSzene::loadObj(char *fname) {
 	glEndList();
 	fclose(fp);
 }
+void LustigiSzene::wiki_load_obj(const char* filename, std::vector<glm::vec4> &vertices, std::vector<glm::vec3> &normals, std::vector<GLushort> &elements) {
+	glm::vec4 * mesh; 
+  ifstream in(filename, ios::in);
+  if (!in) { cerr << "Cannot open " << filename << endl; exit(1); }
+ 
+  string line;
+  while (getline(in, line)) {
+    if (line.substr(0,2) == "v ") {
+      istringstream s(line.substr(2));
+      glm::vec4 v; s >> v.x; s >> v.y; s >> v.z; v.w = 1.0f;
+      vertices.push_back(v);
+    }  else if (line.substr(0,2) == "f ") {
+      istringstream s(line.substr(2));
+      GLushort a,b,c;
+      s >> a; s >> b; s >> c;
+      a--; b--; c--;
+      elements.push_back(a); elements.push_back(b); elements.push_back(c);
+    }
+    else if (line[0] == '#') { /* ignoring this line */ }
+    else { /* ignoring this line */ }
+  }
+ 
+  normals.resize(mesh->vertices.size(), glm::vec3(0.0, 0.0, 0.0));
+  for (int i = 0; i < elements.size(); i+=3) {
+    GLushort ia = elements[i];
+    GLushort ib = elements[i+1];
+    GLushort ic = elements[i+2];
+    glm::vec3 normal = glm::normalize(glm::cross(
+      glm::vec3(vertices[ib]) - glm::vec3(vertices[ia]),
+      glm::vec3(vertices[ic]) - glm::vec3(vertices[ia])));
+    normals[ia] = normals[ib] = normals[ic] = normal;
+  }
+}
 
 void LustigiSzene::drawCar() {
  glPushMatrix();
@@ -114,10 +148,20 @@ void LustigiSzene::display(float dTime){
 //		glutSolidTeapot(1);
 //////////////////////////////////////   
 //
+//////////////////////////////////////   
+// wikibooks opengl-obj-reader
+//////////////////////////////////////   
+vector<glm::vec4> suzanne_vertices;
+vector<glm::vec3> suzanne_normals;
+vector<GLushort> suzanne_elements;
+//////////////////////////////////////   
+
+
+
 		glClearColor (0.0,1.0,0.0,1.0);
 		glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
-		loadObj("data/woman.obj");//replace porsche.obj with radar.obj or any other .obj to display it
+		sf_loadObj("data/woman.obj");//replace porsche.obj with radar.obj or any other .obj to display it
 		drawCar();
 
 		glutSwapBuffers();
