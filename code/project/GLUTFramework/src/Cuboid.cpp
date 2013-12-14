@@ -121,10 +121,10 @@ std::vector<unsigned int> Cuboid::getIndices(){
 
 std::vector<geometry_type> Cuboid::getColors(){
 	std::vector<geometry_type> colors;
-	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
-	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
-	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
-	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
+	colors.push_back(0.0); colors.push_back(0.1); colors.push_back(0.2); colors.push_back(1.0);
+	colors.push_back(0.0); colors.push_back(0.1); colors.push_back(0.2); colors.push_back(1.0);
+	colors.push_back(0.0); colors.push_back(0.1); colors.push_back(0.2); colors.push_back(1.0);
+	colors.push_back(0.0); colors.push_back(0.1); colors.push_back(0.2); colors.push_back(1.0);
 
 	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
 	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);

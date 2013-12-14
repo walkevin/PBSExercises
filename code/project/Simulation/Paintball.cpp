@@ -16,11 +16,13 @@
 #include "../GLUTFramework/src/Ball.h"
 #include "../GLUTFramework/src/Pyramid.h"
 #include "../GLUTFramework/src/Cuboid.h"
+#include "../GLUTFramework/src/Ellipse.h"
 
 using namespace sph;
 
 	Paintball::Paintball(SphSolver* solver){
 		this->solver = solver;
+		ch = solver->getCollisionHandler().get();
 		nActiveParticles = solver->getParticleNumber();
 		activeParticles = solver->getParticles();
 		nDeadParticles = solver->getDeadParticleNumber();
@@ -40,9 +42,8 @@ using namespace sph;
 		nDeadParticles = deadParticles.size();
 		nTotalParticles = nActiveParticles + nDeadParticles;
 		for(int i = 0; i < 5; i++)
-//		std::cout << "Update positions" << std::endl;
 			solver->simulationStep(0.0001);
-//   	std::chrono::milliseconds dura( 200 );
+//    std::chrono::milliseconds dura( 200 );
 //    std::this_thread::sleep_for( dura );
 	}
 
@@ -66,8 +67,8 @@ using namespace sph;
 		glUseProgram(sh.getProgramId());
 //		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+		//Update positions of particles
 		glBindVertexArray(objInfo["Ball"].vaoId);
-
 		glBindBuffer(GL_ARRAY_BUFFER, objInfo["Ball"].bufferId[3]);
 		// Map the buffer
 		glm::mat4* matrices = (glm::mat4 *)glMapBuffer(GL_ARRAY_BUFFER,GL_WRITE_ONLY);
@@ -90,6 +91,25 @@ using namespace sph;
 		// Done. Unmap the buffer.
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		objInfo["Ball"].numInstances = nTotalParticles;
+
+		//Update tracer ellipses
+		auto collisionPositions = ch->getCollisionPositions();
+		auto collisionVelocities = ch->getCollisionVelocities();
+		auto collisionVelocitiesOrthogonal = ch->getCollisionVelocitiesOrthogonal();
+
+		if(collisionPositions.size() > 0){
+			GeometricObject* ell = new Ellipse(collisionVelocities, collisionVelocitiesOrthogonal, collisionPositions, 10);
+
+			std::vector<glm::mat4> ellTransforms;
+			ellTransforms.push_back(glm::make_mat4x4(solver->getBackTransform().data()));
+
+			//Create objectInfo struct
+			objectInfo ellinfo(ell->getNumElements(), ellTransforms.size());
+
+			objInfo["PaintTracers"] = ellinfo;
+			//Upload to GPU
+			uploadGeometricObject(ell, ellTransforms.size(), ellTransforms, objInfo["PaintTracers"]);
+		}
 
 		//Draw registered objects
 	    for (auto& x: objInfo) {
@@ -124,88 +144,90 @@ using namespace sph;
 		//END: Create and preprocess Ball
 
 
-		//BEGIN: Create and preprocess collisionBall
-		//Load collisionBall
-		GeometricObject* colball = new Ball(15, 15, 0.5);
+//		//BEGIN: Create and preprocess collisionBall
+//		//Load collisionBall
+//		GeometricObject* colball = new Ball(15, 15, 0.5);
+//
+//		//Prepare multiple instances of ball
+//		std::vector<glm::mat4> colballTransforms;
+//		colballTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,-0.5, 0.0)));
+//
+//		//Create objectInfo struct
+//		objectInfo colballinfo(colball->getNumElements(), colballTransforms.size());
+//		objInfo["Colball"] = colballinfo;
+//
+//		//Upload to GPU
+//		uploadGeometricObject(colball, colballTransforms.size(), colballTransforms, objInfo["Colball"]);
+//
+//		//Perform transformation of vertices and register in Collision Handler
+//		for(int i = 0; i < colballTransforms.size(); i++){
+//			using namespace Eigen;
+//			std::vector<geometry_type> colballData = colball->getVertices();
+//			Map<MatrixXf> rawVertices(colballData.data(), 4, colballData.size() / 4);//rawVertices operates on the same data as pyrData
+//			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(colballTransforms[i]));
+//			rawVertices = transform * rawVertices;
+//			solver->addObject(colballData, 4, colball->getIndices());
+//		}
+//		//END Create and preprocess CollisionBall
+
+
+
+		//BEGIN: Create and preprocess pyramid
+		//Load pyramid
+		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
 
 		//Prepare multiple instances of ball
-		std::vector<glm::mat4> colballTransforms;
-		colballTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,-0.5, 0.0)));
+		std::vector<glm::mat4> pyrTransforms;
+		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,-0.5,0.0)));
+//		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.7,0.4,0.0)));
+		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1))
 
 		//Create objectInfo struct
-		objectInfo colballinfo(colball->getNumElements(), colballTransforms.size());
-		objInfo["Colball"] = colballinfo;
-
+		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
+		objInfo["Pyramid"] = pyrinfo;
 		//Upload to GPU
-		uploadGeometricObject(colball, colballTransforms.size(), colballTransforms, objInfo["Colball"]);
+		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, objInfo["Pyramid"]);
 
 		//Perform transformation of vertices and register in Collision Handler
-		for(int i = 0; i < colballTransforms.size(); i++){
+		for(int i = 0; i < pyrTransforms.size(); i++){
 			using namespace Eigen;
-			std::vector<geometry_type> colballData = colball->getVertices();
-			Map<MatrixXf> rawVertices(colballData.data(), 4, colballData.size() / 4);//rawVertices operates on the same data as pyrData
-			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(colballTransforms[i]));
+			std::vector<geometry_type> pyrData = pyr->getVertices();
+			Map<MatrixXf> rawVertices(pyrData.data(), 4, pyrData.size() / 4);//rawVertices operates on the same data as pyrData
+			Map<Matrix4f> transform(glm::value_ptr(pyrTransforms[i]));
 			rawVertices = transform * rawVertices;
-			solver->addObject(colballData, 4, colball->getIndices());
+			solver->addObject(pyrData, 4, pyr->getIndices());
 		}
-		//END Create and preprocess CollisionBall
+		//END: Create and preprocess pyramid
 
 
+		//BEGIN: Create and preprocess cuboid
+		//Load cuboid
+		GeometricObject* cub = new Cuboid(7., 3., 7.);
 
-//		//BEGIN: Create and preprocess pyramid
-//		//Load pyramid
-//		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
-//
-//		//Prepare multiple instances of ball
-//		std::vector<glm::mat4> pyrTransforms;
-//		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.5,-0.9,0.0)));
-////		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.7,0.4,0.0)));
-//		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1))
-//
-//		//Create objectInfo struct
-//		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
-//		objInfo["Pyramid"] = pyrinfo;
-//
-//		//Upload to GPU
-//		uploadGeometricObject(pyr, pyrTransforms.size(), pyrTransforms, objInfo["Pyramid"]);
-//
-//		//Perform transformation of vertices and register in Collision Handler
-//		for(int i = 0; i < pyrTransforms.size(); i++){
-//			using namespace Eigen;
-//			std::vector<geometry_type> pyrData = pyr->getVertices();
-//			Map<MatrixXf> rawVertices(pyrData.data(), 4, pyrData.size() / 4);//rawVertices operates on the same data as pyrData
-//			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(pyrTransforms[i]));
-//			rawVertices = transform * rawVertices;
-//			solver->addObject(pyrData, 4, pyr->getIndices());
-//		}
-//		//END: Create and preprocess pyramid
+		//Prepare multiple instances of ball
+		std::vector<glm::mat4> cubTransforms;
+		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.0,0.0,0.0)));
 
-//		//BEGIN: Create and preprocess cuboid
-//		//Load cuboid
-//		GeometricObject* cub = new Cuboid(1.2, 3.0, 1.5);
-//
-//		//Prepare multiple instances of ball
-//		std::vector<glm::mat4> cubTransforms;
-//		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.0,0.0,0.0)));
-//
-//		//Create objectInfo struct
-//		objectInfo cubinfo(cub->getNumElements(), cubTransforms.size());
-//		objInfo["Cuboid"] = cubinfo;
-//
-//		//Upload to GPU
-//		uploadGeometricObject(cub, cubTransforms.size(), cubTransforms, objInfo["Cuboid"]);
-//
-//		//Perform transformation of vertices and register in Collision Handler
-//		for(int i = 0; i < cubTransforms.size(); i++){
-//			using namespace Eigen;
-//			std::vector<geometry_type> cubData = cub->getVertices();
-//			Map<MatrixXf> rawVertices(cubData.data(), 4, cubData.size() / 4);//rawVertices operates on the same data as cubData
-//			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(cubTransforms[i]));
-//			rawVertices = transform * rawVertices;
-//			solver->addObject(cubData, 4, cub->getIndices());
-//		}
-//
-//		//ENd: Create and preprocess cuboid
+		//Create objectInfo struct
+		objectInfo cubinfo(cub->getNumElements(), cubTransforms.size());
+		objInfo["Room"] = cubinfo;
+
+		//Upload to GPU
+		uploadGeometricObject(cub, cubTransforms.size(), cubTransforms, objInfo["Room"]);
+
+		//Perform transformation of vertices and register in Collision Handler
+		for(int i = 0; i < cubTransforms.size(); i++){
+			using namespace Eigen;
+			std::vector<geometry_type> cubData = cub->getVertices();
+			Map<MatrixXf> rawVertices(cubData.data(), 4, cubData.size() / 4);//rawVertices operates on the same data as cubData
+			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(cubTransforms[i]));
+			rawVertices = transform * rawVertices;
+			solver->addObject(cubData, 4, cub->getIndices());
+		}
+
+		//ENd: Create and preprocess cuboid
+
+
 	}
 	void Paintball::destroyVBO(){
 		GLenum ErrorCheckValue = glGetError();

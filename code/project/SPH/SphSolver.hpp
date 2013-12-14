@@ -136,18 +136,16 @@ namespace sph
 			entityValue getLastTimestep() const;
 
 			/*
-			Transforms a position back from the Simulation coordinates to coordinates from [-1, 1]^3
+			Returns 4x4 Backtransformation matrix from the Simulation coordinates to coordinates from [-1, 1]^3
 			
-			Arguments:
-			1. Vector in my Simulation coordinate space
 			*/
-			homogeneousPosition transformBack(position);
+			Eigen::Matrix<float, 4, 4> getBackTransform();
 
-		private:
 			/*
 			Returns collision Handler
 			*/
 			std::shared_ptr<CollisionHandlerNS::CollisionHandler> getCollisionHandler();
+		private:
 
 			/*
       Returns the kernel

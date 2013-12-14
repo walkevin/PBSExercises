@@ -27,4 +27,6 @@ public:
 	virtual unsigned int getNumElements() = 0;
 };
 
+
+//TODO: Move GeometricObjects to Scene or sth like that. Modify constructors such that custom colorisation is possible
 #endif /* GEOMETRICOBJECT_H_ */

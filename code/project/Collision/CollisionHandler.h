@@ -115,7 +115,15 @@ public:
 	 */
 	bool pointInsideCube(position_t x, cube_t c);
 
+	std::vector<position_t> getCollisionPositions();
+	std::vector<velocity_t> getCollisionVelocities();
+	std::vector<velocity_t> getCollisionVelocitiesOrthogonal();
+private:
 	std::vector<object_t> objects;
+
+	std::vector<position_t> collisionPositions;
+	std::vector<velocity_t> collisionVelocities;
+	std::vector<velocity_t> collisionVelocitiesOrthogonal;
 };
 
 } /* namespace CollisionHandler */

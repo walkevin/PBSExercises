@@ -26,6 +26,12 @@ public:
 	 *
 	 */
 	Ellipse(vec3 A_, vec3 B_, vec3 center_, int t_);
+
+	/*
+	 *
+	 * Create multiple independent ellipses as a single object
+	 */
+	Ellipse(std::vector<vec3> A_, std::vector<vec3> B_, std::vector<vec3> center_, int t_);
 	virtual ~Ellipse();
 
 	std::vector<geometry_type> getVertices();
@@ -46,6 +52,7 @@ private:
 	vec3 center;// side length in z direction
 	int t; //number of vertices on the boundary
 	unsigned int numElements;
+	int numEllipses;//Number of generated ellipses
 
 	std::vector<geometry_type> vertices;
 	std::vector<geometry_type> normals;

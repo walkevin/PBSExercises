@@ -275,13 +275,14 @@ namespace sph
 		return collisionHandler;
 	}
 
-	homogeneousPosition SphSolver::transformBack(position pos)
+	Eigen::Matrix<float, 4, 4> SphSolver::getBackTransform()
 	{
+		Eigen::Matrix<float, 4, 4> B;
 		double linTransFac = 2./(cutoff*gridSize);
-		homogeneousPosition temp;
-		pos = pos*linTransFac;
-		temp << pos(0), pos(1), pos(2), 2;
-		temp = temp - 1.;
-		return temp;
+		B << linTransFac, 0, 0, -1,
+			 0, linTransFac, 0, -1,
+			 0, 0, linTransFac, -1,
+			 0, 0, 0, 1;
+		return B;
 	}
 }

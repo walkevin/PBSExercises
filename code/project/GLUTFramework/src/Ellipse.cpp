@@ -25,13 +25,28 @@
 #include <cassert>
 #include <Eigen/Geometry>
 
-Ellipse::Ellipse(vec3 A_, vec3 B_, vec3 center_, int t_) : A(A_), B(B_), center(center_), numElements(3 * t_), t(t_){
+
+
+Ellipse::Ellipse(vec3 A_, vec3 B_, vec3 center_, int t_) : A(A_), B(B_), center(center_), numElements(3 * t_), t(t_), numEllipses(1){
 	computeVertices();
 	computeNormals();
 	computeIndices();
 	computeColors();
 }
 
+Ellipse::Ellipse(std::vector<vec3> A_, std::vector<vec3> B_, std::vector<vec3> center_, int t_) : t(t_), numEllipses(A_.size()){
+	for(int i = 0; i < A_.size(); i++){
+		A = A_[i];
+		B = B_[i];
+		center = center_[i];
+
+		computeVertices();
+		computeNormals();
+		computeIndices();
+		computeColors();
+	}
+
+}
 Ellipse::~Ellipse() {}
 
 /* Vertex numbering of Ellipse
@@ -46,7 +61,6 @@ Ellipse::~Ellipse() {}
 
 void Ellipse::computeVertices(){
 	//Specify vertices for sphere (displaced latitude-longitude discretization)
-	vertices.clear();
 
 	vertices.push_back(center[0]); vertices.push_back(center[1]); vertices.push_back(center[2]); vertices.push_back(1.0f);
 
@@ -60,12 +74,10 @@ void Ellipse::computeVertices(){
 
 }
 void Ellipse::computeNormals(){
-	assert((vertices.size() / 4) == t + 1); //Make sure that vertices have already been computed
-	normals.clear();
-	geometry_type tmpdist;
+	assert((vertices.size() / 4) % (t + 1) == 0); //Make sure that vertices have already been computed
 
 	vec3 normal = (A-center).cross((vec3(vertices[3], vertices[4], vertices[5])) - center).normalized();
-	for(int i = 0; i < vertices.size(); i += 4){
+	for(int i = 0; i < t+1; i++){
 		normals.push_back(normal[0]); normals.push_back(normal[1]); normals.push_back(normal[2]); normals.push_back(1.0);
 	}
 }
@@ -73,22 +85,19 @@ void Ellipse::computeNormals(){
 
 void Ellipse::computeIndices(){
 	//Specify indices
-	assert((vertices.size() / 4) == t + 1); //Make sure that vertices have already been computed
-
-	indices.clear();
-
+	assert((vertices.size() / 4) % (t + 1) == 0); //Make sure that vertices have already been computed
+	int offset = indices.size() / (3*t) * (t+1);
 	for(int i = 1; i < t; i++){
-		indices.push_back(0); indices.push_back(i); indices.push_back(i+1);
+		indices.push_back(offset + 0); indices.push_back(offset + i); indices.push_back(offset + i+1);
 	}
-	indices.push_back(0); indices.push_back(t); indices.push_back(1);
+	indices.push_back(offset + 0); indices.push_back(offset + t); indices.push_back(offset + 1);
 
 	numElements = indices.size();
 
 }
 void Ellipse::computeColors(){
-	assert((vertices.size() / 4) == t + 1); //Make sure that vertices have already been computed
-	colors.clear();
-	for(int i = 0; i < vertices.size(); i++){
+	assert((vertices.size() / 4) % (t + 1) == 0); //Make sure that vertices have already been computed
+	for(int i = 0; i < t+1; i++){
 		colors.push_back(0.4); colors.push_back(0.5); colors.push_back(0.0); colors.push_back(1.0);
 	}
 }

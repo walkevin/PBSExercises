@@ -2,6 +2,7 @@
 #define PAINTBALL_H_
 
 #include <Eigen/Core>
+#include <Eigen/StdVector>//Aligned allocator for std::vector
 #include <array>
 #include <map>
 #include <string>
@@ -28,6 +29,11 @@ struct objectInfo{
 	GLuint bufferId[4];
 };
 
+struct paintTracerStruct{
+	int numTracers;
+	std::vector<float> vertices;
+	std::vector<float> indices;
+};
 
 class Paintball : public glutFramework::GlutFramework{
 public:
@@ -49,9 +55,11 @@ private:
 
 	std::map<std::string, GLint> locs;
 	std::map<std::string, objectInfo> objInfo;
+	paintTracerStruct paintTracers;
 
 	ShaderLoader sh;
 	RotatingView* rv;
+	CollisionHandlerNS::CollisionHandler* ch;
 
 	void createVBO();
 	void destroyVBO();
