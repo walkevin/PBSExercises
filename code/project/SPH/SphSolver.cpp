@@ -274,4 +274,14 @@ namespace sph
 	{
 		return collisionHandler;
 	}
+
+	homogeneousPosition SphSolver::transformBack(position pos)
+	{
+		double linTransFac = 2./(cutoff*gridSize);
+		homogeneousPosition temp;
+		pos = pos*linTransFac;
+		temp << pos(0), pos(1), pos(2), 2;
+		temp = temp - 1.;
+		return temp;
+	}
 }

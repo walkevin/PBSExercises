@@ -135,6 +135,14 @@ namespace sph
 			*/
 			entityValue getLastTimestep() const;
 
+			/*
+			Transforms a position back from the Simulation coordinates to coordinates from [-1, 1]^3
+			
+			Arguments:
+			1. Vector in my Simulation coordinate space
+			*/
+			homogeneousPosition transformBack(position);
+
 		private:
 			/*
 			Returns collision Handler
