@@ -135,6 +135,11 @@ namespace sph
 			*/
 			entityValue getLastTimestep() const;
 
+			/*
+			Deletes the objects in the Collision Handler
+			*/
+			void clearObjects();
+
 		private:
 			/*
 			Returns collision Handler

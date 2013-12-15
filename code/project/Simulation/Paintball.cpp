@@ -163,9 +163,8 @@ using namespace sph;
 
 		//Prepare multiple instances of ball
 		std::vector<glm::mat4> pyrTransforms;
-		glm::vec3 euler(0, 120, 0);
-		glm::quat myQuat(euler);
-		pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(0.5,-0.5,0.0)));
+		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.5,-0.5,0.0)));
+		transforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.5,-0.5,0.0)));
 		//pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(0.5,0.4,0.0)));
 		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1))
 
@@ -318,7 +317,8 @@ using namespace sph;
 		std::vector<glm::mat4> pyrTransforms;
 		glm::vec3 euler(0, angle, 0);
 		glm::quat myQuat(euler);
-		pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(0.5,-0.5,0.0)));
+		glm::mat4 transformation = glm::toMat4(myQuat)*transforms[0];
+		pyrTransforms.push_back(transformation);
 		
 		objectInfo pyrinfo(objects[0]->getNumElements(), pyrTransforms.size());
 		objInfo["Pyramid"] = pyrinfo;
@@ -326,7 +326,5 @@ using namespace sph;
 		uploadGeometricObject(objects[0], pyrTransforms.size(), pyrTransforms, objInfo["Pyramid"]);
 
 		angle += 0.1;
-		std::cout << angle << std::endl;
-		
 	}
 

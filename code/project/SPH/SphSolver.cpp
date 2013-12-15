@@ -274,4 +274,9 @@ namespace sph
 	{
 		return collisionHandler;
 	}
+
+	void SphSolver::clearObjects()
+	{
+		collisionHandler->clearObjects();
+	}
 }
