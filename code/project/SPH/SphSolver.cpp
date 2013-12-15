@@ -275,14 +275,45 @@ namespace sph
 		return collisionHandler;
 	}
 
-	Eigen::Matrix<float, 4, 4> SphSolver::getBackTransform()
+	std::vector<CollisionHandlerNS::position_t> SphSolver::getCollisionPositions()
 	{
-		Eigen::Matrix<float, 4, 4> B;
+		std::vector<CollisionHandlerNS::position_t> vec = collisionHandler->getCollisionPositions();
 		double linTransFac = 2./(cutoff*gridSize);
-		B << linTransFac, 0, 0, -1,
-			 0, linTransFac, 0, -1,
-			 0, 0, linTransFac, -1,
-			 0, 0, 0, 1;
-		return B;
+    for(int i = 0; i < vec.size(); i++)
+    {
+      for(int j = 0; j < 3; j++)
+      {
+				vec[i](j) = vec[i](j)*linTransFac - 1;
+      }
+    }
+    return vec;
+	}
+
+	std::vector<CollisionHandlerNS::velocity_t> SphSolver::getCollisionVelocities()
+	{
+		std::vector<CollisionHandlerNS::velocity_t> vec = collisionHandler->getCollisionVelocities();
+		double linTransFac = 2./(cutoff*gridSize);
+    for(int i = 0; i < vec.size(); i++)
+    {
+      for(int j = 0; j < 3; j++)
+      {
+				vec[i](j) = vec[i](j)*linTransFac - 1;
+      }
+    }
+    return vec;
+	}
+
+	std::vector<CollisionHandlerNS::velocity_t> SphSolver::getCollisionVelocitiesOrthogonal()
+	{
+		std::vector<CollisionHandlerNS::velocity_t> vec = collisionHandler->getCollisionVelocitiesOrthogonal();
+		double linTransFac = 2./(cutoff*gridSize);
+    for(int i = 0; i < vec.size(); i++)
+    {
+      for(int j = 0; j < 3; j++)
+      {
+				vec[i](j) = vec[i](j)*linTransFac - 1;
+      }
+    }
+    return vec;
 	}
 }

@@ -43,8 +43,8 @@ using namespace sph;
 		nTotalParticles = nActiveParticles + nDeadParticles;
 		for(int i = 0; i < 5; i++)
 			solver->simulationStep(0.0001);
-//    std::chrono::milliseconds dura( 200 );
-//    std::this_thread::sleep_for( dura );
+    std::chrono::milliseconds dura( 200 );
+    std::this_thread::sleep_for( dura );
 	}
 
 
@@ -93,15 +93,15 @@ using namespace sph;
 		objInfo["Ball"].numInstances = nTotalParticles;
 
 		//Update tracer ellipses
-		auto collisionPositions = ch->getCollisionPositions();
-		auto collisionVelocities = ch->getCollisionVelocities();
-		auto collisionVelocitiesOrthogonal = ch->getCollisionVelocitiesOrthogonal();
+		auto collisionPositions = solver->getCollisionPositions();
+		auto collisionVelocities = solver->getCollisionVelocities();
+		auto collisionVelocitiesOrthogonal = solver->getCollisionVelocitiesOrthogonal();
 
 		if(collisionPositions.size() > 0){
 			GeometricObject* ell = new Ellipse(collisionVelocities, collisionVelocitiesOrthogonal, collisionPositions, 10);
 
 			std::vector<glm::mat4> ellTransforms;
-			ellTransforms.push_back(glm::make_mat4x4(solver->getBackTransform().data()));
+			ellTransforms.push_back(glm::mat4(1.0f));
 
 			//Create objectInfo struct
 			objectInfo ellinfo(ell->getNumElements(), ellTransforms.size());

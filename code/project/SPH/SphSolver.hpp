@@ -145,6 +145,22 @@ namespace sph
 			Returns collision Handler
 			*/
 			std::shared_ptr<CollisionHandlerNS::CollisionHandler> getCollisionHandler();
+
+			/*
+			Returns the Positions from the Collision Handler where Collisions occured
+			*/
+			std::vector<CollisionHandlerNS::position_t> getCollisionPositions();
+
+			/*
+			Returns the Velocities from the Collision Handler where Collisions occured
+			*/
+			std::vector<CollisionHandlerNS::velocity_t> getCollisionVelocities();
+
+			/*
+			Returns the Orthogonal Velocities from the Collision Handler where Collisions occured
+			*/
+			std::vector<CollisionHandlerNS::velocity_t> getCollisionVelocitiesOrthogonal();
+
 		private:
 
 			/*
@@ -162,7 +178,8 @@ namespace sph
       force gravity;
       entityValue stiffness;
 			entityValue lastTimestep;
-			std::shared_ptr<CollisionHandlerNS::CollisionHandler> collisionHandler;  
+			std::shared_ptr<CollisionHandlerNS::CollisionHandler> collisionHandler;
+			double linTransFac; 
 
       void initNeighbourTransitions();
 
