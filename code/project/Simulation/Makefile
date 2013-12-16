@@ -6,8 +6,8 @@ EXAMPLE_OBJ = main.o Paintball.o
 #EXAMPLE_OBJ = triangles.o
 
 FP = ../GLUTFramework/src/
-FRAMEWORK_SRC = $(FP)GlutFramework.cpp $(FP)PerformanceTimer.cpp $(FP)ShaderLoader.cpp $(FP)RotatingView.cpp $(FP)Ball.cpp $(FP)Pyramid.cpp $(FP)Cuboid.cpp $(FP)GeometricObject.cpp $(FP)Ellipse.cpp
-FRAMEWORK_OBJ = $(FP)GlutFramework.o $(FP)PerformanceTimer.o $(FP)ShaderLoader.o $(FP)RotatingView.o $(FP)Ball.o $(FP)Pyramid.o $(FP)Cuboid.o $(FP)GeometricObject.o $(FP)Ellipse.o
+FRAMEWORK_SRC = $(FP)GlutFramework.cpp $(FP)PerformanceTimer.cpp $(FP)ShaderLoader.cpp $(FP)RotatingView.cpp $(FP)Ball.cpp $(FP)Pyramid.cpp $(FP)Cuboid.cpp $(FP)GeometricObject.cpp $(FP)Ellipse.cpp $(FP)OBJModel.cpp
+FRAMEWORK_OBJ = $(FP)GlutFramework.o $(FP)PerformanceTimer.o $(FP)ShaderLoader.o $(FP)RotatingView.o $(FP)Ball.o $(FP)Pyramid.o $(FP)Cuboid.o $(FP)GeometricObject.o $(FP)Ellipse.o $(FP)OBJModel.o
 
 FPS = ../SPH/
 SOLVER_SRC = $(FPS)SphSolver.cpp $(FPS)SphBase.cpp $(FPS)SphCell.cpp $(FPS)SphLiquid.cpp
