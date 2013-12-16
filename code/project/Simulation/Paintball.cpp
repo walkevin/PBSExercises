@@ -30,7 +30,7 @@ using namespace sph;
 		nDeadParticles = solver->getDeadParticleNumber();
 //		nDeadParticles = 0;
 		nTotalParticles = nActiveParticles + nDeadParticles;
-		angle = 0;
+		angle = 1;
 	}
 	Paintball::~Paintball(){}
 
@@ -66,7 +66,6 @@ using namespace sph;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		updatePositions();
-		//rotateObjects();
 
 		glUseProgram(sh.getProgramId());
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -96,6 +95,8 @@ using namespace sph;
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 		objInfo["Ball"].numInstances = nTotalParticles;
 
+
+
 		//Update tracer ellipses
 		auto collisionPositions = solver->getCollisionPositions();
 		auto collisionVelocities = solver->getCollisionVelocities();
@@ -114,6 +115,8 @@ using namespace sph;
 			//Upload to GPU
 			uploadGeometricObject(ell, ellTransforms.size(), ellTransforms, objInfo["PaintTracers"]);
 		}
+
+			rotateObjects();
 
 		//Draw registered objects
 	    for (auto& x: objInfo) {
@@ -333,14 +336,26 @@ using namespace sph;
 
 	void Paintball::rotateObjects()
 	{
-		std::vector<glm::mat4> pyrTransforms;
 		glm::vec3 euler(0, angle, 0);
 		glm::quat myQuat(euler);
-		glm::mat4 transformation = glm::toMat4(myQuat)*transforms[0];
-		pyrTransforms.push_back(transformation);
+		
+		for (auto& x: objInfo) {
+			if(x.first == "Ball")
+				continue;
 
-		uploadGeometricObject(objects[0], pyrTransforms.size(), pyrTransforms, objInfo["Pyramid"]);
+			glBindVertexArray(x.second.vaoId);
+			glBindBuffer(GL_ARRAY_BUFFER, x.second.bufferId[3]);
+			// Map the buffer
+			glm::mat4* matrices = (glm::mat4 *)glMapBuffer(GL_ARRAY_BUFFER,GL_READ_WRITE);
+			// Set model matrices for each instance
 
-		angle += 0.1;
+			for (int n = 0;	n < x.second.numInstances; n++)
+			{
+				matrices[n] = glm::toMat4(myQuat)*matrices[n];
+			}
+
+			glUnmapBuffer(GL_ARRAY_BUFFER);
+			
+		}
 	}
 
