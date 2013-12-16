@@ -52,22 +52,6 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 		position_t v2(object.vertices[object.vertexStride * vInd2], object.vertices[object.vertexStride * vInd2 + 1], object.vertices[object.vertexStride * vInd2 + 2]);
 		position_t v3(object.vertices[object.vertexStride * vInd3], object.vertices[object.vertexStride * vInd3 + 1], object.vertices[object.vertexStride * vInd3 + 2]);
 
-//		float R = (v1 - position_t(1.0, 0.5, 1.0)).dot(v1 - position_t(1.0, 0.5, 1.0));
-//			if(!(R > 0.25 - 0.01 || R < 0.25 + 0.01)){
-//				std::cout << "Erroneus vertex: " << v1 << std::endl;
-//				std::cout << "Corresponding R: " << R << std::endl;
-//			}
-//			R = (v2 - position_t(1.0, 0.5, 1.0)).dot(v2 - position_t(1.0, 0.5, 1.0));
-//			if(!(R > 0.25 - 0.01 || R < 0.25 + 0.01)){
-//				std::cout << "Erroneus vertex: " << v2 << std::endl;
-//				std::cout << "Corresponding R: " << R << std::endl;
-//			}
-//			R = (v3 - position_t(1.0, 0.5, 1.0)).dot(v3 - position_t(1.0, 0.5, 1.0));
-//			if(!(R > 0.25 - 0.01 || R < 0.25 + 0.01)){
-//				std::cout << "Erroneus vertex: " << v3 << std::endl;
-//				std::cout << "Corresponding R: " << R << std::endl;
-//			}
-
 		//Compute (not normalized) triangle normal by vector product
 		vec3 triangleNormal = ((v2-v1).cross(v3-v1)).normalized(); //note: normal always points away from the plane
 
@@ -114,18 +98,22 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 //		    //Add some perturbation in triangle normal inwards direction (so as to stick with the surface and not free float in space)
 //			correctedVel += 0.5 * (particleVel - correctedVel);
 
-		    //Add some random perturbation
-			//Init RNG
-			std::mt19937 randEng(42);
-			collision_t factor = 0.2 * particleVel.norm();
-		    std::uniform_real_distribution<collision_t> uniformDist(-factor, factor);
-		    collision_t rand0 = uniformDist(randEng);
-		    collision_t rand1 = uniformDist(randEng);
+//		    //Add some random perturbation
+//			//Init RNG
+//			std::mt19937 randEng(42);
+//			collision_t factor = 0.2 * particleVel.norm();
+//		    std::uniform_real_distribution<collision_t> uniformDist(-factor, factor);
+//		    collision_t rand0 = uniformDist(randEng);
+//		    collision_t rand1 = uniformDist(randEng);
+//
+//		    correctedVel += rand0 * (v2-v1) + rand1 * (v2-v3);
 
-		    correctedVel += rand0 * (v2-v1) + rand1 * (v2-v3);
+		    //Report collisions
+		    collisionPositions.push_back(inters.second);
+		    Eigen::Vector3f threshold = 0.0003 * (inters.second + triangleNormal.cross(correctedVel));
+		    collisionVelocities.push_back(threshold + 0.001 *(inters.second + correctedVel));
+		    collisionVelocitiesOrthogonal.push_back(threshold);
 
-//		    std::cout << "Reporting collision at: " << inters.second << std::endl;
-//		    std::cout << "New Position: " << newParticlePos << std::endl;
 
 		    return std::make_tuple(true, correctedPos, correctedVel);
 		}
@@ -269,7 +257,6 @@ void CollisionHandler::addObject(std::vector<collision_t> vertices, int vertexSt
 	AABB << minima[0], maxima[0], minima[1], maxima[1], minima[2], maxima[2];
 	obj.AABB = AABB;
 
-	std::cout << "object AABB" << AABB << std::endl;
 	objects.push_back(obj);
 }
 
@@ -277,6 +264,18 @@ void CollisionHandler::clearObjects()
 {
 	while(!objects.empty())
 		objects.pop_back();
+}
+
+std::vector<position_t> CollisionHandler::getCollisionPositions(){
+	return collisionPositions;
+}
+
+std::vector<velocity_t> CollisionHandler::getCollisionVelocities(){
+	return collisionVelocities;
+}
+
+std::vector<velocity_t> CollisionHandler::getCollisionVelocitiesOrthogonal(){
+	return collisionVelocitiesOrthogonal;
 }
 
 } /* namespace CollisionHandler */
