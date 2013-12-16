@@ -325,4 +325,16 @@ std::vector<velocity_t> CollisionHandler::getCollisionVelocitiesOrthogonal(){
 	return collisionVelocitiesOrthogonal;
 }
 
+void CollisionHandler::clearCollisionPositions(){
+  collisionPositions.clear();
+}
+
+void CollisionHandler::clearCollisionVelocities(){
+  collisionVelocities.clear();
+}
+
+void CollisionHandler::clearCollisionVelocitiesOrthogonal(){
+  collisionVelocitiesOrthogonal.clear();
+}
+
 } /* namespace CollisionHandler */

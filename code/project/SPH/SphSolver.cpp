@@ -289,6 +289,7 @@ namespace sph
 				vec[i](j) = vec[i](j)*linTransFac - linTransConst;
       }
     }
+		collisionHandler->clearCollisionPositions();
     return vec;
 	}
 
@@ -299,6 +300,7 @@ namespace sph
     {
       vec[i] = vec[i]*linTransFac;
     }
+		collisionHandler->clearCollisionVelocities();
     return vec;
 	}
 
@@ -309,6 +311,7 @@ namespace sph
     {
       vec[i] = vec[i]*linTransFac;
     }
+		collisionHandler->clearCollisionVelocitiesOrthogonal();
     return vec;
 	}
 }

@@ -139,6 +139,11 @@ public:
 	std::vector<position_t> getCollisionPositions();
 	std::vector<velocity_t> getCollisionVelocities();
 	std::vector<velocity_t> getCollisionVelocitiesOrthogonal();
+
+	void clearCollisionPositions();
+	void clearCollisionVelocities();
+	void clearCollisionVelocitiesOrthogonal();
+
 private:
 	std::vector<object_t> objects;
 
