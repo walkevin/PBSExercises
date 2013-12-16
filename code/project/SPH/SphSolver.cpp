@@ -15,9 +15,12 @@ namespace sph
   , gravity()
 	, stiffness(1000)
 	, collisionHandler(handler)
-	, linTransFac(2./(cut*size))
-	, linTransConst(1)
+	, linTransFac(2./(2*cut*size))
+	, linTransConst()
   {
+		linTransConst[0] = 0.5;
+		linTransConst[1] = 1;
+		linTransConst[2] = -0.5;
     gravity << 0, -9.81, 0;
     initNeighbourTransitions();
     for(int k = 0; k < size; k++)
@@ -104,7 +107,7 @@ namespace sph
 			{
 				if(j == 3)
 					continue;
-				vertices[i + j] = linTransFac * (vertices[i + j] + linTransConst);
+				vertices[i + j] = linTransFac * (vertices[i + j] + linTransConst[j]);
 			}
 		}
 		collisionHandler->addObject(vertices, stride, indices);
@@ -149,8 +152,7 @@ namespace sph
       {
 				position onePos = tempPos[j];
 				onePos = onePos*linTransFac;
-        temp << onePos(0), onePos(1), onePos(2), 2;
-				temp = temp - linTransConst;
+        temp << onePos(0) - linTransConst[0], onePos(1) - linTransConst[1], onePos(2) - linTransConst[2], 1;
         positions[index] = temp;
         index++;
       }
@@ -168,8 +170,7 @@ namespace sph
 		{
 			position onePos = tempPos[i];
 			onePos = onePos*linTransFac;
-      temp << onePos(0), onePos(1), onePos(2), 2;
-			temp = temp - linTransConst;
+      temp << onePos(0) - linTransConst[0], onePos(1) - linTransConst[1], onePos(2) - linTransConst[2], 1;
       positions[i] = temp;
     }
 		trash.clear();
@@ -286,7 +287,7 @@ namespace sph
     {
       for(int j = 0; j < 3; j++)
       {
-				vec[i](j) = vec[i](j)*linTransFac - linTransConst;
+				vec[i](j) = vec[i](j)*linTransFac - linTransConst[j];
       }
     }
 		collisionHandler->clearCollisionPositions();

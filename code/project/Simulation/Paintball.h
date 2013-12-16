@@ -61,9 +61,6 @@ private:
 	RotatingView* rv;
 
 	int numPaintTracers;
-
-	std::vector<GeometricObject*> objects;
-	std::vector<glm::mat4> transforms;
 	double angle;
 
 	void createVBO();

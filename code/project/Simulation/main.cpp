@@ -8,24 +8,24 @@ using namespace sph;
 
 int main(int argc, char *argv[])
 {
-  KernelSpiky kernel(0.1);
+  KernelSpiky kernel(0.05);
 	std::shared_ptr<CollisionHandlerNS::CollisionHandler> handler = std::make_shared<CollisionHandlerNS::CollisionHandler>();
-  SphSolver simulation(0.1, 20, kernel, handler);
+  SphSolver simulation(0.05, 40, kernel, handler);
   
   std::vector<position> pos;
   std::vector<velocity> vel;
 
-  for(int i = 0; i < 2; i++)
+  for(int i = 0; i < 4; i++)
   {
-    for(int j = 0; j < 2; j++)
+    for(int j = 0; j < 4; j++)
     {
-      for(int k = 0; k < 2; k++)
+      for(int k = 0; k < 4; k++)
       {
         position tempPos;
-        tempPos << 0.3 + i*0.05, 1 + j*0.05, 1 + k*0.05;
+        tempPos << 0 + i*0.5, 0 + j*0.5, 0 + k*0.5;
         pos.push_back(tempPos);
         velocity tempVel;
-        tempVel << 100, 0, 0;
+        tempVel << 0, 0, 0;
         vel.push_back(tempVel);
       }
     }

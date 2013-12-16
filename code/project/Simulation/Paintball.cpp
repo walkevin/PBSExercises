@@ -31,7 +31,7 @@ using namespace sph;
 		nDeadParticles = solver->getDeadParticleNumber();
 //		nDeadParticles = 0;
 		nTotalParticles = nActiveParticles + nDeadParticles;
-		angle = 0.1;
+		angle = 0.02;
 		numPaintTracers = 0;
 	}
 	Paintball::~Paintball(){}
@@ -48,8 +48,8 @@ using namespace sph;
 		for(int i = 0; i < 5; i++)
 			solver->simulationStep(0.0001);
 
-    //std::chrono::milliseconds dura( 200 );
-    //std::this_thread::sleep_for( dura );
+    std::chrono::milliseconds dura( 500 );
+    std::this_thread::sleep_for( dura );
 	}
 
 
@@ -184,13 +184,15 @@ using namespace sph;
 		//BEGIN: Create and preprocess pyramid
 		//Load pyramid
 		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
-		objects.push_back(pyr);
 
 		//Prepare multiple instances of pyramid
 		std::vector<glm::mat4> pyrTransforms;
-		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.5,-0.5,0.0)));
-		transforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.5,-0.5,0.0)));
-		//pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(0.5,0.4,0.0)));
+		for(double i = 0; i < 5.1; i+= 1)
+		{
+			glm::vec3 euler(0, i, 0);
+			glm::quat myQuat(euler);
+			pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(0.8,-0.4,0.0)));
+		}
 		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1));
 
 		//Create objectInfo struct

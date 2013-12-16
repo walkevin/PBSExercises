@@ -1,6 +1,7 @@
 #ifndef SPH_SOLVER_HPP
 #define SPH_SOLVER_HPP
 
+#include <array>
 #include "SphBase.hpp"
 #include "SphCell.hpp"
 #include "SphLiquid.hpp"
@@ -187,7 +188,7 @@ namespace sph
 			entityValue lastTimestep;
 			std::shared_ptr<CollisionHandlerNS::CollisionHandler> collisionHandler;
 			double linTransFac;
-			double linTransConst; 
+			std::array<double, 3> linTransConst; 
 
       void initNeighbourTransitions();
 
