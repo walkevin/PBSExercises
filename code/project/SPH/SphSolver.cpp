@@ -19,7 +19,7 @@ namespace sph
 	, linTransConst()
   {
 		linTransConst[0] = 0.5;
-		linTransConst[1] = 1;
+		linTransConst[1] = 0.5;
 		linTransConst[2] = -0.5;
     gravity << 0, -9.81, 0;
     initNeighbourTransitions();

@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 	std::shared_ptr<CollisionHandlerNS::CollisionHandler> handler = std::make_shared<CollisionHandlerNS::CollisionHandler>();
   SphSolver simulation(0.05, 40, kernel, handler);
   
-  std::vector<position> pos;
+  /*std::vector<position> pos;
   std::vector<velocity> vel;
 
   for(int i = 0; i < 4; i++)
@@ -34,15 +34,15 @@ int main(int argc, char *argv[])
   std::shared_ptr<SphWater> water = std::make_shared<SphWater>();
 	std::shared_ptr<bond> bondTemp = std::make_shared<bond>();
 	*bondTemp = true;
-  simulation.insertParticles(pos, vel, water, bondTemp);
+  simulation.insertParticles(pos, vel, water, bondTemp);*/
 
-//	position center;
-//	center << 0.4, 0.4, 1;
-//
-//	velocity vel;
-//	vel << 100, 0, 80;
-//
-//	simulation.createSphere(0.2, center, vel);
+	position center;
+	center << 1, 1.4, 6;
+
+	velocity vel;
+	vel << 0, 100, -200;
+
+	simulation.createSphere(0.11, center, vel);
 
 	GlutFramework* framework = new Paintball(&simulation);
 	framework->startFramework(argc, argv);

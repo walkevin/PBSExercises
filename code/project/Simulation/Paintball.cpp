@@ -120,7 +120,7 @@ using namespace sph;
 			uploadGeometricObject(ell, ellTransforms.size(), ellTransforms, objInfo[infoName]);
 		}
 
-			rotateObjects();
+			//rotateObjects();
 
 		//Draw registered objects
 	    for (auto& x: objInfo) {
@@ -191,7 +191,7 @@ using namespace sph;
 		{
 			glm::vec3 euler(0, i, 0);
 			glm::quat myQuat(euler);
-			pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(0.8,-0.4,0.0)));
+			pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(0.8,0.0,0.0)));
 		}
 		//glm::rotate(glm::mat4(1.0f), 40.0f, glm::vec3(1, 1, 1));
 
