@@ -179,7 +179,8 @@ namespace sph
       entityValue stiffness;
 			entityValue lastTimestep;
 			std::shared_ptr<CollisionHandlerNS::CollisionHandler> collisionHandler;
-			double linTransFac; 
+			double linTransFac;
+			double linTransConst; 
 
       void initNeighbourTransitions();
 

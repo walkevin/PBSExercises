@@ -15,6 +15,8 @@ namespace sph
   , gravity()
 	, stiffness(1000)
 	, collisionHandler(handler)
+	, linTransFac(2./(cut*size))
+	, linTransConst(1)
   {
     gravity << 0, -9.81, 0;
     initNeighbourTransitions();
@@ -95,7 +97,6 @@ namespace sph
 
 	void SphSolver::addObject(std::vector<CollisionHandlerNS::collision_t> vertices, int stride, std::vector<unsigned int> indices)
 	{
-		double linTrans = 0.5 * gridSize * cutoff;
 		CollisionHandlerNS::collision_t temp;
 		for(int i = 0; i < vertices.size(); i+=4)
 		{
@@ -103,7 +104,7 @@ namespace sph
 			{
 				if(j == 3)
 					continue;
-				vertices[i + j] = linTrans * (vertices[i + j] + 1);
+				vertices[i + j] = linTransFac * (vertices[i + j] + linTransConst);
 			}
 		}
 		collisionHandler->addObject(vertices, stride, indices);
@@ -138,7 +139,6 @@ namespace sph
   {
     int vectorSize = getParticleNumber();
     int index = 0;
-		double linTransFac = 2./(cutoff*gridSize);
     homogeneousPosition temp;
     std::vector<homogeneousPosition> positions(vectorSize);
     for(int i = 0; i < cells.size(); i++)
@@ -150,7 +150,7 @@ namespace sph
 				position onePos = tempPos[j];
 				onePos = onePos*linTransFac;
         temp << onePos(0), onePos(1), onePos(2), 2;
-				temp = temp - 1.;
+				temp = temp - linTransConst;
         positions[index] = temp;
         index++;
       }
@@ -161,7 +161,6 @@ namespace sph
 	std::vector<homogeneousPosition> SphSolver::getDeadParticles() 
 	{
 		int vectorSize = getDeadParticleNumber();
-		double linTransFac = 2./(cutoff*gridSize);
 		std::vector<homogeneousPosition> positions(vectorSize);
 		const std::vector<position>& tempPos = trash.getPositions();
 		homogeneousPosition temp;
@@ -170,7 +169,7 @@ namespace sph
 			position onePos = tempPos[i];
 			onePos = onePos*linTransFac;
       temp << onePos(0), onePos(1), onePos(2), 2;
-			temp = temp - 1.;
+			temp = temp - linTransConst;
       positions[i] = temp;
     }
 		trash.clear();
@@ -278,12 +277,11 @@ namespace sph
 	std::vector<CollisionHandlerNS::position_t> SphSolver::getCollisionPositions()
 	{
 		std::vector<CollisionHandlerNS::position_t> vec = collisionHandler->getCollisionPositions();
-		double linTransFac = 2./(cutoff*gridSize);
     for(int i = 0; i < vec.size(); i++)
     {
       for(int j = 0; j < 3; j++)
       {
-				vec[i](j) = vec[i](j)*linTransFac - 1;
+				vec[i](j) = vec[i](j)*linTransFac - linTransConst;
       }
     }
     return vec;
@@ -292,7 +290,6 @@ namespace sph
 	std::vector<CollisionHandlerNS::velocity_t> SphSolver::getCollisionVelocities()
 	{
 		std::vector<CollisionHandlerNS::velocity_t> vec = collisionHandler->getCollisionVelocities();
-		double linTransFac = 2./(cutoff*gridSize);
     for(int i = 0; i < vec.size(); i++)
     {
       vec[i] = vec[i]*linTransFac;
@@ -303,7 +300,6 @@ namespace sph
 	std::vector<CollisionHandlerNS::velocity_t> SphSolver::getCollisionVelocitiesOrthogonal()
 	{
 		std::vector<CollisionHandlerNS::velocity_t> vec = collisionHandler->getCollisionVelocitiesOrthogonal();
-		double linTransFac = 2./(cutoff*gridSize);
     for(int i = 0; i < vec.size(); i++)
     {
       vec[i] = vec[i]*linTransFac;
