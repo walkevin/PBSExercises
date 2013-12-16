@@ -275,12 +275,14 @@ void CollisionHandler::rotateObjects(double angle)
 	glm::vec3 euler(0, angle, 0);
 	glm::quat myQuat(euler);
 	glm::mat4 transformation = glm::toMat4(myQuat);
+
 	for(int i = 0; i < objects.size(); i++)
 	{
-		std::vector<geometry_type> colballData = objects[i].vertices;
-		Eigen::Map<Eigen::MatrixXf> rawVertices(colballData.data(), 4, colballData.size() / 4);//rawVertices operates on the same data as pyrData
+		std::vector<geometry_type> objectData = objects[i].vertices;
+		Eigen::Map<Eigen::MatrixXf> rawVertices(objectData.data(), 4, objectData.size() / 4);//rawVertices operates on the same data as pyrData
 		Eigen::Map<Eigen::Matrix<float, 4, 4> > transform(glm::value_ptr(transformation));
 		rawVertices = transform * rawVertices;
+		objects[i].vertices = objectData;
 		
 		std::vector<collision_t>::iterator it;
 		std::vector<collision_t> vertices = objects[i].vertices;

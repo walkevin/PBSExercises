@@ -155,6 +155,14 @@ namespace sph
 			*/
 			std::vector<CollisionHandlerNS::velocity_t> getCollisionVelocitiesOrthogonal();
 
+			/*
+			Rotates the objects in the collision Handler by angle
+
+			Arguments:
+			1. Angle of the rotation
+			*/
+			void rotateObjects(double);
+
 		private:
 
 			/*

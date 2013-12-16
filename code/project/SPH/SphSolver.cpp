@@ -314,4 +314,9 @@ namespace sph
 		collisionHandler->clearCollisionVelocitiesOrthogonal();
     return vec;
 	}
+
+	void SphSolver::rotateObjects(double angle)
+	{
+		collisionHandler->rotateObjects(angle);
+	}
 }

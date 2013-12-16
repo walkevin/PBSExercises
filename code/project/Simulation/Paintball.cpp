@@ -6,6 +6,7 @@
 
 #include <chrono>
 #include <thread>
+#include <string>
 
 //OpenGL Math
 #include <glm/glm.hpp>
@@ -30,7 +31,8 @@ using namespace sph;
 		nDeadParticles = solver->getDeadParticleNumber();
 //		nDeadParticles = 0;
 		nTotalParticles = nActiveParticles + nDeadParticles;
-		angle = 1;
+		angle = 0.1;
+		numPaintTracers = 0;
 	}
 	Paintball::~Paintball(){}
 
@@ -103,6 +105,7 @@ using namespace sph;
 		auto collisionVelocitiesOrthogonal = solver->getCollisionVelocitiesOrthogonal();
 
 		if(collisionPositions.size() > 0){
+			numPaintTracers++;
 			GeometricObject* ell = new Ellipse(collisionVelocities, collisionVelocitiesOrthogonal, collisionPositions, 10);
 
 			std::vector<glm::mat4> ellTransforms;
@@ -111,9 +114,10 @@ using namespace sph;
 			//Create objectInfo struct
 			objectInfo ellinfo(ell->getNumElements(), ellTransforms.size());
 
-			objInfo["PaintTracers"] = ellinfo;
+			std::string infoName = "PaintTracers" + std::to_string(numPaintTracers);
+			objInfo[infoName] = ellinfo;
 			//Upload to GPU
-			uploadGeometricObject(ell, ellTransforms.size(), ellTransforms, objInfo["PaintTracers"]);
+			uploadGeometricObject(ell, ellTransforms.size(), ellTransforms, objInfo[infoName]);
 		}
 
 			rotateObjects();
@@ -338,6 +342,8 @@ using namespace sph;
 	{
 		glm::vec3 euler(0, angle, 0);
 		glm::quat myQuat(euler);
+
+		solver->rotateObjects(angle);
 		
 		for (auto& x: objInfo) {
 			if(x.first == "Ball")
