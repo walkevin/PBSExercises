@@ -295,10 +295,7 @@ namespace sph
 		double linTransFac = 2./(cutoff*gridSize);
     for(int i = 0; i < vec.size(); i++)
     {
-      for(int j = 0; j < 3; j++)
-      {
-				vec[i](j) = vec[i](j)*linTransFac - 1;
-      }
+      vec[i] = vec[i]*linTransFac;
     }
     return vec;
 	}
@@ -309,10 +306,7 @@ namespace sph
 		double linTransFac = 2./(cutoff*gridSize);
     for(int i = 0; i < vec.size(); i++)
     {
-      for(int j = 0; j < 3; j++)
-      {
-				vec[i](j) = vec[i](j)*linTransFac - 1;
-      }
+      vec[i] = vec[i]*linTransFac;
     }
     return vec;
 	}
