@@ -11,6 +11,16 @@
 #include <iostream>
 #include <cmath>
 #include <random>
+#include <map>
+#include <array>
+
+#include "../GLUTFramework/src/GeometricObject.h"
+
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace CollisionHandlerNS {
 
@@ -259,6 +269,43 @@ void CollisionHandler::addObject(std::vector<collision_t> vertices, int vertexSt
 
 	objects.push_back(obj);
 }
+
+void CollisionHandler::rotateObjects(double angle)
+{
+	glm::vec3 euler(0, angle, 0);
+	glm::quat myQuat(euler);
+	glm::mat4 transformation = glm::toMat4(myQuat);
+	for(int i = 0; i < objects.size(); i++)
+	{
+		std::vector<geometry_type> colballData = objects[i].vertices;
+		Eigen::Map<Eigen::MatrixXf> rawVertices(colballData.data(), 4, colballData.size() / 4);//rawVertices operates on the same data as pyrData
+		Eigen::Map<Eigen::Matrix<float, 4, 4> > transform(glm::value_ptr(transformation));
+		rawVertices = transform * rawVertices;
+		
+		std::vector<collision_t>::iterator it;
+		std::vector<collision_t> vertices = objects[i].vertices;
+
+		std::array<collision_t, 3> minima = {vertices[0], vertices[1], vertices[2]};
+		std::array<collision_t, 3> maxima = {vertices[0], vertices[1], vertices[2]};
+
+		int vertexStride = 4;
+		
+		for(it = vertices.begin(); it != vertices.end(); it+=vertexStride)
+		{
+			for(int i = 0; i < 3; i++)
+			{
+				if(*(it + i) < minima[i]){
+					minima[i] = *(it + i);
+				}
+				else if(*(it + i) > maxima[i]){
+					maxima[i] = *(it + i);
+				}
+			}
+		}
+		objects[i].AABB << minima[0], maxima[0], minima[1], maxima[1], minima[2], maxima[2]; 		
+	}
+}
+	
 
 void CollisionHandler::clearObjects()
 {

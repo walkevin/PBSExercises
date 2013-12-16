@@ -59,7 +59,6 @@ private:
 
 	ShaderLoader sh;
 	RotatingView* rv;
-	CollisionHandlerNS::CollisionHandler* ch;
 
 	std::vector<GeometricObject*> objects;
 	std::vector<glm::mat4> transforms;

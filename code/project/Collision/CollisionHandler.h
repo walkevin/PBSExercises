@@ -62,6 +62,18 @@ public:
 	 */
 	void clearObjects();
 
+	/*
+	 * rotateObjects
+	 *
+	 * rotates all Objects
+	 *
+	 * Arguments:
+	 * 1. angle to rotate
+	 *
+	 */
+	void rotateObjects(double angle);
+	
+
 //private:
 	std::tuple<bool, position_t, velocity_t> particleVsOneObject(position_t newParticlePos, position_t oldParticlePos, velocity_t particleVel, object_t object);
 

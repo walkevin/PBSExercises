@@ -25,7 +25,6 @@ using namespace sph;
 	Paintball::Paintball(SphSolver* solver)
 	{
 		this->solver = solver;
-		ch = solver->getCollisionHandler().get();
 		nActiveParticles = solver->getParticleNumber();
 		activeParticles = solver->getParticles();
 		nDeadParticles = solver->getDeadParticleNumber();
@@ -67,10 +66,10 @@ using namespace sph;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		updatePositions();
-		rotateObjects();
+		//rotateObjects();
 
 		glUseProgram(sh.getProgramId());
-//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 		//Update positions of particles
 		glBindVertexArray(objInfo["Ball"].vaoId);
@@ -178,6 +177,7 @@ using namespace sph;
 		//BEGIN: Create and preprocess pyramid
 		//Load pyramid
 		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
+		objects.push_back(pyr);
 
 		//Prepare multiple instances of pyramid
 		std::vector<glm::mat4> pyrTransforms;
@@ -338,9 +338,6 @@ using namespace sph;
 		glm::quat myQuat(euler);
 		glm::mat4 transformation = glm::toMat4(myQuat)*transforms[0];
 		pyrTransforms.push_back(transformation);
-		
-		objectInfo pyrinfo(objects[0]->getNumElements(), pyrTransforms.size());
-		objInfo["Pyramid"] = pyrinfo;
 
 		uploadGeometricObject(objects[0], pyrTransforms.size(), pyrTransforms, objInfo["Pyramid"]);
 
