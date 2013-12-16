@@ -164,7 +164,20 @@ namespace sph
 			*/
 			void rotateObjects(double);
 
+			/*
+      Adds a particle to the cell
+      
+      Arguments:
+      1. Position of the particle
+      2. Velocity of the particle
+      3. Liquid of the particle
+			4. Bool value for the bond
+      */
+      void addParticle(position, velocity, std::shared_ptr<SphLiquid>, std::shared_ptr<bond>);
+
 		private:
+			
+			void makeTransitions();
 
 			/*
 			Returns collision Handler

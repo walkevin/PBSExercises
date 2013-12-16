@@ -66,7 +66,9 @@ namespace sph
 				cells[i].makeTransitions();
 			}
 		}
-		dummyCell.clear();
+		dummyCell.computeOnlyGravity();
+		dummyCell.update(deltaT);
+		dummyCell.checkDomain();
   }
 
 	void SphSolver::createSphere(entityValue radius, position center, velocity vel)
@@ -135,6 +137,7 @@ namespace sph
     {
       size += cells[i].getStoredParticles();
     }
+		size += dummyCell.getStoredParticles();
 		return size;
 	}
 
@@ -157,6 +160,15 @@ namespace sph
         index++;
       }
     }
+		for(int i = 0; i < dummyCell.getStoredParticles(); i++)
+		{
+			const std::vector<position>& tempPos = dummyCell.getPositions();
+			position onePos = tempPos[i];
+			onePos = onePos*linTransFac;
+			temp << onePos(0) - linTransConst[0], onePos(1) - linTransConst[1], onePos(2) - linTransConst[2], 1;
+			positions[index] = temp;
+			index++;
+		}
     return positions;
   }
 
@@ -191,11 +203,16 @@ namespace sph
   {
     for(int i = 0; i < pos.size(); i++)
     {
-      cells[0].addParticle(pos[i], vel[i], liq, bondIn);
+      dummyCell.addParticle(pos[i], vel[i], liq, bondIn);
     }
   
-    cells[0].makeTransitions();
+    dummyCell.checkDomain();
   }
+
+	void SphSolver::addParticle(position posIn, velocity velIn, std::shared_ptr<SphLiquid> liqIn, std::shared_ptr<bond> bondIn)
+	{
+		cells[0].addParticle(posIn, velIn, liqIn, bondIn);
+	}
 
   SmoothingKernel& SphSolver::getKernel() const
   {
@@ -319,5 +336,10 @@ namespace sph
 	void SphSolver::rotateObjects(double angle)
 	{
 		collisionHandler->rotateObjects(angle);
+	}
+
+	void SphSolver::makeTransitions()
+	{
+		cells[0].makeTransitions();
 	}
 }

@@ -48,8 +48,8 @@ using namespace sph;
 		for(int i = 0; i < 5; i++)
 			solver->simulationStep(0.0001);
 
-    std::chrono::milliseconds dura( 500 );
-    std::this_thread::sleep_for( dura );
+    //std::chrono::milliseconds dura( 500 );
+    //std::this_thread::sleep_for( dura );
 	}
 
 
