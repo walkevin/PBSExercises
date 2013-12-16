@@ -1,0 +1,53 @@
+\usetikzlibrary{positioning,calc,matrix,chains,scopes,fit,decorations,decorations.pathmorphing,decorations.pathreplacing,arrows,patterns,3d}
+\usepgfplotslibrary{external}
+\tikzexternalize[prefix=tikz-pictures/]
+
+\definecolor{rioday}{RGB}{255,166,0} 
+\colorlet{riomorning}{rioday!65!black}
+\colorlet{rionight}{rioday!50!black}
+
+\definecolor{helsinkiday}{RGB}{0,89,255} 
+%%% Hi from 2013. I think it's fascinating that this code could possibly be used until like 2043 or even further.
+\colorlet{helsinkimorning}{helsinkiday!65!black}
+\colorlet{helsinkinight}{helsinkiday!50!black}
+\hypersetup{colorlinks=false,linkbordercolor=rioday}
+%%%This is the global setting of the number of samples used to plot the functions in the graphs. 
+\tikzset{
+	smasa/.style={
+		%%%The number of samples with low number.
+		%%% 1000 should be enough for a final edition
+		%samples=10
+		samples=1000
+	},
+	bigsa/.style={
+		%%%The number of samples with high number.
+		%%% 10000 should be enough for a final edition.
+		%samples=20
+		samples=10000
+	},
+	%%%The standard filling
+	sfill/.style={
+		fill=rioday
+	},
+	zyplane/.style={canvas is zy plane at x=#1,very thin},
+	zxplane/.style={canvas is zx plane at y=#1,very thin},
+	yxplane/.style={canvas is yx plane at z=#1,very thin},
+	bigspinmatrix/.style={ampersand replacement=\&,column sep=0pt,row sep=1em},
+	hugespinmatrix/.style={ampersand replacement=\&,column sep=0pt,row sep=1em,font=\Large},
+	bigspin/.style={minimum size=1.5em,rectangle,rounded corners=1ex},
+	hugespin/.style={minimum size=2.25em,rectangle,rounded corners=1.5ex},
+	bigspinup/.style={bigspin,fill=rioday},
+	bigspindown/.style={bigspin,fill=helsinkinight,text=white},
+	hugespinup/.style={hugespin,fill=rioday},
+	hugespindown/.style={hugespin,fill=helsinkinight,text=white},
+	smallspin/.style={rectangle,minimum size=0.32cm,draw,very thick},
+	smallspinup/.style={smallspin,fill=rioday},
+	smallspindown/.style={smallspin,fill=helsinkinight},
+	matrixcircle/.style={circle,minimum size=2.0cm}
+}
+\newcommand{\scu}[2]{\node[smallspinup,fill={rioday!#1!red},opacity=#2]{};}
+\newcommand{\scd}[2]{\node[smallspindown,fill={helsinkinight!#1!red},opacity=#2]{};}
+\newcommand{\bcu}[2]{\node[bigspinup,fill={rioday!#1!red},opacity=#2]{$\uparrow$};}
+\newcommand{\bcd}[2]{\node[bigspindown,fill={helsinkinight!#1!red},opacity=#2]{$\downarrow$};}
+\newcommand{\hcun}[3]{\node[hugespinup,fill={rioday!#1!red},opacity=#2](#3){$\uparrow$};}
+\newcommand{\hcdn}[3]{\node[hugespindown,fill={helsinkinight!#1!red},opacity=#2](#3){$\downarrow$};}

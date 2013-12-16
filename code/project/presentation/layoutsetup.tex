@@ -1,0 +1,54 @@
+%% Memoir layout setup
+
+%% NOTE: You are strongly advised not to change any of them unless you
+%% know what you are doing.  These settings strongly interact in the
+%% final look of the document.
+
+% Dependencies
+\usepackage{array}
+\usetheme{Copenhagen}
+\useinnertheme{circles}
+
+% Define the default sans serif font as the lighter computer modern bright by
+% D. Knuth.
+%%% Define a nice orange color and use it for hyperref
+%%% Needs xcolor
+\usepackage{xcolor}
+\definecolor{rioday}{RGB}{255,166,0} 
+\hypersetup{colorlinks=false,linkbordercolor=rioday}
+
+%\setbeamercolor{background canvas}{bg=black}
+\setbeamercolor{frametitle}{fg=black,bg=rioday}
+\setbeamercolor{structure}{fg=helsinkinight!60!white}
+%\setbeamercolor{alerted text}{fg=helsinkinight,bg=white}
+%\setbeamercolor{example text}{fg=helsinkinight,bg=white}
+\setbeamercolor{item}{fg=helsinkinight}
+\setbeamercolor{item projected}{fg=black,bg=rioday}
+\setbeamercolor{subitem projected}{fg=white,bg=helsinkinight}
+%\setbeamercolor*{enumerate item}{fg=rioday}
+%\setbeamercolor*{enumerate subitem}{fg=helsinkinight}
+%\setbeamertemplate{enumerate items}[circles]
+%\setbeamertemplate{enumerate subitems}[squares]
+\setbeamercolor{section in head/foot}{fg=white,bg=helsinkinight}
+%\setbeamercolor{inner color}{fg=rioday,bg=helsinkinight}
+%\setbeamercolor{outer color}{fg=rioday,bg=helsinkinight}
+
+\setbeamercolor{palette primary}{fg=black,bg=rioday}
+%\setbeamercolor{normal text}{fg=white,bg=black}
+
+
+% This defines how theorems should look. Best leave as is.
+%\theoremstyle{plain}
+%\theoremseparator{:\quad}
+%\theoremprework{}
+%\theoremindent2em
+%\theoremheaderfont{\sffamily\bfseries}
+%\theorembodyfont{\normalfont}
+%%\theoremsymbol{}
+%%% Minimal margin to print two pages on an A4 paper or viewing it on tablets.
+%\settypeblocksize{17.7cm}{11.8cm}{*}
+%\setlrmargins{2cm}{*}{*}
+%\setulmargins{1.6cm}{*}{*}
+%\setheadfoot{7pt}{20pt}
+%\setlength{\beforechapskip}{-1.2cm}
+%\checkandfixthelayout
