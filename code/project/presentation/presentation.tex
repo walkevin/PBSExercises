@@ -14,6 +14,7 @@
 	\end{itemize}
 \end{frame}
 \subsection{Inspiration}
+\tikzsetnextfilename{video}
 \begin{frame}
 	\begin{center}
 		\tikz\node[fill=rioday,minimum width=5cm,minimum height=2cm,text=black,rounded corners=10pt] (a) at (0,0) {\LARGE Video};
@@ -40,39 +41,15 @@
 \begin{frame}
 	\only<1> {\frametitle{Approach}}
 	\only<2> {\frametitle{Why?}}
-=======
-	\begin{itemize}
-		\item OpenGL 
+	\begin{itemize}[<+->]
+		\item<1-> SPH solver
 			\begin{itemize}
-				\item showing simple objects
-			\end{itemize}
-		\item SPH solver
-			\begin{itemize}
-				\item time to make it work as expected
-			\end{itemize}
-	\end{itemize}
-\end{frame}
-\section{Approach}
-\begin{frame}
-	\begin{itemize}
-			\frametitle{Approach}
-		\item SPH solver
-			\begin{itemize}
-%				\only<1>{\transparent{0}}
-				\only<1>{\item[]}
-				\only<2>{\item splashes and droplets}
+				\item<2-> splashes and droplets
 			\end{itemize}
 		\item Collision handling with no library but boundary boxes
 			\begin{itemize}
-%				\only<1>{\transparent{0}}
-				\only<1>{
-					\item[]
-					\item[]
-				}
-				\only<2>{
-					\item late attacket
-					\item risk of heavy time investission
-				}
+					\item<2-> late attacket
+					\item<2-> risk of heavy time investission
 			\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -105,11 +82,11 @@
 \begin{frame}
 	\frametitle{Difficulties}
 	\begin{itemize}
-		\item Debugging
-		\item general code
-		\item parameter tuning
-		\item coordinates: simulation space $\leftrightarrow$ window space
+		\item (general code debugging)
+		\item (parameter tuning)
+		\item (coordinates: simulation space $\leftrightarrow$ window space)
 		\item many particles behaving like a ball
+		\item particles pushed and trapped inside object
 		\item sticky paint on object with given resolution
 	\end{itemize}
 \end{frame}
@@ -119,18 +96,56 @@
 	\begin{itemize}
 		\item many particles behaving like a ball
 			\begin{itemize}
-				\item particle-particle forces ignored before collision
+				\item[$\to$] particle-particle forces ignored before collision
+			\end{itemize}
+		\item particles pushed and trapped inside object
+			\begin{itemize}
+				\item[$\to$] projection further than on surface
 			\end{itemize}
 		\item sticky paint on object
 			\begin{itemize}
-				\item velocity dependent trace on object
-					\begin{gather*}
-						\vtr{v}=\vtr{v}_{\parallel}+\vtr{v}_{\perp}.
-					\end{gather*}
-				\item ''$\parallel$`` and ''$\perp$`` describe angle between particle velocity and surface
-				\item set $v_{\perp}=0$ after collision
+				\item[$\to$] velocity dependent trace on object
 			\end{itemize}
 	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle{Particles pushed and trapped inside object}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}[]
+					\tikzsetnextfilename{pp1}
+					\only<1>{
+						\begin{center}
+							\input{tikz-code/ch1.tex}
+						\end{center}
+					}
+					\tikzsetnextfilename{pp2}
+					\only<2>{
+						\begin{center}
+							\input{tikz-code/ch2.tex}
+						\end{center}
+					}
+					\tikzsetnextfilename{pp3}
+					\only<3>{
+						\begin{center}
+							\input{tikz-code/ch2.tex}
+						\end{center}
+					}
+				\label{fig:pm1}
+			\end{figure}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{figure}[]
+				\uncover<3>{
+						\begin{center}
+							\tikzsetnextfilename{pp4}
+							\input{tikz-code/ch3.tex}
+						\end{center}
+				\label{fig:p2}
+				}
+			\end{figure}
+		\end{column}
+	\end{columns}
 \end{frame}
 \begin{frame}
 	\frametitle{Sticky paint on object}
@@ -161,6 +176,7 @@
 \end{frame}
 \section{Demonstration}
 \begin{frame}
+\tikzsetnextfilename{demo}
 	\begin{center}
 		\tikz\node[fill=rioday,minimum width=5cm,minimum height=2cm,text=black,rounded corners=10pt] (a) at (0,0) {\LARGE Demonstration};
 	\end{center}
@@ -171,13 +187,22 @@
 			\begin{block}{Performance}
 				\begin{itemize}
 					\item Real time simulation for simple objects (500 vertices)
+					\item For complex objects substantionally slower
 				\end{itemize}
 			\end{block}
 		\end{column}
+		\pause
 		\begin{column}{0.5\textwidth}
 			\begin{block}{Limitations}
 				\begin{itemize}
-					\item No complex objects because of simple collision handling
+					\item resolution and number of collision objects
+						\begin{itemize}
+							\item[$\to$] bottleneck collision handling
+						\end{itemize}
+					\item number of particles
+						\begin{itemize}
+							\item[$\to$] bottleneck SPH simulation
+						\end{itemize}
 				\end{itemize}
 			\end{block}
 		\end{column}
@@ -190,10 +215,11 @@
 			\begin{block}{What we learned}
 				\begin{itemize}
 					\item OpenGL
-					\item Blend
+					\item Blender
 				\end{itemize}
 			\end{block}
 		\end{column}
+		\pause
 		\begin{column}{0.5\textwidth}
 			\begin{block}{What we would do different}
 				\begin{itemize}
