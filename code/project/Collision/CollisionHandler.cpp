@@ -124,12 +124,12 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 		    //Dirty hack with clamping
 
 		    Eigen::Vector3f threshold = 0.0003 * (inters.second + triangleNormal.cross(correctedVel));
-		    if(threshold.squaredNorm() > 0.1){
+		    if(threshold.squaredNorm() > 0.005){
 		    	threshold.normalize();
 		    	threshold *= 0.1;
 		    }
-		    Eigen::Vector3f aClamp = threshold + 0.001 * (inters.second + correctedVel);
-		    if(aClamp.squaredNorm() > 0.1){
+		    Eigen::Vector3f aClamp = threshold + 0.0003 * (inters.second + correctedVel);
+		    if(aClamp.squaredNorm() > 0.005){
 		    	aClamp.normalize();
 		    	aClamp *= 0.1;
 		    }

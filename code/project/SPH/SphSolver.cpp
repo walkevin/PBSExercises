@@ -15,12 +15,12 @@ namespace sph
   , gravity()
 	, stiffness(1000)
 	, collisionHandler(handler)
-	, linTransFac(2./(2*cut*size))
+	, linTransFac(4./(2*cut*size))
 	, linTransConst()
   {
-		linTransConst[0] = 0.5;
-		linTransConst[1] = 0.5;
-		linTransConst[2] = -0.5;
+		linTransConst[0] = 1;
+		linTransConst[1] = 0;
+		linTransConst[2] = 1;
     gravity << 0, -9.81, 0;
     initNeighbourTransitions();
     for(int k = 0; k < size; k++)
