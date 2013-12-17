@@ -60,6 +60,8 @@ private:
 	ShaderLoader sh;
 	RotatingView* rv;
 
+	void mouseButtonPress(int button, int state, int x, int y);
+
 	int numPaintTracers;
 	double angle;
 
