@@ -30,7 +30,7 @@ using namespace sph;
 		activeParticles = solver->getParticles();
 		nDeadParticles = solver->getDeadParticleNumber();
 //		nDeadParticles = 0;
-		nTotalParticles = 2000;
+		nTotalParticles = 100000;
 		angle = 0.02;
 		numPaintTracers = 0;
 	}
@@ -270,29 +270,13 @@ using namespace sph;
 	{
 		if(state == 0)
 		{
-			std::vector<position> pos;
-  		std::vector<velocity> vel;
+			position center;
+			center << x/320., y/240., 6;
 
-  		for(int i = 0; i < 1; i++)
-  		{
-   	 		for(int j = 0; j < 1; j++)
-    		{
-      		for(int k = 0; k < 1; k++)
-      		{
-        		position tempPos;
-        		tempPos << x/320. + i*0.05, y/240. + j*0.05, 6 + k*0.05;
-        		pos.push_back(tempPos);
-       			velocity tempVel;
-       			tempVel << 0, 80, -200;
-       			vel.push_back(tempVel);
-      		}
-    		}
-			}
+			velocity vel;
+			vel << 0, 100, -300;
 
-  		std::shared_ptr<SphWater> water = std::make_shared<SphWater>();
-			std::shared_ptr<bond> bondTemp = std::make_shared<bond>();
-			*bondTemp = true;
-  		solver->insertParticles(pos, vel, water, bondTemp);
+			solver->createSphere(0.08, center, vel);
 		}
 	}
 

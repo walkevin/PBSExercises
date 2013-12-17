@@ -103,7 +103,7 @@ namespace sph
     vel.push_back(velIn);
     f.push_back(force());
     liq.push_back(liqIn);
-    density.push_back(0);
+    density.push_back(1);
     pressure.push_back(0);
 		bonds.push_back(bondIn);
     storedParticles++;
@@ -219,11 +219,6 @@ namespace sph
 
 		if(storedParticles != density.size())
 			density.reserve(storedParticles);
-	
-		for(int i = 0; i < storedParticles; i++)
-		{
-			density[i] = 1000;
-		}
 
     for(int i = 0; i < storedParticles; i++)
     {

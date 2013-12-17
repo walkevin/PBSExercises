@@ -15,17 +15,17 @@ int main(int argc, char *argv[])
   /*std::vector<position> pos;
   std::vector<velocity> vel;
 
-  for(int i = 0; i < 4; i++)
+  for(int i = 0; i < 1; i++)
   {
-    for(int j = 0; j < 4; j++)
+    for(int j = 0; j < 1; j++)
     {
-      for(int k = 0; k < 4; k++)
+      for(int k = 0; k < 1; k++)
       {
         position tempPos;
-        tempPos << 0 + i*0.5, 0 + j*0.5, 0 + k*0.5;
+        tempPos << 0 + i*0.5, 0 + j*0.5, 6 + k*0.5;
         pos.push_back(tempPos);
         velocity tempVel;
-        tempVel << 0, 0, 0;
+        tempVel << 0, 0, -100;
         vel.push_back(tempVel);
       }
     }
@@ -36,13 +36,13 @@ int main(int argc, char *argv[])
 	*bondTemp = true;
   simulation.insertParticles(pos, vel, water, bondTemp);*/
 
-	position center;
+	/*position center;
 	center << 1, 1.4, 6;
 
 	velocity vel;
 	vel << 0, 100, -200;
 
-	simulation.createSphere(0.11, center, vel);
+	simulation.createSphere(0.11, center, vel);*/
 
 	GlutFramework* framework = new Paintball(&simulation);
 	framework->startFramework(argc, argv);
