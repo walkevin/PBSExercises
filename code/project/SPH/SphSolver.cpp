@@ -103,13 +103,14 @@ namespace sph
 	void SphSolver::addObject(std::vector<CollisionHandlerNS::collision_t> vertices, int stride, std::vector<unsigned int> indices)
 	{
 		CollisionHandlerNS::collision_t temp;
+		double linTransFacInv = 1./linTransFac;
 		for(int i = 0; i < vertices.size(); i+=4)
 		{
 			for(int j = 0; j < 4; j++)
 			{
 				if(j == 3)
 					continue;
-				vertices[i + j] = linTransFac * (vertices[i + j] + linTransConst[j]);
+				vertices[i + j] = linTransFacInv * (vertices[i + j] + linTransConst[j]);
 			}
 		}
 		collisionHandler->addObject(vertices, stride, indices);
