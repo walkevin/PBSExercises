@@ -14,7 +14,7 @@
 #include <map>
 #include <array>
 
-#include "../GLUTFramework/src/GeometricObject.h"
+#include "../Models/GeometricObject.h"
 
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>

@@ -16,10 +16,10 @@
 #include <glm/gtx/quaternion.hpp>
 
 #include "../GLUTFramework/src/RotatingView.h"
-#include "../GLUTFramework/src/Ball.h"
-#include "../GLUTFramework/src/Pyramid.h"
-#include "../GLUTFramework/src/Cuboid.h"
-#include "../GLUTFramework/src/Ellipse.h"
+#include "../Models/Ball.h"
+#include "../Models/Pyramid.h"
+#include "../Models/Cuboid.h"
+#include "../Models/Ellipse.h"
 
 using namespace sph;
 
@@ -154,13 +154,13 @@ using namespace sph;
 		uploadGeometricObject(bal, balTransforms.size(), balTransforms, objInfo["Ball"]);
 		//END: Create and preprocess Ball
 
-		/*//BEGIN: Create and preprocess collisionBall
+		//BEGIN: Create and preprocess collisionBall
 		//Load collisionBall
-		GeometricObject* colball = new Ball(15, 15, 0.5);
+		GeometricObject* colball = new Ball(15, 15, 0.2);
 
 		//Prepare multiple instances of ball
 		std::vector<glm::mat4> colballTransforms;
-		colballTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,-0.5, 0.0)));
+		colballTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.4, 0.4)));
 
 		//Create objectInfo struct
 		objectInfo colballinfo(colball->getNumElements(), colballTransforms.size());
@@ -178,7 +178,7 @@ using namespace sph;
 			rawVertices = transform * rawVertices;
 			solver->addObject(colballData, 4, colball->getIndices());
 		}
-		//END Create and preprocess CollisionBall*/
+		//END Create and preprocess CollisionBall
 
 
 		//BEGIN: Create and preprocess pyramid

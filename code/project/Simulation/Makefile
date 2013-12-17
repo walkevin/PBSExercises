@@ -2,12 +2,9 @@ EXE=viewer
 EXAMPLE_SRC = main.cpp Paintball.cpp
 EXAMPLE_OBJ = main.o Paintball.o
 
-#EXAMPLE_SRC = triangles.cpp
-#EXAMPLE_OBJ = triangles.o
-
 FP = ../GLUTFramework/src/
-FRAMEWORK_SRC = $(FP)GlutFramework.cpp $(FP)PerformanceTimer.cpp $(FP)ShaderLoader.cpp $(FP)RotatingView.cpp $(FP)Ball.cpp $(FP)Pyramid.cpp $(FP)Cuboid.cpp $(FP)GeometricObject.cpp $(FP)Ellipse.cpp
-FRAMEWORK_OBJ = $(FP)GlutFramework.o $(FP)PerformanceTimer.o $(FP)ShaderLoader.o $(FP)RotatingView.o $(FP)Ball.o $(FP)Pyramid.o $(FP)Cuboid.o $(FP)GeometricObject.o $(FP)Ellipse.o
+FRAMEWORK_SRC = $(FP)GlutFramework.cpp $(FP)PerformanceTimer.cpp $(FP)ShaderLoader.cpp $(FP)RotatingView.cpp 
+FRAMEWORK_OBJ = $(FP)GlutFramework.o $(FP)PerformanceTimer.o $(FP)ShaderLoader.o $(FP)RotatingView.o
 
 FPS = ../SPH/
 SOLVER_SRC = $(FPS)SphSolver.cpp $(FPS)SphBase.cpp $(FPS)SphCell.cpp $(FPS)SphLiquid.cpp
@@ -17,17 +14,20 @@ FPC = ../Collision/
 COLLISION_SRC = $(FPC)CollisionHandler.cpp
 COLLISION_OBJ = $(FPC)CollisionHandler.o
 
+FPM = ../Models/
+MODEL_SRC = $(FPM)Ball.cpp $(FPM)Pyramid.cpp $(FPM)Cuboid.cpp $(FPM)GeometricObject.cpp $(FPM)Ellipse.cpp
+MODEL_OBJ = $(FPM)Ball.o $(FPM)Pyramid.o $(FPM)Cuboid.o $(FPM)GeometricObject.o $(FPM)Ellipse.o
 #SOURCES = $(wildcard *.cpp)
 #OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 
-SOURCES = $(EXAMPLE_SRC) $(FRAMEWORK_SRC) $(SOLVER_SRC) $(COLLISION_SRC)
-OBJECTS = $(EXAMPLE_OBJ) $(FRAMEWORK_OBJ) $(SOLVER_OBJ) $(COLLISION_OBJ)
+SOURCES = $(EXAMPLE_SRC) $(FRAMEWORK_SRC) $(SOLVER_SRC) $(COLLISION_SRC) $(MODEL_SRC)
+OBJECTS = $(EXAMPLE_OBJ) $(FRAMEWORK_OBJ) $(SOLVER_OBJ) $(COLLISION_OBJ) $(MODEL_OBJ)
 
 CXX        = g++-4.8
 LDFLAGS    = -g -pg -lGL -lGLEW -lGLU -lglut -lrt -L/usr/lib/x86_64-linux-gnu
 INC        = -I/usr/include/eigen3
-CFLAGS     = -g -pg -c -std=c++11 -Og -Wno-enum-compare
-#DEFINES    = -DNDEBUG
+CFLAGS     = -g -pg -c -std=c++11 -O3 -Wno-enum-compare
+DEFINES    = -DNDEBUG
 
 
 default: $(EXE)

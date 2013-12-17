@@ -10,7 +10,7 @@
 #include "../GLUTFramework/src/GlutFramework.h"
 #include "../GLUTFramework/src/ShaderLoader.h"
 #include "../GLUTFramework/src/RotatingView.h"
-#include "../GLUTFramework/src/GeometricObject.h"
+#include "../Models/GeometricObject.h"
 
 #include "../SPH/SphSolver.hpp"
 #include "../Collision/CollisionHandler.h"
