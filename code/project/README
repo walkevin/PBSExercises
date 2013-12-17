@@ -1,0 +1,15 @@
+Instructions on building
+------------------------
+
+This application was written and tested on Linux.
+The application can be built using the Makefile in the folder Simulation
+
+Dependencies / Requirements
+---------------------------
+- Eigen 3
+- C++11
+- glm OpenGL Math (http://glm.g-truc.net; apt-get install libglm-dev)
+- Freeglut
+- GLEW 1.6
+- GLSL 1.5
+- OpenGL 3.0
