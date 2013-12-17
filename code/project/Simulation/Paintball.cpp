@@ -219,7 +219,9 @@ using namespace sph;
 		{
 			glm::vec3 euler(0, i, 0);
 			glm::quat myQuat(euler);
-			pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(1.,0.0,0.0)));
+			glm::mat4 firstTrans = glm::translate(glm::toMat4(myQuat), glm::vec3(1.,0.0, 0.0));
+			glm::mat4 secondTrans = glm::translate(glm::mat4(1.0f), glm::vec3(0.0 ,0.0, -0.8));
+			pyrTransforms.push_back(secondTrans * firstTrans);
 		}
 
 		//Create objectInfo struct
@@ -247,7 +249,7 @@ using namespace sph;
 
 		//Prepare multiple instances of ball
 		std::vector<glm::mat4> humanTransforms;
-		humanTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0)));
+		humanTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -0.5)));
 
 		//Create objectInfo struct
 		objectInfo humaninfo(human->getNumElements(), humanTransforms.size());
