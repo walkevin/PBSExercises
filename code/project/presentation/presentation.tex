@@ -2,7 +2,7 @@
 	\titlepage
 \end{frame}
 \begin{frame}
-	\tableofcontents[hideallsubsections]
+	\tableofcontents%[hideallsubsections]
 \end{frame}
 \section{Introduction}
 \begin{frame}
@@ -20,9 +20,24 @@
 \begin{frame}
 		\hspace*{-1cm}\movie[height=\textheight,width=\paperwidth,poster,showcontrols=true]{}{paintball-def.mp4}
 \end{frame}
-\section{Simulation content}
+\subsection{Expected challenges}
+\begin{frame}
+	\frametitle{Expected challenges}
+	\begin{itemize}
+		\item OpenGL 
+			\begin{itemize}
+				\item showing simple objects
+			\end{itemize}
+		\item SPH solver
+			\begin{itemize}
+				\item time to make it work as expected
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+\section{Approach}
 \begin{frame}
 	\begin{itemize}
+			\frametitle{Approach}
 		\item SPH solver
 		\item collision handling
 	\end{itemize}
