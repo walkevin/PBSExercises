@@ -13,7 +13,7 @@ RotatingView::RotatingView(ShaderLoader sh_, std::string matrixName_)
 , PVMatrixName(matrixName_)
 , distance(6.)
 , azimuth(M_PI * 0.5)
-, polar(M_PI * 0.5)
+, polar(M_PI * 0.4)
 , angleChangeSpeed(M_PI * 0.1)
 , zoomSpeed(0.3)
 {}

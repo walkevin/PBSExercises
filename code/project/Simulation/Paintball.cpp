@@ -271,10 +271,10 @@ using namespace sph;
 		if(state == 0)
 		{
 			position center;
-			center << 2*((x/320.) - 1) + 1, 2*((2-y/240.) - 1) + 1, 6;
+			center << 2*((x/320.) - 1) + 1, 2*((2-y/240.) - 1) + 3, 6;
 
 			velocity vel;
-			vel << 0, 100, -300;
+			vel << 0, 0, -300;
 
 			solver->createSphere(0.08, center, vel);
 		}
