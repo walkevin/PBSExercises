@@ -183,7 +183,7 @@ using namespace sph;
 
 		//BEGIN: Create and preprocess pyramid
 		//Load pyramid
-		GeometricObject* pyr = new Pyramid(0.8, 1.2, 0.9);
+		GeometricObject* pyr = new Pyramid(0.8, 1.5, 0.9);
 
 		//Prepare multiple instances of pyramid
 		std::vector<glm::mat4> pyrTransforms;
@@ -213,13 +213,13 @@ using namespace sph;
 
 		//END: Create and preprocess pyramid
 
-		/*//BEGIN: Create and preprocess cuboid
+		//BEGIN: Create and preprocess cuboid
 		//Load cuboid
-		GeometricObject* cub = new Cuboid(7., 3., 7.);
+		GeometricObject* cub = new Cuboid(5., 0.4, 5.);
 
 		//Prepare multiple instances of ball
 		std::vector<glm::mat4> cubTransforms;
-		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1.0,0.0,0.0)));
+		cubTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,-0.4,0.0)));
 
 		//Create objectInfo struct
 		objectInfo cubinfo(cub->getNumElements(), cubTransforms.size());
@@ -238,7 +238,7 @@ using namespace sph;
 			solver->addObject(cubData, 4, cub->getIndices());
 		}
 
-		//END: Create and preprocess cuboid*/
+		//END: Create and preprocess cuboid
 
 	}
 	void Paintball::destroyVBO(){
