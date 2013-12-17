@@ -140,7 +140,7 @@ using namespace sph;
 	void Paintball::createVBO(){
 		//BEGIN: Create and preprocess Ball
 		//Load ball
-		GeometricObject* bal = new Ball(5, 5, 0.05);
+		GeometricObject* bal = new Ball(5, 5, 0.03);
 
 		//Prepare multiple instances of ball
 		std::vector<glm::mat4> balTransforms;
@@ -271,7 +271,7 @@ using namespace sph;
 		if(state == 0)
 		{
 			position center;
-			center << x/320., y/240., 6;
+			center << 2*((x/320.) - 1) + 1, 2*((2-y/240.) - 1) + 1, 6;
 
 			velocity vel;
 			vel << 0, 100, -300;
