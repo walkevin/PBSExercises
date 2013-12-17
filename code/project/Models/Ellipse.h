@@ -25,13 +25,13 @@ public:
 	 * t: Number of vertices on the boundary => total number of vertices = t + 1
 	 *
 	 */
-	Ellipse(vec3 A_, vec3 B_, vec3 center_, int t_);
+	Ellipse(vec3 A_, vec3 B_, vec3 center_, int t_, Eigen::Vector4f bodyColor_);
 
 	/*
 	 *
 	 * Create multiple independent ellipses as a single object
 	 */
-	Ellipse(std::vector<vec3> A_, std::vector<vec3> B_, std::vector<vec3> center_, int t_);
+	Ellipse(std::vector<vec3> A_, std::vector<vec3> B_, std::vector<vec3> center_, int t_, Eigen::Vector4f bodyColor_);
 	virtual ~Ellipse();
 
 	std::vector<geometry_type> getVertices();
@@ -53,6 +53,7 @@ private:
 	int t; //number of vertices on the boundary
 	unsigned int numElements;
 	int numEllipses;//Number of generated ellipses
+	Eigen::Vector4f bodyColor;
 
 	std::vector<geometry_type> vertices;
 	std::vector<geometry_type> normals;

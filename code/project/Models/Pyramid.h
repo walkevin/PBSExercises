@@ -11,11 +11,12 @@
 typedef float geometry_type;
 
 #include <vector>
+#include <Eigen/Core>
 #include "GeometricObject.h"
 
 class Pyramid : public GeometricObject {
 public:
-	Pyramid(geometry_type a_, geometry_type b_, geometry_type h_);
+	Pyramid(geometry_type a_, geometry_type b_, geometry_type h_, Eigen::Vector4f bodyColor_);
 	virtual ~Pyramid();
 
 	std::vector<geometry_type> getVertices();
@@ -30,6 +31,7 @@ private:
 	geometry_type b;// side length of base
 	geometry_type h;// height of pyramid
 	unsigned int numElements;
+	Eigen::Vector4f bodyColor;
 
 	inline geometry_type distance(geometry_type a1, geometry_type a2, geometry_type a3);//length of a vector (a1, a2, a3)
 };

@@ -26,15 +26,15 @@
 using namespace sph;
 
 	Paintball::Paintball(SphSolver* solver)
+	:angle (0.02)
+	,nTotalParticles(100000)
+	,numPaintTracers(0)
+	,fluidColor(Eigen::Vector4f(0.97, 0.57, 0.06, 1.))
 	{
 		this->solver = solver;
 		nActiveParticles = solver->getParticleNumber();
 		activeParticles = solver->getParticles();
 		nDeadParticles = solver->getDeadParticleNumber();
-//		nDeadParticles = 0;
-		nTotalParticles = 100000;
-		angle = 0.02;
-		numPaintTracers = 0;
 	}
 	Paintball::~Paintball(){}
 
@@ -108,7 +108,7 @@ using namespace sph;
 
 		if(collisionPositions.size() > 0){
 			numPaintTracers++;
-			GeometricObject* ell = new Ellipse(collisionVelocities, collisionVelocitiesOrthogonal, collisionPositions, 10);
+			GeometricObject* ell = new Ellipse(collisionVelocities, collisionVelocitiesOrthogonal, collisionPositions, 10, fluidColor);
 
 			std::vector<glm::mat4> ellTransforms;
 			ellTransforms.push_back(glm::mat4(1.0f));
@@ -142,7 +142,7 @@ using namespace sph;
 	void Paintball::createVBO(){
 		//BEGIN: Create and preprocess Ball
 		//Load ball
-		GeometricObject* bal = new Ball(5, 5, 0.03);
+		GeometricObject* bal = new Ball(5, 5, 0.03, fluidColor);
 
 		//Prepare multiple instances of ball
 		std::vector<glm::mat4> balTransforms;
@@ -185,7 +185,7 @@ using namespace sph;
 
 		//BEGIN: Create and preprocess pyramid
 		//Load pyramid
-		GeometricObject* pyr = new Pyramid(0.8, 1.5, 0.9);
+		GeometricObject* pyr = new Pyramid(0.8, 1.5, 0.9, Eigen::Vector4f(0.34, 0.83, 0.42, 1.));
 
 		//Prepare multiple instances of pyramid
 		std::vector<glm::mat4> pyrTransforms;
@@ -217,7 +217,7 @@ using namespace sph;
 
 		//BEGIN: Create and preprocess cuboid
 		//Load cuboid
-		GeometricObject* cub = new Cuboid(5., 0.4, 5.);
+		GeometricObject* cub = new Cuboid(5., 0.4, 5., Eigen::Vector4f(0., 0.1, 0.2, 1.));
 
 		//Prepare multiple instances of ball
 		std::vector<glm::mat4> cubTransforms;

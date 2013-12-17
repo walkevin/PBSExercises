@@ -23,7 +23,8 @@
 #include <vector>
 #include <cmath>
 
-Ball::Ball(int N_, int M_, geometry_type R_) : N(N_), M(M_), R(R_), numElements(N_ * M_ * 6){}
+Ball::Ball(int N_, int M_, geometry_type R_, Eigen::Vector4f bodyColor_)
+: N(N_), M(M_), R(R_), numElements(N_ * M_ * 6), bodyColor(bodyColor_){}
 
 Ball::~Ball() {}
 
@@ -112,7 +113,12 @@ std::vector<unsigned int> Ball::getIndices(){
 std::vector<geometry_type> Ball::getColors(){
 	std::vector<geometry_type> colors;
 	for(int i = 0; i < N * M + 2; i++){
-		colors.push_back(0.4); colors.push_back(0.5); colors.push_back(0.0); colors.push_back(1.0);
+		colors.push_back(bodyColor[0]);
+		colors.push_back(bodyColor[1]);
+		colors.push_back(bodyColor[2]);
+		colors.push_back(bodyColor[3]);
+
+//		colors.push_back(0.4); colors.push_back(0.5); colors.push_back(0.0); colors.push_back(1.0);
 	}
 	return colors;
 }

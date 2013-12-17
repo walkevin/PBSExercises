@@ -11,11 +11,12 @@
 typedef float geometry_type;
 
 #include <vector>
+#include <Eigen/Core>
 #include "GeometricObject.h"
 
 class Cuboid : public GeometricObject {
 public:
-	Cuboid(geometry_type a_, geometry_type b_, geometry_type c_);
+	Cuboid(geometry_type a_, geometry_type b_, geometry_type c_, Eigen::Vector4f bodyColor_);
 	virtual ~Cuboid();
 
 	std::vector<geometry_type> getVertices();
@@ -30,6 +31,8 @@ private:
 	geometry_type b;// side length in y direction
 	geometry_type c;// side length in z direction
 	unsigned int numElements;
+
+	Eigen::Vector4f bodyColor;
 
 	inline geometry_type distance(geometry_type a1, geometry_type a2, geometry_type a3);//length of a vector (a1, a2, a3)
 
