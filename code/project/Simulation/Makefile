@@ -15,8 +15,8 @@ COLLISION_SRC = $(FPC)CollisionHandler.cpp
 COLLISION_OBJ = $(FPC)CollisionHandler.o
 
 FPM = ../Models/
-MODEL_SRC = $(FPM)Ball.cpp $(FPM)Pyramid.cpp $(FPM)Cuboid.cpp $(FPM)GeometricObject.cpp $(FPM)Ellipse.cpp
-MODEL_OBJ = $(FPM)Ball.o $(FPM)Pyramid.o $(FPM)Cuboid.o $(FPM)GeometricObject.o $(FPM)Ellipse.o
+MODEL_SRC = $(FPM)Ball.cpp $(FPM)Pyramid.cpp $(FPM)Cuboid.cpp $(FPM)GeometricObject.cpp $(FPM)Ellipse.cpp $(FPM)OBJModel.cpp
+MODEL_OBJ = $(FPM)Ball.o $(FPM)Pyramid.o $(FPM)Cuboid.o $(FPM)GeometricObject.o $(FPM)Ellipse.o $(FPM)OBJModel.o
 #SOURCES = $(wildcard *.cpp)
 #OBJECTS = $(patsubst %.cpp,%.o,$(SOURCES))
 

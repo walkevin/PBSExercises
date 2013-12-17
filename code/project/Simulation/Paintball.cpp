@@ -20,6 +20,8 @@
 #include "../Models/Pyramid.h"
 #include "../Models/Cuboid.h"
 #include "../Models/Ellipse.h"
+#include "../Models/OBJModel.h"
+
 
 using namespace sph;
 
@@ -154,31 +156,31 @@ using namespace sph;
 		uploadGeometricObject(bal, balTransforms.size(), balTransforms, objInfo["Ball"]);
 		//END: Create and preprocess Ball
 
-		//BEGIN: Create and preprocess collisionBall
-		//Load collisionBall
-		GeometricObject* colball = new Ball(15, 15, 0.2);
-
-		//Prepare multiple instances of ball
-		std::vector<glm::mat4> colballTransforms;
-		colballTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.4, 0.4)));
-
-		//Create objectInfo struct
-		objectInfo colballinfo(colball->getNumElements(), colballTransforms.size());
-		objInfo["Colball"] = colballinfo;
-
-		//Upload to GPU
-		uploadGeometricObject(colball, colballTransforms.size(), colballTransforms, objInfo["Colball"]);
-
-		//Perform transformation of vertices and register in Collision Handler
-		for(int i = 0; i < colballTransforms.size(); i++){
-			using namespace Eigen;
-			std::vector<geometry_type> colballData = colball->getVertices();
-			Map<MatrixXf> rawVertices(colballData.data(), 4, colballData.size() / 4);//rawVertices operates on the same data as pyrData
-			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(colballTransforms[i]));
-			rawVertices = transform * rawVertices;
-			solver->addObject(colballData, 4, colball->getIndices());
-		}
-		//END Create and preprocess CollisionBall
+//		//BEGIN: Create and preprocess collisionBall
+//		//Load collisionBall
+//		GeometricObject* colball = new Ball(15, 15, 0.2);
+//
+//		//Prepare multiple instances of ball
+//		std::vector<glm::mat4> colballTransforms;
+//		colballTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.4, 0.4)));
+//
+//		//Create objectInfo struct
+//		objectInfo colballinfo(colball->getNumElements(), colballTransforms.size());
+//		objInfo["Colball"] = colballinfo;
+//
+//		//Upload to GPU
+//		uploadGeometricObject(colball, colballTransforms.size(), colballTransforms, objInfo["Colball"]);
+//
+//		//Perform transformation of vertices and register in Collision Handler
+//		for(int i = 0; i < colballTransforms.size(); i++){
+//			using namespace Eigen;
+//			std::vector<geometry_type> colballData = colball->getVertices();
+//			Map<MatrixXf> rawVertices(colballData.data(), 4, colballData.size() / 4);//rawVertices operates on the same data as pyrData
+//			Map<Matrix<float, 4, 4> > transform(glm::value_ptr(colballTransforms[i]));
+//			rawVertices = transform * rawVertices;
+//			solver->addObject(colballData, 4, colball->getIndices());
+//		}
+//		//END Create and preprocess CollisionBall
 
 
 		//BEGIN: Create and preprocess pyramid
@@ -237,8 +239,33 @@ using namespace sph;
 			rawVertices = transform * rawVertices;
 			solver->addObject(cubData, 4, cub->getIndices());
 		}
-
 		//END: Create and preprocess cuboid
+
+
+		//BEGIN: Create and preprocess human
+		//Load human
+		GeometricObject* human = new OBJModel("../Models/human.obj", Eigen::Vector4f(0.4, 0.4, 0.3, 1.));
+
+		//Prepare multiple instances of ball
+		std::vector<glm::mat4> humanTransforms;
+		humanTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(-0.8,-0.2, 1.0)));
+
+		//Create objectInfo struct
+		objectInfo humaninfo(human->getNumElements(), humanTransforms.size());
+		objInfo["Human"] = humaninfo;
+		//Upload to GPU
+		uploadGeometricObject(human, humanTransforms.size(), humanTransforms, objInfo["Human"]);
+
+		//Perform transformation of vertices and register in Collision Handler
+		for(int i = 0; i < humanTransforms.size(); i++){
+			using namespace Eigen;
+			std::vector<geometry_type> humanData = human->getVertices();
+			Map<MatrixXf> rawVertices(humanData.data(), 4, humanData.size() / 4);//rawVertices operates on the same data as humanData
+			Map<Matrix4f> transform(glm::value_ptr(humanTransforms[i]));
+			rawVertices = transform * rawVertices;
+			solver->addObject(humanData, 4, human->getIndices());
+		}
+		//END: Create and preprocess human
 
 	}
 	void Paintball::destroyVBO(){
