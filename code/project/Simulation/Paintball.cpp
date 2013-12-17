@@ -158,11 +158,12 @@ using namespace sph;
 
 		//BEGIN: Create and preprocess collisionBall
 		//Load collisionBall
-		GeometricObject* colball = new Ball(15, 15, 0.4, Eigen::Vector4f(0.55, 0.63, 0.83, 1.));
+		GeometricObject* colball = new Ball(15, 15, 0.2, Eigen::Vector4f(0.55, 0.63, 0.83, 1.));
 
 		//Prepare multiple instances of ball
 		std::vector<glm::mat4> colballTransforms;
-		colballTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(-1.0, 0.0, 0.0)));
+		colballTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(-1.0, 1.0, 0.0)));
+		colballTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3( 1.0, 1.0, 0.0)));
 
 		//Create objectInfo struct
 		objectInfo colballinfo(colball->getNumElements(), colballTransforms.size());
@@ -210,17 +211,16 @@ using namespace sph;
 
 		//BEGIN: Create and preprocess pyramids
 		//Load pyramid
-		GeometricObject* pyr = new Pyramid(1.3, 2, 1.5, Eigen::Vector4f(0.34, 0.83, 0.42, 1.));
+		GeometricObject* pyr = new Pyramid(0.8, 1.5, 0.9, Eigen::Vector4f(0.34, 0.83, 0.42, 1.));
 
 		//Prepare multiple instances of pyramid
 		std::vector<glm::mat4> pyrTransforms;
-//		for(double i = 0; i < 5.1; i+= 1)
-//		{
-//			glm::vec3 euler(0, i, 0);
-//			glm::quat myQuat(euler);
-//			pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(0.8,0.0,0.0)));
-//		}
-		pyrTransforms.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(1,0.0,0.0)));
+		for(double i = -2.5; i < -0.4; i+= 1.)
+		{
+			glm::vec3 euler(0, i, 0);
+			glm::quat myQuat(euler);
+			pyrTransforms.push_back(glm::translate(glm::toMat4(myQuat), glm::vec3(1.,0.0,0.0)));
+		}
 
 		//Create objectInfo struct
 		objectInfo pyrinfo(pyr->getNumElements(), pyrTransforms.size());
