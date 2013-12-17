@@ -2,13 +2,15 @@
 	\titlepage
 \end{frame}
 \begin{frame}
-	\tableofcontents[hideallsubsections]
+	\tableofcontents%[hideallsubsections]
 \end{frame}
 \section{Introduction}
 \begin{frame}
 	\begin{itemize}
-		\item Initial project idea: Paintball shot on wall
-		\item Final result: Paintball shot on simple objects
+		\item Initial project idea:\\
+			Paintball shot on wall
+		\item Final project:\\
+			Paintball shot on simple objects
 	\end{itemize}
 \end{frame}
 \subsection{Inspiration}
@@ -20,15 +22,49 @@
 \begin{frame}
 		\hspace*{-1cm}\movie[height=\textheight,width=\paperwidth,poster,showcontrols=true]{}{paintball-def.mp4}
 \end{frame}
-\section{Simulation content}
+\subsection{Expected challenges}
 \begin{frame}
+	\frametitle{Expected challenges}
+	\begin{itemize}
+		\item OpenGL 
+			\begin{itemize}
+				\item showing simple objects
+			\end{itemize}
+		\item SPH solver
+			\begin{itemize}
+				\item time to make it work as expected
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+\section{Approach}
+\begin{frame}
+	\only<1> {\frametitle{Approach}}
+	\only<2> {\frametitle{Why?}}
 	\begin{itemize}
 		\item SPH solver
-		\item collision handling
+			\begin{itemize}
+%				\only<1>{\transparent{0}}
+				\only<1>{\item[]}
+				\only<2>{\item splashes and droplets}
+			\end{itemize}
+		\item Collision handling with no library but boundary boxes
+			\begin{itemize}
+%				\only<1>{\transparent{0}}
+				\only<1>{
+					\item[]
+					\item[]
+				}
+				\only<2>{
+					\item late attacket
+					\item risk of heavy time investission
+				}
+			\end{itemize}
 	\end{itemize}
 \end{frame}
 \section{Implementation}
+\subsection{Low level}
 \begin{frame}
+	\frametitle{Low level}
 	\begin{itemize}
 		\item C++ 11
 			\begin{itemize}
@@ -41,6 +77,97 @@
 			\end{itemize}
 	\end{itemize}
 \end{frame}
+\subsection{High level}
+\begin{frame}
+	\frametitle{High level}
+	\begin{enumerate}
+		\item Shot with gravitation
+		\item Collision detection
+		\item On impact the SPH simulation starts
+	\end{enumerate}
+\end{frame}
+\subsection{Difficulties}
+\begin{frame}
+	\frametitle{Difficulties}
+	\begin{itemize}
+		\item Debugging
+		\item general code
+		\item parameter tuning
+		\item coordinates: simulation space $\leftrightarrow$ window space
+		\item many particles behaving like a ball
+		\item sticky paint on object with given resolution
+	\end{itemize}
+\end{frame}
+\subsection{Tricks}
+\begin{frame}
+	\frametitle{Tricks}
+	\begin{itemize}
+		\item many particles behaving like a ball
+			\begin{itemize}
+				\item particle-particle forces ignored before collision
+			\end{itemize}
+		\item sticky paint on object
+			\begin{itemize}
+				\item velocity dependent trace on object
+					\begin{gather*}
+						\vtr{v}=\vtr{v}_{\parallel}+\vtr{v}_{\perp}.
+					\end{gather*}
+				\item ''$\parallel$`` and ''$\perp$`` describe angle between particle velocity and surface
+				\item set $v_{\perp}=0$ after collision
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle{Sticky paint on object}
+	\framesubtitle{Trace handling}
+\tikzsetnextfilename{collision-trace}
+			\begin{figure}[]
+				\begin{center}
+					\begin{tikzpicture}[fill=rioday,every node/.style={label distance=0.5cm}]
+						\begin{scope}[shift={(-5.5,0)},fill=black,every node/.style={label distance=1ex}]
+							\node[fill=rioday,rounded corners=1ex] (tl) at (-1,3) {Velocity split};
+							\node[circle,fill=helsinkinight,minimum size=0.5cm,pin=above:SPH particle] (cb) at (-1,1) {};
+							\draw[very thick] (0,-1) -- (0,1.5);
+							\coordinate[] (sf) at (0,0);
+							\coordinate[] (sfe) at (-2,0);
+							\path[-latex,draw] (cb) to[above] node{$\vtr{v}$} (sf);
+							\path[-latex,draw] (cb) to[above] node{$\vtr{v}_{\perp}$} +(1,0);
+							\path[-latex,draw] (cb) to[left] node{$\vtr{v}_{\parallel}$} +(0,-1);
+						\end{scope}
+						\node[fill=rioday,rounded corners=1ex] (tl) at (0,3) {Resulting trace};
+						\node[circle,fill,minimum size=1cm,label={[align=center]left:{$\vtr{v}_{\parallel}=0$\\$\abs{\vtr{v}}$ big}}] (c1) at (-1,1) {};
+						\node[ellipse,fill,rotate=45,minimum width=2cm,minimum height=0.5cm,label={[align=center]below right:{$\vtr{v}_{\parallel}\neq0$\\$\abs{\vtr{v}}$ big}}] (e1) at (1,1) {};
+						\node[circle,fill,minimum size=0.4cm,label={[align=center]left:{$\vtr{v}_{\parallel}=0$\\$\abs{\vtr{v}}$ small}}] (c2) at (-1,-1) {};
+						\node[ellipse,fill,rotate=45,minimum width=0.8cm,minimum height=0.2cm,label={[align=center]below right:{$\vtr{v}_{\parallel}\neq0$\\$\abs{\vtr{v}}$ small}}] (e2) at (1,-1) {};
+					\end{tikzpicture}
+				\end{center}
+				\label{fig:velocity}
+			\end{figure}
+\end{frame}
+\section{Demonstration}
+\begin{frame}
+	\begin{center}
+		\tikz\node[fill=rioday,minimum width=5cm,minimum height=2cm,text=black,rounded corners=10pt] (a) at (0,0) {\LARGE Demonstration};
+	\end{center}
+\end{frame}
+\begin{frame}
+	\begin{columns}[t]
+		\begin{column}{0.5\textwidth}
+			\begin{block}{Performance}
+				\begin{itemize}
+					\item Real time simulation for simple objects (500 vertices)
+				\end{itemize}
+			\end{block}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{block}{Limitations}
+				\begin{itemize}
+					\item No complex objects because of simple collision handling
+				\end{itemize}
+			\end{block}
+		\end{column}
+	\end{columns}
+\end{frame}
 \section{Conclusion}
 \begin{frame}
 	\begin{columns}[t]
@@ -48,6 +175,7 @@
 			\begin{block}{What we learned}
 				\begin{itemize}
 					\item OpenGL
+					\item Blend
 				\end{itemize}
 			\end{block}
 		\end{column}
