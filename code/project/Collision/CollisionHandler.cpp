@@ -121,10 +121,27 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 		    //Report collisions
 		    collisionPositions.push_back(inters.second);
 
-		    //Dirty hack with cwiseMax
-		    Eigen::Vector3f threshold = 0.0003 * (inters.second + triangleNormal.cross(correctedVel)).cwiseMax(Eigen::Vector3f(0.3, 0.3, 0.3));
-		    collisionVelocities.push_back(threshold + 0.001 * (inters.second + correctedVel).cwiseMax(Eigen::Vector3f(0.3, 0.3, 0.3)));
+		    //Dirty hack with clamping
+
+		    Eigen::Vector3f threshold = 0.0003 * (inters.second + triangleNormal.cross(correctedVel));
+		    if(threshold.squaredNorm() > 0.1){
+		    	threshold.normalize();
+		    	threshold *= 0.1;
+		    }
+		    Eigen::Vector3f aClamp = threshold + 0.001 * (inters.second + correctedVel);
+		    if(aClamp.squaredNorm() > 0.1){
+		    	aClamp.normalize();
+		    	aClamp *= 0.1;
+		    }
+		    collisionVelocities.push_back(aClamp);
+
+//		    Eigen::Vector3f threshold = 0.0003 * (inters.second + triangleNormal.cross(correctedVel));
+//		    collisionVelocities.push_back(threshold + 0.001 * (inters.second + correctedVel));
+
 		    collisionVelocitiesOrthogonal.push_back(threshold);
+
+//		    collisionVelocities.push_back(0.001 * Eigen::Vector3f(1,1,1));
+//		    collisionVelocitiesOrthogonal.push_back(0.001 * Eigen::Vector3f(1,1,1));
 
 
 		    return std::make_tuple(true, correctedPos, correctedVel);
