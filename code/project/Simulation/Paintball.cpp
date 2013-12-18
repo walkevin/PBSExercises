@@ -47,7 +47,7 @@ using namespace sph;
 		deadParticles = solver->getDeadParticles();
 		nDeadParticles = deadParticles.size();
 		nTotalParticles = nActiveParticles + nDeadParticles;
-		for(int i = 0; i < 5; i++)
+		for(int i = 0; i < 3; i++)
 			solver->simulationStep(0.0001);
 
     //std::chrono::milliseconds dura( 500 );
