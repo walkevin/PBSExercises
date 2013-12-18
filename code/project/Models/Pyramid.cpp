@@ -22,7 +22,8 @@
 #include <vector>
 #include <cmath>
 
-Pyramid::Pyramid(geometry_type a_, geometry_type b_, geometry_type h_) : a(a_), b(b_), h(h_), numElements(3 * 6){}
+Pyramid::Pyramid(geometry_type a_, geometry_type b_, geometry_type h_, Eigen::Vector4f bodyColor_)
+: a(a_), b(b_), h(h_), numElements(3 * 6), bodyColor(bodyColor_){}
 
 Pyramid::~Pyramid() {}
 
@@ -92,12 +93,13 @@ unsigned int Pyramid::getNumElements(){
 
 std::vector<geometry_type> Pyramid::getColors(){
 	std::vector<geometry_type> colors;
-	colors.push_back(0.4); colors.push_back(0.0); colors.push_back(0.5); colors.push_back(1.0);
-	colors.push_back(0.4); colors.push_back(0.0); colors.push_back(0.5); colors.push_back(1.0);
-	colors.push_back(0.4); colors.push_back(0.0); colors.push_back(0.5); colors.push_back(1.0);
-	colors.push_back(0.4); colors.push_back(0.0); colors.push_back(0.5); colors.push_back(1.0);
-	colors.push_back(0.4); colors.push_back(0.0); colors.push_back(0.5); colors.push_back(1.0);
-
+	for(int i = 0; i < 5; i++){
+		colors.push_back(bodyColor[0]);
+		colors.push_back(bodyColor[1]);
+		colors.push_back(bodyColor[2]);
+		colors.push_back(bodyColor[3]);
+	}
+//	colors.push_back(0.4); colors.push_back(0.0); colors.push_back(0.5); colors.push_back(1.0);
 	return colors;
 }
 

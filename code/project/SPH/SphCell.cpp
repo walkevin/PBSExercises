@@ -103,7 +103,7 @@ namespace sph
     vel.push_back(velIn);
     f.push_back(force());
     liq.push_back(liqIn);
-    density.push_back(0);
+    density.push_back(1);
     pressure.push_back(0);
 		bonds.push_back(bondIn);
     storedParticles++;
@@ -212,6 +212,28 @@ namespace sph
     }
   }
 
+	void SphCell::computeOnlyGravity()
+	{
+		if(storedParticles == 0)
+			return;
+
+		if(storedParticles != density.size())
+			density.reserve(storedParticles);
+
+    for(int i = 0; i < storedParticles; i++)
+    {
+      if(f.size() != storedParticles)
+        f.reserve(storedParticles);
+      f[i] << 0, 0, 0;
+    }
+
+		force gravity = solver.getGravity();
+    for(int i = 0; i < storedParticles; i++)
+    {
+      f[i] += density[i]*gravity;
+    }
+	}
+
   void SphCell::updatePositions(entityValue deltaT)
   {
 		std::shared_ptr<CollisionHandlerNS::CollisionHandler> handler = solver.getCollisionHandler();
@@ -274,6 +296,26 @@ namespace sph
 			}				
     }
   }
+
+	void SphCell::checkDomain()
+	{
+		for(int i = 0; i < storedParticles; i++)
+		{
+			bool inside = true;
+			double size = cellSize*solver.getGridSize();
+			for(int j = 0; j < 3; j++)
+			{
+				if(pos[i](j) < 0 || pos[i](j) > size)
+					inside = false;
+			}
+			if(inside)
+			{
+				solver.addParticle(pos[i], vel[i], liq[i], bonds[i]);
+				deleteParticle(i);
+			}
+		}
+		solver.makeTransitions();
+	}
 
   const std::vector<position>& SphCell::getPositions() const
   {

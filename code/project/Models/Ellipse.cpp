@@ -27,14 +27,16 @@
 
 
 
-Ellipse::Ellipse(vec3 A_, vec3 B_, vec3 center_, int t_) : A(A_), B(B_), center(center_), numElements(3 * t_), t(t_), numEllipses(1){
+Ellipse::Ellipse(vec3 A_, vec3 B_, vec3 center_, int t_, Eigen::Vector4f bodyColor_)
+: A(A_), B(B_), center(center_), numElements(3 * t_), t(t_), numEllipses(1), bodyColor(bodyColor_){
 	computeVertices();
 	computeNormals();
 	computeIndices();
 	computeColors();
 }
 
-Ellipse::Ellipse(std::vector<vec3> A_, std::vector<vec3> B_, std::vector<vec3> center_, int t_) : t(t_), numEllipses(A_.size()){
+Ellipse::Ellipse(std::vector<vec3> A_, std::vector<vec3> B_, std::vector<vec3> center_, int t_, Eigen::Vector4f bodyColor_)
+: t(t_), numEllipses(A_.size()), bodyColor(bodyColor_){
 	for(int i = 0; i < A_.size(); i++){
 		A = A_[i];
 		B = B_[i];
@@ -98,7 +100,11 @@ void Ellipse::computeIndices(){
 void Ellipse::computeColors(){
 	assert((vertices.size() / 4) % (t + 1) == 0); //Make sure that vertices have already been computed
 	for(int i = 0; i < t+1; i++){
-		colors.push_back(0.4); colors.push_back(0.5); colors.push_back(0.0); colors.push_back(1.0);
+		colors.push_back(bodyColor[0]);
+		colors.push_back(bodyColor[1]);
+		colors.push_back(bodyColor[2]);
+		colors.push_back(bodyColor[3]);
+//		colors.push_back(0.4); colors.push_back(0.5); colors.push_back(0.0); colors.push_back(1.0);
 	}
 }
 

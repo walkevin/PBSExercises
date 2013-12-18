@@ -11,10 +11,11 @@
 //typedef float ball_type;
 
 #include <vector>
+#include <Eigen/Core>
 #include "GeometricObject.h"
 class Ball : public GeometricObject {
 public:
-	Ball(int N, int M, geometry_type R);
+	Ball(int N, int M, geometry_type R, Eigen::Vector4f bodyColor_);
 	virtual ~Ball();
 
 	std::vector<geometry_type> getVertices();
@@ -29,6 +30,8 @@ private:
 	int M;// # vertices on latitude
 	float R; //radius of ball
 	unsigned int numElements;
+
+	Eigen::Vector4f bodyColor;
 };
 
 #endif /* BALL_H_ */

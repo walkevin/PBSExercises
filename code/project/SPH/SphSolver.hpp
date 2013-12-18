@@ -1,6 +1,7 @@
 #ifndef SPH_SOLVER_HPP
 #define SPH_SOLVER_HPP
 
+#include <array>
 #include "SphBase.hpp"
 #include "SphCell.hpp"
 #include "SphLiquid.hpp"
@@ -136,15 +137,9 @@ namespace sph
 			entityValue getLastTimestep() const;
 
 			/*
-			Returns 4x4 Backtransformation matrix from the Simulation coordinates to coordinates from [-1, 1]^3
-			
+			Deletes the objects in the Collision Handler
 			*/
-			Eigen::Matrix<float, 4, 4> getBackTransform();
-
-			/*
-			Returns collision Handler
-			*/
-			std::shared_ptr<CollisionHandlerNS::CollisionHandler> getCollisionHandler();
+			void clearObjects();
 
 			/*
 			Returns the Positions from the Collision Handler where Collisions occured
@@ -161,7 +156,33 @@ namespace sph
 			*/
 			std::vector<CollisionHandlerNS::velocity_t> getCollisionVelocitiesOrthogonal();
 
+			/*
+			Rotates the objects in the collision Handler by angle
+
+			Arguments:
+			1. Angle of the rotation
+			*/
+			void rotateObjects(double);
+
+			/*
+      Adds a particle to the cell
+      
+      Arguments:
+      1. Position of the particle
+      2. Velocity of the particle
+      3. Liquid of the particle
+			4. Bool value for the bond
+      */
+      void addParticle(position, velocity, std::shared_ptr<SphLiquid>, std::shared_ptr<bond>);
+
 		private:
+			
+			void makeTransitions();
+
+			/*
+			Returns collision Handler
+			*/
+			std::shared_ptr<CollisionHandlerNS::CollisionHandler> getCollisionHandler();
 
 			/*
       Returns the kernel
@@ -180,7 +201,7 @@ namespace sph
 			entityValue lastTimestep;
 			std::shared_ptr<CollisionHandlerNS::CollisionHandler> collisionHandler;
 			double linTransFac;
-			double linTransConst; 
+			std::array<double, 3> linTransConst; 
 
       void initNeighbourTransitions();
 

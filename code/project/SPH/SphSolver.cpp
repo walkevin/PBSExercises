@@ -15,9 +15,12 @@ namespace sph
   , gravity()
 	, stiffness(1000)
 	, collisionHandler(handler)
-	, linTransFac(2./(cut*size))
-	, linTransConst(1)
+	, linTransFac(4./(2*cut*size))
+	, linTransConst()
   {
+		linTransConst[0] = 1;
+		linTransConst[1] = 0;
+		linTransConst[2] = 1;
     gravity << 0, -9.81, 0;
     initNeighbourTransitions();
     for(int k = 0; k < size; k++)
@@ -63,7 +66,9 @@ namespace sph
 				cells[i].makeTransitions();
 			}
 		}
-		dummyCell.clear();
+		dummyCell.computeOnlyGravity();
+		dummyCell.update(deltaT);
+		dummyCell.checkDomain();
   }
 
 	void SphSolver::createSphere(entityValue radius, position center, velocity vel)
@@ -98,13 +103,14 @@ namespace sph
 	void SphSolver::addObject(std::vector<CollisionHandlerNS::collision_t> vertices, int stride, std::vector<unsigned int> indices)
 	{
 		CollisionHandlerNS::collision_t temp;
+		double linTransFacInv = 1./linTransFac;
 		for(int i = 0; i < vertices.size(); i+=4)
 		{
 			for(int j = 0; j < 4; j++)
 			{
 				if(j == 3)
 					continue;
-				vertices[i + j] = linTransFac * (vertices[i + j] + linTransConst);
+				vertices[i + j] = linTransFacInv * (vertices[i + j] + linTransConst[j]);
 			}
 		}
 		collisionHandler->addObject(vertices, stride, indices);
@@ -132,6 +138,7 @@ namespace sph
     {
       size += cells[i].getStoredParticles();
     }
+		size += dummyCell.getStoredParticles();
 		return size;
 	}
 
@@ -149,12 +156,20 @@ namespace sph
       {
 				position onePos = tempPos[j];
 				onePos = onePos*linTransFac;
-        temp << onePos(0), onePos(1), onePos(2), 2;
-				temp = temp - linTransConst;
+        temp << onePos(0) - linTransConst[0], onePos(1) - linTransConst[1], onePos(2) - linTransConst[2], 1;
         positions[index] = temp;
         index++;
       }
     }
+		for(int i = 0; i < dummyCell.getStoredParticles(); i++)
+		{
+			const std::vector<position>& tempPos = dummyCell.getPositions();
+			position onePos = tempPos[i];
+			onePos = onePos*linTransFac;
+			temp << onePos(0) - linTransConst[0], onePos(1) - linTransConst[1], onePos(2) - linTransConst[2], 1;
+			positions[index] = temp;
+			index++;
+		}
     return positions;
   }
 
@@ -168,8 +183,7 @@ namespace sph
 		{
 			position onePos = tempPos[i];
 			onePos = onePos*linTransFac;
-      temp << onePos(0), onePos(1), onePos(2), 2;
-			temp = temp - linTransConst;
+      temp << onePos(0) - linTransConst[0], onePos(1) - linTransConst[1], onePos(2) - linTransConst[2], 1;
       positions[i] = temp;
     }
 		trash.clear();
@@ -190,11 +204,16 @@ namespace sph
   {
     for(int i = 0; i < pos.size(); i++)
     {
-      cells[0].addParticle(pos[i], vel[i], liq, bondIn);
+      dummyCell.addParticle(pos[i], vel[i], liq, bondIn);
     }
   
-    cells[0].makeTransitions();
+    dummyCell.checkDomain();
   }
+
+	void SphSolver::addParticle(position posIn, velocity velIn, std::shared_ptr<SphLiquid> liqIn, std::shared_ptr<bond> bondIn)
+	{
+		cells[0].addParticle(posIn, velIn, liqIn, bondIn);
+	}
 
   SmoothingKernel& SphSolver::getKernel() const
   {
@@ -274,6 +293,11 @@ namespace sph
 		return collisionHandler;
 	}
 
+	void SphSolver::clearObjects()
+	{
+		collisionHandler->clearObjects();
+	}
+
 	std::vector<CollisionHandlerNS::position_t> SphSolver::getCollisionPositions()
 	{
 		std::vector<CollisionHandlerNS::position_t> vec = collisionHandler->getCollisionPositions();
@@ -281,9 +305,10 @@ namespace sph
     {
       for(int j = 0; j < 3; j++)
       {
-				vec[i](j) = vec[i](j)*linTransFac - linTransConst;
+				vec[i](j) = vec[i](j)*linTransFac - linTransConst[j];
       }
     }
+		collisionHandler->clearCollisionPositions();
     return vec;
 	}
 
@@ -294,6 +319,7 @@ namespace sph
     {
       vec[i] = vec[i]*linTransFac;
     }
+		collisionHandler->clearCollisionVelocities();
     return vec;
 	}
 
@@ -304,6 +330,17 @@ namespace sph
     {
       vec[i] = vec[i]*linTransFac;
     }
+		collisionHandler->clearCollisionVelocitiesOrthogonal();
     return vec;
+	}
+
+	void SphSolver::rotateObjects(double angle)
+	{
+		collisionHandler->rotateObjects(angle);
+	}
+
+	void SphSolver::makeTransitions()
+	{
+		cells[0].makeTransitions();
 	}
 }

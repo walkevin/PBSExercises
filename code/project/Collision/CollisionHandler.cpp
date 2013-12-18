@@ -11,6 +11,16 @@
 #include <iostream>
 #include <cmath>
 #include <random>
+#include <map>
+#include <array>
+
+#include "../Models/GeometricObject.h"
+
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace CollisionHandlerNS {
 
@@ -110,9 +120,28 @@ std::tuple<bool, position_t, velocity_t> CollisionHandler::particleVsOneObject(p
 
 		    //Report collisions
 		    collisionPositions.push_back(inters.second);
+
+		    //Dirty hack with clamping
+
 		    Eigen::Vector3f threshold = 0.0003 * (inters.second + triangleNormal.cross(correctedVel));
-		    collisionVelocities.push_back(threshold + 0.001 *(inters.second + correctedVel));
+		    if(threshold.squaredNorm() > 0.005){
+		    	threshold.normalize();
+		    	threshold *= 0.1;
+		    }
+		    Eigen::Vector3f aClamp = threshold + 0.0003 * (inters.second + correctedVel);
+		    if(aClamp.squaredNorm() > 0.005){
+		    	aClamp.normalize();
+		    	aClamp *= 0.1;
+		    }
+		    collisionVelocities.push_back(aClamp);
+
+//		    Eigen::Vector3f threshold = 0.0003 * (inters.second + triangleNormal.cross(correctedVel));
+//		    collisionVelocities.push_back(threshold + 0.001 * (inters.second + correctedVel));
+
 		    collisionVelocitiesOrthogonal.push_back(threshold);
+
+//		    collisionVelocities.push_back(0.001 * Eigen::Vector3f(1,1,1));
+//		    collisionVelocitiesOrthogonal.push_back(0.001 * Eigen::Vector3f(1,1,1));
 
 
 		    return std::make_tuple(true, correctedPos, correctedVel);
@@ -260,14 +289,73 @@ void CollisionHandler::addObject(std::vector<collision_t> vertices, int vertexSt
 	objects.push_back(obj);
 }
 
+void CollisionHandler::rotateObjects(double angle)
+{
+	glm::vec3 euler(0, angle, 0);
+	glm::quat myQuat(euler);
+	glm::mat4 transformation = glm::toMat4(myQuat);
+
+	for(int i = 0; i < objects.size(); i++)
+	{
+		std::vector<geometry_type> objectData = objects[i].vertices;
+		Eigen::Map<Eigen::MatrixXf> rawVertices(objectData.data(), 4, objectData.size() / 4);//rawVertices operates on the same data as pyrData
+		Eigen::Map<Eigen::Matrix<float, 4, 4> > transform(glm::value_ptr(transformation));
+		rawVertices = transform * rawVertices;
+		objects[i].vertices = objectData;
+		
+		std::vector<collision_t>::iterator it;
+		std::vector<collision_t> vertices = objects[i].vertices;
+
+		std::array<collision_t, 3> minima = {vertices[0], vertices[1], vertices[2]};
+		std::array<collision_t, 3> maxima = {vertices[0], vertices[1], vertices[2]};
+
+		int vertexStride = 4;
+		
+		for(it = vertices.begin(); it != vertices.end(); it+=vertexStride)
+		{
+			for(int i = 0; i < 3; i++)
+			{
+				if(*(it + i) < minima[i]){
+					minima[i] = *(it + i);
+				}
+				else if(*(it + i) > maxima[i]){
+					maxima[i] = *(it + i);
+				}
+			}
+		}
+		objects[i].AABB << minima[0], maxima[0], minima[1], maxima[1], minima[2], maxima[2]; 		
+	}
+}
+	
+
+void CollisionHandler::clearObjects()
+{
+	while(!objects.empty())
+		objects.pop_back();
+}
+
 std::vector<position_t> CollisionHandler::getCollisionPositions(){
 	return collisionPositions;
 }
+
 std::vector<velocity_t> CollisionHandler::getCollisionVelocities(){
 	return collisionVelocities;
 }
+
 std::vector<velocity_t> CollisionHandler::getCollisionVelocitiesOrthogonal(){
 	return collisionVelocitiesOrthogonal;
+}
+
+void CollisionHandler::clearCollisionPositions(){
+  collisionPositions.clear();
+}
+
+void CollisionHandler::clearCollisionVelocities(){
+  collisionVelocities.clear();
+}
+
+void CollisionHandler::clearCollisionVelocitiesOrthogonal(){
+  collisionVelocitiesOrthogonal.clear();
 }
 
 } /* namespace CollisionHandler */

@@ -1,22 +1,23 @@
 /*
- * Cuboid.h
+ * Pyramid.h
  *
- *  Created on: Dec 8, 2013
+ *  Created on: Nov 23, 2013
  *      Author: kevin
  */
 
-#ifndef CUBOID_H_
-#define CUBOID_H_
+#ifndef PYRAMID_H_
+#define PYRAMID_H_
 
 typedef float geometry_type;
 
 #include <vector>
+#include <Eigen/Core>
 #include "GeometricObject.h"
 
-class Cuboid : public GeometricObject {
+class Pyramid : public GeometricObject {
 public:
-	Cuboid(geometry_type a_, geometry_type b_, geometry_type c_);
-	virtual ~Cuboid();
+	Pyramid(geometry_type a_, geometry_type b_, geometry_type h_, Eigen::Vector4f bodyColor_);
+	virtual ~Pyramid();
 
 	std::vector<geometry_type> getVertices();
 	std::vector<geometry_type> getNormals();
@@ -26,13 +27,13 @@ public:
 	unsigned int getNumElements();
 
 private:
-	geometry_type a;// side length in x direction
-	geometry_type b;// side length in y direction
-	geometry_type c;// side length in z direction
+	geometry_type a;// side length of base
+	geometry_type b;// side length of base
+	geometry_type h;// height of pyramid
 	unsigned int numElements;
+	Eigen::Vector4f bodyColor;
 
 	inline geometry_type distance(geometry_type a1, geometry_type a2, geometry_type a3);//length of a vector (a1, a2, a3)
-
 };
 
-#endif /* CUBOID_H_ */
+#endif /* PYRAMID_H_ */

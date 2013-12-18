@@ -71,6 +71,7 @@ namespace sph
       1. Position of the particle
       2. Velocity of the particle
       3. Liquid of the particle
+			4. Bool value for the bond
       */
       void addParticle(position, velocity, std::shared_ptr<SphLiquid>, std::shared_ptr<bond>);
 
@@ -91,6 +92,21 @@ namespace sph
 			1. Index of the particle to be deleted
 			*/
 			void deleteParticle(int);
+
+			/*
+			Sets all bonds true that are new added with push_back
+			*/
+			void setBonds();
+
+			/*
+			Checks if the particle moves into the computing domain and if yes adds it
+			*/
+			void checkDomain();
+
+			/*
+			Computes only gravity
+			*/
+			void computeOnlyGravity();
  
     private:
       std::vector<velocity> vel;

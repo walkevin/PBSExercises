@@ -23,7 +23,8 @@
 #include <vector>
 #include <cmath>
 
-Cuboid::Cuboid(geometry_type a_, geometry_type b_, geometry_type c_) : a(a_), b(b_), c(c_), numElements(3 * 12){}
+Cuboid::Cuboid(geometry_type a_, geometry_type b_, geometry_type c_, Eigen::Vector4f bodyColor_)
+: a(a_), b(b_), c(c_), numElements(3 * 12), bodyColor(bodyColor_){}
 
 Cuboid::~Cuboid() {}
 
@@ -121,16 +122,14 @@ std::vector<unsigned int> Cuboid::getIndices(){
 
 std::vector<geometry_type> Cuboid::getColors(){
 	std::vector<geometry_type> colors;
-	colors.push_back(0.0); colors.push_back(0.1); colors.push_back(0.2); colors.push_back(1.0);
-	colors.push_back(0.0); colors.push_back(0.1); colors.push_back(0.2); colors.push_back(1.0);
-	colors.push_back(0.0); colors.push_back(0.1); colors.push_back(0.2); colors.push_back(1.0);
-	colors.push_back(0.0); colors.push_back(0.1); colors.push_back(0.2); colors.push_back(1.0);
 
-	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
-	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
-	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
-	colors.push_back(0.0); colors.push_back(0.4); colors.push_back(0.5); colors.push_back(1.0);
-
+	for(int i = 0; i < 8; i++){
+		colors.push_back(bodyColor[0]);
+		colors.push_back(bodyColor[1]);
+		colors.push_back(bodyColor[2]);
+		colors.push_back(bodyColor[3]);
+	}
+//	colors.push_back(0.0); colors.push_back(0.1); colors.push_back(0.2); colors.push_back(1.0);
 	return colors;
 }
 

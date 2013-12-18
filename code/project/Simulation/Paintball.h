@@ -10,7 +10,7 @@
 #include "../GLUTFramework/src/GlutFramework.h"
 #include "../GLUTFramework/src/ShaderLoader.h"
 #include "../GLUTFramework/src/RotatingView.h"
-#include "../GLUTFramework/src/GeometricObject.h"
+#include "../Models/GeometricObject.h"
 
 #include "../SPH/SphSolver.hpp"
 #include "../Collision/CollisionHandler.h"
@@ -29,11 +29,6 @@ struct objectInfo{
 	GLuint bufferId[4];
 };
 
-struct paintTracerStruct{
-	int numTracers;
-	std::vector<float> vertices;
-	std::vector<float> indices;
-};
 
 class Paintball : public glutFramework::GlutFramework{
 public:
@@ -52,21 +47,25 @@ private:
 	unsigned int nTotalParticles;
 
 	sph::SphSolver* solver;
-
-	std::map<std::string, GLint> locs;
 	std::map<std::string, objectInfo> objInfo;
-	paintTracerStruct paintTracers;
 
 	ShaderLoader sh;
+	std::map<std::string, GLint> locs;
 	RotatingView* rv;
-	CollisionHandlerNS::CollisionHandler* ch;
+
+
+	int numPaintTracers;
+	double angle;
+	Eigen::Vector4f fluidColor;
 
 	void createVBO();
 	void destroyVBO();
 	void updatePositions();
 	void specialKeyboardDown(int key, int x, int y );
+	void mouseButtonPress(int button, int state, int x, int y);
 
 	void uploadGeometricObject(GeometricObject* obj, int numObj, std::vector<glm::mat4> objTransforms, objectInfo objInfo);
+	void rotateObjects();
 
 };
 

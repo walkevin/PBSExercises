@@ -53,6 +53,27 @@ public:
 	 *
 	 */
 	void addObject(std::vector<collision_t> vertices, int vertexStride, std::vector<unsigned int> indices);
+
+	/*
+	 * clearObjects
+	 *
+	 * removes all Objects
+	 *
+	 */
+	void clearObjects();
+
+	/*
+	 * rotateObjects
+	 *
+	 * rotates all Objects
+	 *
+	 * Arguments:
+	 * 1. angle to rotate
+	 *
+	 */
+	void rotateObjects(double angle);
+	
+
 //private:
 	std::tuple<bool, position_t, velocity_t> particleVsOneObject(position_t newParticlePos, position_t oldParticlePos, velocity_t particleVel, object_t object);
 
@@ -118,6 +139,11 @@ public:
 	std::vector<position_t> getCollisionPositions();
 	std::vector<velocity_t> getCollisionVelocities();
 	std::vector<velocity_t> getCollisionVelocitiesOrthogonal();
+
+	void clearCollisionPositions();
+	void clearCollisionVelocities();
+	void clearCollisionVelocitiesOrthogonal();
+
 private:
 	std::vector<object_t> objects;
 
