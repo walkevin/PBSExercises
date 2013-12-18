@@ -76,18 +76,29 @@
 		\item On impact the SPH simulation starts
 	\end{enumerate}
 \end{frame}
-\subsection{General difficulties}
-\subsection{Specific difficulties}
+\subsection{Difficulties}
 \begin{frame}
-	\frametitle{Difficulties}
-	\begin{itemize}
-		\item (general code debugging)
-		\item (parameter tuning)
-		\item (coordinates: simulation space $\leftrightarrow$ window space)
-		\item many particles behaving like a ball
-		\item particles pushed and trapped inside object
-		\item sticky paint on object with given resolution
-	\end{itemize}
+	\begin{columns}[t]
+		\begin{column}{0.5\textwidth}
+			\begin{block}{General difficulties}
+				\begin{itemize}
+					\item general code debugging
+					\item parameter tuning
+					\item coordinates: simulation space $\leftrightarrow$ window space
+				\end{itemize}
+			\end{block}
+		\end{column}
+		\pause
+		\begin{column}{0.5\textwidth}
+			\begin{block}{Specific difficulties}
+				\begin{itemize}
+					\item many particles behaving like a ball
+					\item particles pushed and trapped inside object
+					\item sticky paint on object with given resolution
+				\end{itemize}
+			\end{block}
+		\end{column}
+	\end{columns}
 \end{frame}
 \subsection{Tricks}
 \begin{frame}
