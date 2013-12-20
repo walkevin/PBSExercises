@@ -1,0 +1,23 @@
+\begin{tikzpicture}[every node/.style={pin distance=0.5ex},every pin edge/.style={draw=black}]
+	\def\circlesize{0.5cm}
+	\def\particlesize{0.3cm}
+		\fill[white!70!black] (0,2) rectangle (2.5,-1);
+		\node[fill=rioday,rounded corners=1ex] (tl) at (0,3.5) {our method};
+		\draw[ultra thick] (0,2) -- (0,-1);
+		\node[fill=rioday,circle,minimum size=\particlesize,pin=above:$t^{(n)}$] (tn) at (-1,2) {};
+		\node[fill=rioday,circle,minimum size=\particlesize,pin=above right:$t^{(n+1)}$] (tnp1) at (1,0) {};
+		\node[fill=rioday,circle,minimum size=\particlesize,pin=below right:$t_{\text{corr}}^{(n+1)}$] (tnp1corr) at (-3,0) {};
+		\node[circle,draw,dashed,minimum size=\circlesize] (col1) at (0,1) {};
+		\draw[-latex,thick] (tn) -- (tnp1);
+		\path[draw,-latex] (tnp1) to[above,pos=0.8] node{$4\ell$} (tnp1corr);
+		\foreach \x/\y/\z in {%
+			1/-1/-0.5,
+			2/-1.2/-0.1,
+			3/-0.3/0.3,
+			4/-0.5/-0.25,
+			5/-1.3/0.8,
+			6/-1.1/0.3,
+			7/-0.7/0.1
+		}
+			\node[circle,fill=helsinkinight,minimum size=\particlesize] (p\z) at (\y,\z) {};
+\end{tikzpicture}
